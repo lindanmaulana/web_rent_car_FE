@@ -1,0 +1,72 @@
+import { TypeCarCreateSchema } from "@/schemas/car"
+import { axiosInstance, setToken } from "./axios-instance"
+import { UtilsErrorService } from "./errors"
+
+interface UtilsCarGetAllParams {
+    params?: string
+}
+
+export const UtilsCarCreate = async (data: TypeCarCreateSchema, token?: string) => {
+    
+    if(token) {
+        setToken(token)
+    } else {
+        throw new Error("Invalid authentication")
+    }
+
+    try {
+        const response = await axiosInstance.post("/cars", data)
+
+        return response.data
+    } catch (err) {
+        UtilsErrorService(err)
+    }
+}
+
+export const UtilsCarGetAll = async ({params}: UtilsCarGetAllParams) => {
+    try {
+        const response = await axiosInstance.get(`/cars?${params}`)
+
+        return response.data.data
+    } catch (err) {
+        UtilsErrorService(err)
+    }
+}
+
+interface UtilsCarGetOneParams {
+    id: string
+}
+export const UtilsCarGetOne = async ({id}: UtilsCarGetOneParams) => {
+    try {
+        const response = await axiosInstance.get(`/cars/${id}`)
+
+        return response.data.data
+    } catch (err) {
+        UtilsErrorService(err)        
+    }
+}
+
+interface UtilsCarUpdateParams {
+
+}
+export const UtilsCarUpdate = async () => {
+
+}
+
+interface UtilsCarDeleteParams {
+    id: string
+    token?: string
+}
+export const UtilsCarDelete = async ({id, token}: UtilsCarDeleteParams) => {
+    if(token) {
+        setToken(token)
+    }
+    
+    try {
+        const response = await axiosInstance.delete(`/cars/${id}`)
+
+        return response.data
+    } catch (err) {
+        UtilsErrorService(err)
+    }
+}
