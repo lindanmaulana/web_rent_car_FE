@@ -1,33 +1,58 @@
 "use client"
 
+import { ButtonLoading } from "@/components/button-loading"
 import { ContentCrud } from "@/components/dashboard/crud/content-crud"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { CarUpdateSchema, TypeCarUpdateSchema } from "@/schemas/car"
+import { UtilsCarUpdate } from "@/utils/car"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { Car } from "../../../../../../../types/car"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface CarRentalUpdateProps {
     idCar: string
     dataCar: Car
+    token?: string
 }
-export const CarRentalUpdate = ({idCar, dataCar}: CarRentalUpdateProps) => {
+export const CarRentalUpdate = ({idCar, dataCar, token}: CarRentalUpdateProps) => {
+    const router = useRouter()
+    const {mutate, isPending} = useMutation({
+        mutationKey: ["updateCar"],
+        mutationFn: (values) => UtilsCarUpdate({data: values, id: idCar, token})
+    })
+
     const form = useForm<TypeCarUpdateSchema>({
         resolver: zodResolver(CarUpdateSchema),
         defaultValues: {
-            brand: dataCar.brand ?? "",
+            brand: dataCar.brand,
             model: dataCar.model,
             year: dataCar.year,
             license_plate: dataCar.license_plate,
             seats: dataCar.seats,
             price_per_day: dataCar.price_per_day,
+            status: dataCar.status
         }
     })
 
     const handleForm = form.handleSubmit((values: TypeCarUpdateSchema) => {
-        
+        mutate(values, {
+            onSuccess: (data) => {
+                toast.success(data.message)
+                router.back()
+            },
+
+            onError: (err) => {
+                toast.error(UtilsErrorConsumeAPI(err))
+            }
+        })
     })
+    
     return (
         <ContentCrud title="Car" titleAction="Update car">
             <Form {...form}>
@@ -85,19 +110,42 @@ export const CarRentalUpdate = ({idCar, dataCar}: CarRentalUpdateProps) => {
                                 </FormItem>
                             )}
                         />
-                        <FormField 
-                            control={form.control}
-                            name="seats"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Seats</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} placeholder="seats..." type="number" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="flex items-center gap-8">
+                            <FormField 
+                                control={form.control}
+                                name="seats"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Seats</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} placeholder="seats..." type="number" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField 
+                                control={form.control}
+                                name="status"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Status</FormLabel>
+                                        <FormControl>
+                                            <Select value={field.value} onValueChange={field.onChange}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="AVAILABLE">Available</SelectItem>
+                                                    <SelectItem value="UNAVAILABLE">Unavailable</SelectItem>
+                                                    <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField 
                             control={form.control}
                             name="price_per_day"
@@ -112,6 +160,7 @@ export const CarRentalUpdate = ({idCar, dataCar}: CarRentalUpdateProps) => {
                             )}
                         />
                     </div>
+                    <ButtonLoading isLoading={isPending} type="submit">Update</ButtonLoading>
                 </form>
             </Form>
         </ContentCrud>

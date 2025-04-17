@@ -21,6 +21,7 @@ export const CarUpdateSchema: ZodType = z.object({
     license_plate: z.string().min(4, "License plate is required").optional(),
     seats: z.coerce.number().positive().optional(),
     price_per_day: z.string().optional(),
-    thumbnail: z.string().optional()
+    thumbnail: z.string().optional(),
+    status: z.enum(["AVAILABLE", "UNAVAILABLE", "MAINTENANCE"]).optional()
 })
 export type TypeCarUpdateSchema = z.infer<typeof CarUpdateSchema>

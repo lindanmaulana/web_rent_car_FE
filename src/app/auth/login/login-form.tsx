@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { alert } from "../../../../types/alert"
+import { useToastSmart } from "@/hooks/toast/useToastSmart"
+import { ErrorUi } from "@/components/feedbacks/error-ui"
 
 export const LoginForm = () => {
     const router = useRouter()
@@ -48,6 +50,10 @@ export const LoginForm = () => {
             }
         })
     })
+
+    useToastSmart({isLoading: isPending,  isError, error: error?.message})
+
+    if(isError) return ErrorUi({message: error.message})
 
     return (
         <CardAuth backButtonHref="/auth/register" backButtonLabel="Don't have an account?" headerLabel="Wellcome Back" showSocial >

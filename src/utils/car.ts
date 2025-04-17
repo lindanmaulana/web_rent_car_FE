@@ -1,4 +1,4 @@
-import { TypeCarCreateSchema } from "@/schemas/car"
+import { TypeCarCreateSchema, TypeCarUpdateSchema } from "@/schemas/car"
 import { axiosInstance, setToken } from "./axios-instance"
 import { UtilsErrorService } from "./errors"
 
@@ -47,10 +47,21 @@ export const UtilsCarGetOne = async ({id}: UtilsCarGetOneParams) => {
 }
 
 interface UtilsCarUpdateParams {
-
+    data: TypeCarUpdateSchema
+    id: string
+    token?: string
 }
-export const UtilsCarUpdate = async () => {
+export const UtilsCarUpdate = async (params: UtilsCarUpdateParams) => {
+    if(params.token) {
+        setToken(params.token)
+    }
+    try {
+        const response = await axiosInstance.patch(`/cars/${params.id}`, params.data)
 
+        return response.data
+    } catch (err) {
+        UtilsErrorService(err)
+    }
 }
 
 interface UtilsCarDeleteParams {

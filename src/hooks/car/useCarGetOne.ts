@@ -10,7 +10,7 @@ interface useCarGetOneProps {
 export const useCarGetOne = ({id}: useCarGetOneProps) => {
     const {data, isLoading, isError, error} = useQuery({
         queryKey: ["getOneCar", id],
-        queryFn: () => UtilsCarGetOne({id}),
+        queryFn: () => UtilsCarGetOne({id})
     })
 
     return {

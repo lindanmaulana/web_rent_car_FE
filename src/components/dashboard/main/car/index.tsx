@@ -1,18 +1,22 @@
 "use client"
 
 import { useCarGetAll } from "@/hooks/car"
+import { useToastSmart } from "@/hooks/toast/useToastSmart"
 import { useState } from "react"
-import { toast } from "sonner"
 import { DashboardMainCarHeader } from "./car-header"
 import { DashboardMainCarItem } from "./car-item"
+import { LoadingUi } from "@/components/feedbacks/loading-ui"
+import { ErrorUi } from "@/components/feedbacks/error-ui"
 
 export const DashboardMainCar = () => {
     const [params, setParams] = useState<string>("")
     const {data, isLoading, isError, error} = useCarGetAll({params})
 
-    if(isLoading) return toast("Loading data...")
+    useToastSmart({isLoading, isError, error: error?.message})
+   
+    if(isLoading) return LoadingUi({message: "Loading data car..."})
 
-    if(isError) return toast(error?.message)
+    if(isError) return ErrorUi({message: error?.message})
 
     return (
         <div className="flex flex-col gap-4">

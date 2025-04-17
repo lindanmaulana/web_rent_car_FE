@@ -40,7 +40,6 @@ export const DashboardMainCarItem = ({data}: DashboardMainCarItemProps) => {
                     }
                 })
             },
-            position: "bottom-right",
         })
     }   
 
