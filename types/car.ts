@@ -1,3 +1,5 @@
+import { Images } from "./image"
+
 export interface Car {
     id: string
     brand: string
@@ -8,6 +10,7 @@ export interface Car {
     price_per_day: string
     thumbnail?: string
     status: string
+    image?: Images[]
     createdAt: Date
     updatedAt: Date
 }

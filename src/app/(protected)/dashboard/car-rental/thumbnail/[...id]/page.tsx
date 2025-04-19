@@ -1,33 +1,31 @@
-"use client"
+'use client'
 
 import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { LoadingUi } from "@/components/feedbacks/loading-ui"
 import { useCarGetOne } from "@/hooks/car"
 import { useToastSmart } from "@/hooks/toast/useToastSmart"
-import { useSession } from "next-auth/react"
-import { useParams } from "next/navigation"
-import { toast } from "sonner"
-import { CarRentalUpdate } from "./update-car"
 import { queryHelpers } from "@/utils/queryHelpers"
+import { useParams } from "next/navigation"
+import { ThumbnailCar } from "./thumbnail-car"
+import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 
-const PageDashboardCarRentalUpdate = () => {
+const PageDashboardCarRentalThumbnail = () => {
     const {id} = useParams<{id: string}>()
     const {data: session, status} = useSession()
     const {data, isLoading, isError, error} = useCarGetOne({id})
 
     const {isAnyLoading, isAnyError, isAnyErrorMessage} = queryHelpers([{isLoading, isError, errorMessage: error?.message}])
-
     useToastSmart({isLoading: isAnyLoading, isError: isAnyError, error: isAnyErrorMessage})
 
-    if(isAnyLoading) return LoadingUi({message: "Loading data car..."})
-
+    if(isAnyLoading) return LoadingUi({message: "Loading..."})
     if(isAnyError) return ErrorUi({message: isAnyErrorMessage})
-
-    if(status === "loading") toast("Session loading...")
+    
+    if(status === "loading") toast.loading("Loading session...")
 
     return (
-        <CarRentalUpdate idCar={id} dataCar={data} token={session?.user.token} />
+        <ThumbnailCar data={data} token={session?.user.token} />
     )
 }
 
-export default PageDashboardCarRentalUpdate
+export default PageDashboardCarRentalThumbnail

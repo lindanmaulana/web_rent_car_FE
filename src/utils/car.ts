@@ -55,6 +55,7 @@ export const UtilsCarUpdate = async (params: UtilsCarUpdateParams) => {
     if(params.token) {
         setToken(params.token)
     }
+
     try {
         const response = await axiosInstance.patch(`/cars/${params.id}`, params.data)
 

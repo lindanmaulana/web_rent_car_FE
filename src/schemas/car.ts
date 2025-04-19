@@ -25,3 +25,9 @@ export const CarUpdateSchema: ZodType = z.object({
     status: z.enum(["AVAILABLE", "UNAVAILABLE", "MAINTENANCE"]).optional()
 })
 export type TypeCarUpdateSchema = z.infer<typeof CarUpdateSchema>
+
+
+export const CarUpdateThumbnailSchema: ZodType = z.object({
+    thumbnail: z.string()
+})
+export type TypeCarUpdateThumbnailSchema = z.infer<typeof CarUpdateThumbnailSchema>

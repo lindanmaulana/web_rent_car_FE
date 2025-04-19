@@ -2,27 +2,28 @@
 
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
-import { Banknote, CalendarRange, CarFront, User, X } from "lucide-react"
+import { UtilsCarDelete } from "@/utils/car"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Banknote, CalendarRange, CarFront, PencilLine, User, X } from "lucide-react"
+import { Session } from "next-auth"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Car } from "../../../../../types/car"
-import { useSession } from "next-auth/react"
 import { toast } from "sonner"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { UtilsCarDelete } from "@/utils/car"
-import { UtilsErrorConsumeAPI } from "@/utils/errors"
+import { Car } from "../../../../../types/car"
+import { baseURLImage } from "@/config"
 
 interface DashboardMainCarItemProps {
     data: Car[]
+    session: Session | null
 }
-export const DashboardMainCarItem = ({data}: DashboardMainCarItemProps) => {
+export const DashboardMainCarItem = ({data, session}: DashboardMainCarItemProps) => {
     const pathname = usePathname()
     const queryClient = useQueryClient()
-    const {data: Session, status} = useSession()
     const {mutate} = useMutation({
         mutationKey: ["deleteCar"],
-        mutationFn: (id: string) => UtilsCarDelete({id, token: Session?.user.token})
+        mutationFn: (id: string) => UtilsCarDelete({id, token: session?.user.token})
     })
 
     const handleDelete = (id: string) => {
@@ -43,21 +44,26 @@ export const DashboardMainCarItem = ({data}: DashboardMainCarItemProps) => {
         })
     }   
 
-    if(status === "loading") return toast("Loading session...")
+    if(status === "loading") toast("Loading session...")
 
     return (
         <div className="w-full">
             <Table className="w-full bg-red-50">
                 <TableBody>
-                    {data.length > 0 ? data.map((car: Car) => (
+                    {data.length > 0 ? data.map((car: Car) => {
+                        const CarThumbnail = `${baseURLImage}${car.thumbnail}`
+                    return (
                         <TableRow key={car.id} className="bg-white">
                             <TableCell>
-                                <Image src="/images/car-default.png" alt="car-default" width={140} height={30} />
+                                <Link href={`${pathname}/thumbnail/${car.id}`} className="relative">
+                                    <Image src={car.thumbnail ? CarThumbnail : "/images/car-default.png"} alt="car-default" width={140} height={30} />
+                                    <PencilLine className="absolute bottom-0 right-5 text-primary/50" size={16} />
+                                </Link>
                             </TableCell>
                             <TableCell>
                                 <span className="text-xs text-slate-blue">{car.brand}</span>
                                 <h5 className="text-xl font-semibold text-primary">{car.model}</h5>
-                                <span className="bg-primary text-white text-xs px-2 lowercase rounded">{car.status}</span>
+                                <span className={`${car.status === "AVAILABLE" ? "bg-green-500" : car.status === "NONAVAILABLE" ? "bg-red-500" : "bg-gray-500"} text-white text-xs px-2 lowercase rounded`}>{car.status}</span>
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col items-center justify-center">
@@ -99,7 +105,7 @@ export const DashboardMainCarItem = ({data}: DashboardMainCarItemProps) => {
                                 </div>
                             </TableCell>
                         </TableRow>
-                    )): (
+                    )}): (
                         <TableRow>
                             <TableCell colSpan={9} rowSpan={9} className="text-center">
                                 <div className="flex flex-col items-center justify-center">
