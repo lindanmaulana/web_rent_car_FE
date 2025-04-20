@@ -6,9 +6,9 @@ import { useCarGetOne } from "@/hooks/car"
 import { useToastSmart } from "@/hooks/toast/useToastSmart"
 import { queryHelpers } from "@/utils/queryHelpers"
 import { useParams } from "next/navigation"
-import { ThumbnailCar } from "./thumbnail-car"
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
+import { ThumbnailCar } from "@/components/dashboard/main/car/thumbnail"
 
 const PageDashboardCarRentalThumbnail = () => {
     const {id} = useParams<{id: string}>()

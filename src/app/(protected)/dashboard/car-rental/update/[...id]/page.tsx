@@ -7,8 +7,8 @@ import { useToastSmart } from "@/hooks/toast/useToastSmart"
 import { useSession } from "next-auth/react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
-import { CarRentalUpdate } from "./update-car"
 import { queryHelpers } from "@/utils/queryHelpers"
+import { CarRentalUpdate } from "@/components/dashboard/main/car/update"
 
 const PageDashboardCarRentalUpdate = () => {
     const {id} = useParams<{id: string}>()

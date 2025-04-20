@@ -12,8 +12,11 @@ import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { Car } from "../../../../../../../types/car"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Car } from "../../../../../../types/car"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { ImagePlus } from "lucide-react"
 
 interface CarRentalUpdateProps {
     idCar: string
@@ -145,6 +148,9 @@ export const CarRentalUpdate = ({idCar, dataCar, token}: CarRentalUpdateProps) =
                                     </FormItem>
                                 )}
                             />
+                            <Button className="bg-green-500 self-end" asChild>
+                                <Link href={`/dashboard/car-rental/add/image/${idCar}`}>Add <ImagePlus /> </Link>
+                            </Button>
                         </div>
                         <FormField 
                             control={form.control}

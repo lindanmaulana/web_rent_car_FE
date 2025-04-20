@@ -1,4 +1,5 @@
-import {CarRentalAdd} from "@/app/(protected)/dashboard/car-rental/add/add-car"
+import { CarRentalAdd } from "@/components/dashboard/main/car/add";
+
 const PageDashboardCarRentalAdd = () => {
   return <CarRentalAdd />;
 };
