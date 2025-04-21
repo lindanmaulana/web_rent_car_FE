@@ -16,6 +16,15 @@ export default auth(async function middleware(req: NextRequest) {
     const isAdminRoute = nextUrl.pathname.startsWith(ROUTESPREFIXADMIN)
     const isAuthRoute = ROUTESAUTH.includes(nextUrl.pathname)
 
+    // if(token && token.exp) {
+    //     const isExpired = Date.now() / 1000 > token.exp;
+
+    //     if(isExpired) {
+    //         return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+    //     }
+
+    // }
+
     if(isApiRoute) {
         return;
     }

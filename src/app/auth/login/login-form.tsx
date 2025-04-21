@@ -13,8 +13,8 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { alert } from "../../../../types/alert"
-import { useToastSmart } from "@/hooks/toast/useToastSmart"
-import { ErrorUi } from "@/components/feedbacks/error-ui"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
+import { toast } from "sonner"
 
 export const LoginForm = () => {
     const router = useRouter()
@@ -23,7 +23,7 @@ export const LoginForm = () => {
         type: "success"
     })
 
-    const {mutate, isPending, isError, error} = useMutation({
+    const {mutate, isPending} = useMutation({
         mutationKey: ["authLogin"],
         mutationFn: (values: typeLoginSchema) => loginCredentials(values)
     })
@@ -39,21 +39,15 @@ export const LoginForm = () => {
     const handleFormLogin = form.handleSubmit((values: typeLoginSchema) => {
         mutate(values, {
             onSuccess: (data) => {
-                console.log({onSuccess: data})
-
+                toast.success(data.message)
                 router.push("/")
             },
 
             onError: (err) => { 
-                console.log({onError: err.message})
-                setAlert({type: "error", message: err.message})
+                setAlert({type: "error", message: UtilsErrorConsumeAPI(err)})
             }
         })
     })
-
-    useToastSmart({isLoading: isPending,  isError, error: error?.message})
-
-    if(isError) return ErrorUi({message: error.message})
 
     return (
         <CardAuth backButtonHref="/auth/register" backButtonLabel="Don't have an account?" headerLabel="Wellcome Back" showSocial >

@@ -4,6 +4,7 @@ import { RiHome6Fill } from "react-icons/ri";
 import { BsBarChartFill, BsCalendar2WeekFill } from "react-icons/bs";
 import { BiSolidWallet } from "react-icons/bi";
 import { TbMessageFilled } from "react-icons/tb";
+import { FaUserClock } from "react-icons/fa";
 
 export interface NavbarList {
     id: number
@@ -27,24 +28,30 @@ export const navbarListMainMenu: NavbarList[] = [
     },
     {
         id: 3,
+        icon: FaUserClock,
+        title: "Rental",
+        url: "/dashboard/rental"
+    },
+    {
+        id: 4,
         icon: BsBarChartFill ,
         title: "Insight",
         url: "/dashboard/insight"
     },
     {
-        id: 4,
+        id: 5,
         icon: BiSolidWallet,
         title: "Reimburse",
         url: "/dashboard/reimburse"
     },
     {
-        id: 5,
+        id: 6,
         icon: TbMessageFilled,
         title: "Inbox",
         url: "/dashboard/inbox"
     },
     {
-        id: 6,
+        id: 7,
         icon: BsCalendar2WeekFill,
         title: "Calender",
         url: "/dashboard/calender"

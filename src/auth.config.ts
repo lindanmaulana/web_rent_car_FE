@@ -11,7 +11,6 @@ export default {
 
             if(validatedFields.success) {
                 const user = await UtilsAuthLogin(validatedFields.data)
-
                 if(!user || user.errors) return null
 
                 return {

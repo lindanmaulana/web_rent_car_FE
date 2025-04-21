@@ -1,7 +1,6 @@
 "use client"
 
 import { ContentCrud } from "@/components/dashboard/crud/content-crud"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
@@ -73,11 +72,11 @@ export const ThumbnailCar = ({data, token}: ThumbnailCarProps) => {
                         }}
                         className="w-full"
                         >
-                            <CarouselContent className="w-full">
-                                <CarouselItem className="w-full basis-4/4 flex items-center gap-4">
+                            <CarouselContent className="w-full flex items-center">
                                     {data.image?.map(car => {
                                         const imgUrl = `${baseURLImage}${car.url}`
                                         return (
+                                    <CarouselItem key={car.id} className="w-full basis-2/4 flex items-center gap-4">
                                         <FormField 
                                             key={car.id}
                                             control={form.control}
@@ -89,7 +88,7 @@ export const ThumbnailCar = ({data, token}: ThumbnailCarProps) => {
                                                     <FormControl>
                                                             <Card onClick={() => field.onChange(car.url)} key={car.id} className={cn("", isSelected ? "border-2 border-primary" : "border-2")}>
                                                                 <CardContent>
-                                                                    <figure className="w-full min-h-40">
+                                                                    <figure className="w-full h-52">
                                                                         <Image key={car.id} src={imgUrl} alt={car.url} width={100} height={100} className="w-full h-full object-cover" />
                                                                     </figure>
                                                                 </CardContent>
@@ -98,15 +97,17 @@ export const ThumbnailCar = ({data, token}: ThumbnailCarProps) => {
                                                 </FormItem>
                                             )}}
                                         />
+                                    </CarouselItem>
                                     )})}
-                                    <Link href={`/dashboard/car-rental/add/image/${data.id}`} className="w-full">
-                                        <Card className="hover:bg-green-500 group flex items-center justify-center">
-                                            <CardContent className="min-h-40 flex items-center gap-2 group-hover:text-white">
-                                                    Add Image <ImagePlus />
-                                            </CardContent>
-                                        </Card>
-                                    </Link>
-                                </CarouselItem>
+                                    <CarouselItem className="basis-1/4">
+                                        <Link href={`/dashboard/car-rental/add/image/${data.id}`} className="w-full">
+                                            <Card className="hover:bg-green-500 group flex items-center justify-center">
+                                                <CardContent className="h-52 flex items-center gap-2 group-hover:text-white">
+                                                        Add Image <ImagePlus />
+                                                </CardContent>
+                                            </Card>
+                                        </Link>
+                                    </CarouselItem>
                             </CarouselContent>
                         </Carousel>
                         <ButtonLoading type="submit" isLoading={isPending}>Set thumbnail</ButtonLoading>

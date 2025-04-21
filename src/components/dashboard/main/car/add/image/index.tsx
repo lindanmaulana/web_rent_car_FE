@@ -3,7 +3,7 @@
 import { ButtonLoading } from "@/components/button-loading"
 import { ContentCrud } from "@/components/dashboard/crud/content-crud"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ImageAddSchema, TypeImageAddSchema } from "@/schemas/images"
@@ -42,7 +42,8 @@ export const CarRentalAddImage = ({id, token}: CarRentalAddImageProps) => {
     const handleForm = form.handleSubmit((values) => {
         mutate(values, {
             onSuccess: (data) => {
-                toast.success(data.data.message)
+                console.log({data})
+                toast.success(data.message)
                 router.back()
             },
 

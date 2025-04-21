@@ -1,17 +1,27 @@
 import { AxiosError } from "axios"
 import { AuthError } from "next-auth"
 
-export const UtilsErrorAuthentication = (err: unknown) => {
-    if(err instanceof AuthError) {
+export const UtilsErrorAuthentication = (err: unknown): string => {
+    let errorMessage: string = "Authentication failed. Please try again."
+
+    if(err instanceof AxiosError) {
+        errorMessage = err.response?.data?.message || err.response?.data?.errors || "Network or API error occurred";
+
+    } else if(err instanceof AuthError) {
         switch(err.type) {
             case "CredentialsSignin":
-                throw new Error("Invalid credentials!")
+            errorMessage = "Invalid credentials."
+            break;
             default:
-                throw new Error ("An unexpected error occurred!")
+                errorMessage = "Authentication failed. Please try again."
         }
-    }
 
-    throw new Error("Error tidak diketahui")
+    } else if(err instanceof Error) {
+        console.log({ERRORINSTANCE: err})
+        errorMessage = err.message
+    } 
+
+    return errorMessage
 }
 
 export const UtilsErrorService = (err: unknown) => {
@@ -21,11 +31,9 @@ export const UtilsErrorService = (err: unknown) => {
         errorMessage = err.response?.data.errors
     } else if(err instanceof Error) {
         errorMessage = err.message
-    } else if(err instanceof AuthError) {
-        errorMessage = err.message
     }
 
-    throw new Error(errorMessage)
+    return errorMessage
 } 
 
 export const UtilsErrorConsumeAPI = (err: unknown) => {

@@ -17,9 +17,9 @@ export const loginCredentials = async (values: typeLoginSchema) => {
             password,
             redirect: false,
         })
-        
+
         return result
     } catch (err) {
-        UtilsErrorAuthentication(err)
+        throw new Error(UtilsErrorAuthentication(err))
     }
 }  
