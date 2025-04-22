@@ -16,15 +16,6 @@ export default auth(async function middleware(req: NextRequest) {
     const isAdminRoute = nextUrl.pathname.startsWith(ROUTESPREFIXADMIN)
     const isAuthRoute = ROUTESAUTH.includes(nextUrl.pathname)
 
-    // if(token && token.exp) {
-    //     const isExpired = Date.now() / 1000 > token.exp;
-
-    //     if(isExpired) {
-    //         return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    //     }
-
-    // }
-
     if(isApiRoute) {
         return;
     }
@@ -36,19 +27,6 @@ export default auth(async function middleware(req: NextRequest) {
 
         return NextResponse.next();
     }
-
-    // if(isLoggedIn && isAdminRoute) {
-    //     if(token) {
-    //         if(token.role === "USER") {
-    //             return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    //         }
-
-    //     } else {
-    //         return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    //     }
-
-    //     return NextResponse.next();
-    // }
 
     if(isLoggedIn) {
         if(token) {

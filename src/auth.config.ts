@@ -1,8 +1,18 @@
+import { LoginSchema, OauthSchema } from "@/schemas/auth"
+import { UtilsAuthLogin, UtilsAuthOauth } from "@/utils/auth"
+import type { Profile } from "@auth/core/types"
+import type { Account, NextAuthConfig, Session, User } from "next-auth"
+import { JWT } from "next-auth/jwt"
 import Credentials from "next-auth/providers/credentials"
-import { LoginSchema } from "@/schemas/auth"
-import { UtilsAuthLogin } from "@/utils/auth"
-import type {NextAuthConfig, User, Session} from "next-auth"
-import {JWT} from "next-auth/jwt"
+import GithubProvider from "next-auth/providers/github"
+interface jwtParams {
+    token: JWT
+    user?: User
+    account: Account | null
+    profile?: Profile
+}
+
+type Awaitable<T> = T | Promise<T>
   
 export default {
     providers: [Credentials({
@@ -28,19 +38,92 @@ export default {
 
             return null
         }
-    })],
+    }),
+    GithubProvider({
+        clientId: process.env.GITHUB_CLIENT_ID as string,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        profile(profil) {
+            return {
+                id: profil.id.toString(),
+                image: profil.avatar_url,
+                email: profil.email,
+                name: profil.name,
+                provider: "github",
+                providerAccountId: profil.id.toString(),
+                role: "USER",
+                token: ""
+            }
+        }
+    }) 
+],
 
     callbacks: {
-        async jwt({token, user}: {token: JWT, user?: User}) {
-            if(user) {
-                token.id = user.id!
-                token.name = user.name!
-                token.email = user.email!
-                token.role = user.role
-                token.image = user.image!
-                token.provider = user.provider
-                token.providerAccountId = user.providerAccountId
-                token.token = user.token
+        // async jwt({token, user}: {token: JWT, user?: User}) {
+        //     if(user) {
+        //         token.id = user.id!
+        //         token.name = user.name!
+        //         token.email = user.email!
+        //         token.role = user.role
+        //         token.image = user.image!
+        //         token.provider = user.provider
+        //         token.providerAccountId = user.providerAccountId
+        //         token.token = user.token
+        //     }
+
+        //     return token
+        // },
+
+        async jwt({token, user, account}: jwtParams) {
+            if(account?.provider === "credentials") {
+                if(user) {
+                    token.id = user.id!
+                    token.name = user.name!
+                    token.email = user.email!
+                    token.role = user.role
+                    token.image = user.image!
+                    token.provider = user.provider
+                    token.providerAccountId = user.providerAccountId
+                    token.token = user.token
+                }
+            }
+
+            if(account?.provider === "github") {
+                if(user) {
+                    try {
+                        const validatedFields = OauthSchema.safeParse(user)
+                        if(validatedFields.success) {
+                            const user = await UtilsAuthOauth(validatedFields.data)
+                            if(!user || user.errors) return null
+
+                            token.id = user.id
+                            token.name = user.name
+                            token.email = user.email
+                            token.role = user.role
+                            token.image = user.image
+                            token.provider = user.provider
+                            token.providerAccountId = user.providerAccountId
+                            token.token = user.token
+                        }
+                    } catch {
+                        return null
+                    }
+
+
+                    // token.id = account.providerAccountId,
+                    // token.name = user?.name ?? "",
+                    // token.email = user?.email ?? "",
+                    // token.image = profile?.picture ?? "",
+                    // token.provider = account.provider,
+                    // token.providerAccountId = account.providerAccountId
+                }
+                // const userGithub: UserGithub = {
+                //     id: account.providerAccountId,
+                //     name: user?.name ?? "",
+                //     email: user?.email ?? "",
+                //     image: profile?.picture ?? "",
+                //     provider: account.provider,
+                //     providerAccountId: account.providerAccountId
+                // }
             }
 
             return token

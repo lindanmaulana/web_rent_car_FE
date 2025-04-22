@@ -23,3 +23,16 @@ export const loginCredentials = async (values: typeLoginSchema) => {
         throw new Error(UtilsErrorAuthentication(err))
     }
 }  
+
+export const AuthGithub = async () => {
+    try {
+        const result = await signIn("github", {
+            redirect: false,
+            redirectTo: "/"
+        })
+
+        return result
+    } catch (err) {
+        throw new Error(UtilsErrorAuthentication(err))
+    }
+}

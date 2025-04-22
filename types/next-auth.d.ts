@@ -27,6 +27,7 @@ declare module "next-auth" {
         providerAccountId: string | ""
         token: string
     }
+
 }
 
 // interface Ui

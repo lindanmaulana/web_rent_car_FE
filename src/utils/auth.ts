@@ -1,4 +1,4 @@
-import { typeLoginSchema, typeRegisterSchema } from "@/schemas/auth"
+import { typeLoginSchema, typeOauthSchema, typeRegisterSchema } from "@/schemas/auth"
 import { axiosInstance } from "./axios-instance"
 import { UtilsErrorAuthentication, UtilsErrorService } from "./errors"
 
@@ -21,5 +21,18 @@ export const UtilsAuthRegister = async (data: typeRegisterSchema) => {
         return response.data.data
     } catch (err) {
         return UtilsErrorService(err)
+    }
+}
+
+export const UtilsAuthOauth = async (data: typeOauthSchema) => {
+    try {
+        const response = await axiosInstance.post("/auth/oauth", data)
+
+        return response.data.data
+    } catch (err) {
+        
+        return {
+            errors: UtilsErrorService(err)
+        }
     }
 }

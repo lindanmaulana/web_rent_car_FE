@@ -7,14 +7,14 @@ import { ButtonLoading } from "@/components/button-loading"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { LoginSchema, typeLoginSchema } from "@/schemas/auth"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { alert } from "../../../../types/alert"
-import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { toast } from "sonner"
+import { alert } from "../../../../types/alert"
 
 export const LoginForm = () => {
     const router = useRouter()
