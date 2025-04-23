@@ -1,16 +1,21 @@
 "use client"
 
-import { AuthOauth } from "@/actions/auth"
+import { AuthOauth } from "@/actions/oauth"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { useMutation } from "@tanstack/react-query"
 import { FaGithub } from "react-icons/fa"
 import { FcGoogle } from "react-icons/fc"
+import { toast } from "sonner"
 import { OauthProviders } from "../../../types/auth"
 import { Button } from "../ui/button"
-import { UtilsErrorConsumeAPI } from "@/utils/errors"
-import { signIn } from "next-auth/react"
 
 
 export const AuthSocial = () => {
+
+    const {mutate} = useMutation({
+        mutationKey: ['authOauth'],
+        mutationFn: (provider: OauthProviders) => AuthOauth(provider)
+    })
 
     // const {mutate} = useMutation({
     //     mutationKey: ['authOauth'],
@@ -30,9 +35,14 @@ export const AuthSocial = () => {
     // }
 
     const handleOauth = (provider: OauthProviders) => {
-        signIn(provider, {
-            redirect: true,
-            callbackUrl: "/"
+        mutate(provider, {
+            onSuccess: (data) => {
+                toast.success("Success")
+            },
+
+            onError: (err) => {
+                toast.error(UtilsErrorConsumeAPI(err))
+            }
         })
     }
 
