@@ -44,6 +44,9 @@ export default {
                     token.token = user.token
                 }
 
+                console.log({token})
+                console.log({user})
+
             return token
         },
 
