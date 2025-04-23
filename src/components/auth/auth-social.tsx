@@ -11,7 +11,6 @@ import { Button } from "../ui/button"
 
 
 export const AuthSocial = () => {
-
     const {mutate} = useMutation({
         mutationKey: ['authOauth'],
         mutationFn: (provider: OauthProviders) => AuthOauth(provider)

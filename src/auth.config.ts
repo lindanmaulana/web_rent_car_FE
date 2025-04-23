@@ -77,7 +77,6 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
 
         return null
     } catch {
-        
         return null
     }
 }
