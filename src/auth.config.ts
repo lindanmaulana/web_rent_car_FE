@@ -70,15 +70,14 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
         if(validatedFields.success) {
             const result = await UtilsAuthOauth(validatedFields.data)
 
-            if(!result || result.errors) return null
+            if(!result || result.errors) return false
             
             return result
         }
 
         return null
     } catch {
-        
-        return null
+        return false
     }
 }
 
