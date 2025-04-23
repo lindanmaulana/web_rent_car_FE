@@ -63,6 +63,24 @@ export default {
 } satisfies NextAuthConfig
 
 
+const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
+    const validatedFields = LoginSchema.safeParse(credentials)
+
+    try {
+        if(validatedFields.success) {
+            const result = await UtilsAuthLogin(validatedFields.data)
+            console.log({resultAja: result})
+            if(!result || result.errors) return null
+
+            return result
+        }
+
+        return null
+    } catch {
+        return null
+    }
+}
+
 const serviceAuthGithub = async ({user}: OauthParams) => {
     const validatedFields = OauthSchema.safeParse(user)
 
@@ -70,32 +88,13 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
         if(validatedFields.success) {
             const result = await UtilsAuthOauth(validatedFields.data)
 
-            if(!result || result.errors) return null
+            if(!result || result.errors) throw new Error(result.errors)
             
             return result
         }
 
-        return null
+        return false
     } catch {
-        
-        return null
-    }
-}
-
-const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
-    const validatedFields = LoginSchema.safeParse(credentials)
-
-    try {
-        if(validatedFields.success) {
-            const result = await UtilsAuthLogin(validatedFields.data)
-
-            if(!result || result.errors) return null
-
-            return result
-        }
-
-        return null
-    } catch {
-        return null
+        return false
     }
 }

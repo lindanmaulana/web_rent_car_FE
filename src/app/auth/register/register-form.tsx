@@ -12,6 +12,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { alert } from "../../../../types/alert"
 import { ButtonLoading } from "@/components/button-loading"
+import { AuthAlert } from "@/components/auth-alert"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
 
 export const RegisterForm = () => {
     const router = useRouter()
@@ -43,6 +45,7 @@ export const RegisterForm = () => {
 
             onError: (err) => {
                 console.log({err})
+                setAlert({message: UtilsErrorConsumeAPI(err), type: "error"})
             }
         })
     })
@@ -94,6 +97,7 @@ export const RegisterForm = () => {
                             )}
                         />
                     </div>
+                    <AuthAlert message={alert.message} type={alert.type} />
                     <ButtonLoading type="submit" isLoading={isPending} className="w-full">Register</ButtonLoading>
                 </form>
             </Form>

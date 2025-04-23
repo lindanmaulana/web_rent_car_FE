@@ -20,7 +20,7 @@ export const UtilsAuthRegister = async (data: typeRegisterSchema) => {
 
         return response.data.data
     } catch (err) {
-        return UtilsErrorService(err)
+        throw new Error(UtilsErrorService(err))
     }
 }
 
