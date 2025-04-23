@@ -1,4 +1,4 @@
-import { LoginSchema, OauthSchema } from "@/schemas/auth"
+import { LoginSchema, OauthSchema, typeLoginSchema } from "@/schemas/auth"
 import { UtilsAuthLogin, UtilsAuthOauth } from "@/utils/auth"
 import type { Profile } from "@auth/core/types"
 import type { Account, NextAuthConfig, Session, User } from "next-auth"
@@ -12,119 +12,37 @@ interface jwtParams {
     profile?: Profile
 }
 
-type Awaitable<T> = T | Promise<T>
-  
+interface OauthParams {
+    user?: User
+    account: Account | null
+}
+
 export default {
     providers: [Credentials({
         async authorize(credentials) {
-            const validatedFields = LoginSchema.safeParse(credentials)
-
-            if(validatedFields.success) {
-                const user = await UtilsAuthLogin(validatedFields.data)
-                if(!user || user.errors) return null
-
-                return {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    role: user.role,
-                    image: user.image,
-                    provider: user.provider,
-                    providerAccountId: user.providerAccountId,
-                    token: user.token,
-                }
-            }
-            
-
-            return null
+            return await serviceAuthCredentials(credentials as typeLoginSchema)
         }
     }),
     GithubProvider({
         clientId: process.env.GITHUB_CLIENT_ID as string,
         clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-        profile(profil) {
-            return {
-                id: profil.id.toString(),
-                image: profil.avatar_url,
-                email: profil.email,
-                name: profil.name,
-                provider: "github",
-                providerAccountId: profil.id.toString(),
-                role: "USER",
-                token: ""
-            }
-        }
     }) 
 ],
 
     callbacks: {
-        // async jwt({token, user}: {token: JWT, user?: User}) {
-        //     if(user) {
-        //         token.id = user.id!
-        //         token.name = user.name!
-        //         token.email = user.email!
-        //         token.role = user.role
-        //         token.image = user.image!
-        //         token.provider = user.provider
-        //         token.providerAccountId = user.providerAccountId
-        //         token.token = user.token
-        //     }
+        async signIn({user, account}) {
+            if(account?.provider === "github") {
+                return serviceAuthGithub({user, account})
+            }
+        },
 
-        //     return token
-        // },
-
-        async jwt({token, user, account}: jwtParams) {
-            if(account?.provider === "credentials") {
+        async jwt({token, user}: jwtParams) {
                 if(user) {
                     token.id = user.id!
-                    token.name = user.name!
                     token.email = user.email!
                     token.role = user.role
-                    token.image = user.image!
-                    token.provider = user.provider
-                    token.providerAccountId = user.providerAccountId
                     token.token = user.token
                 }
-            }
-
-            if(account?.provider === "github") {
-                if(user) {
-                    try {
-                        const validatedFields = OauthSchema.safeParse(user)
-                        if(validatedFields.success) {
-                            const user = await UtilsAuthOauth(validatedFields.data)
-                            if(!user || user.errors) return null
-
-                            token.id = user.id
-                            token.name = user.name
-                            token.email = user.email
-                            token.role = user.role
-                            token.image = user.image
-                            token.provider = user.provider
-                            token.providerAccountId = user.providerAccountId
-                            token.token = user.token
-                        }
-                    } catch {
-                        return null
-                    }
-
-
-                    // token.id = account.providerAccountId,
-                    // token.name = user?.name ?? "",
-                    // token.email = user?.email ?? "",
-                    // token.image = profile?.picture ?? "",
-                    // token.provider = account.provider,
-                    // token.providerAccountId = account.providerAccountId
-                }
-                // const userGithub: UserGithub = {
-                //     id: account.providerAccountId,
-                //     name: user?.name ?? "",
-                //     email: user?.email ?? "",
-                //     image: profile?.picture ?? "",
-                //     provider: account.provider,
-                //     providerAccountId: account.providerAccountId
-                // }
-            }
 
             return token
         },
@@ -143,3 +61,41 @@ export default {
         }
     }
 } satisfies NextAuthConfig
+
+
+const serviceAuthGithub = async ({user}: OauthParams) => {
+    const validatedFields = OauthSchema.safeParse(user)
+
+    try {
+        if(validatedFields.success) {
+            const result = await UtilsAuthOauth(validatedFields.data)
+
+            if(!result || result.errors) return null
+            
+            return result
+        }
+
+        return null
+    } catch {
+        
+        return null
+    }
+}
+
+const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
+    const validatedFields = LoginSchema.safeParse(credentials)
+
+    try {
+        if(validatedFields.success) {
+            const result = await UtilsAuthLogin(validatedFields.data)
+
+            if(!result || result.errors) return null
+
+            return result
+        }
+
+        return null
+    } catch {
+        return null
+    }
+}
