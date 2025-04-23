@@ -26,14 +26,11 @@ export const loginCredentials = async (values: typeLoginSchema) => {
 }  
 
 export const AuthOauth = async (provider: OauthProviders) => {
-    console.log({ACTION: "fungsi"})
     try {
         const result = await signIn(provider, {
             redirect: true,
             callbackUrl: "/"
         })
-
-        console.log({RESULT: result})
 
         return result
     } catch (err) {

@@ -34,6 +34,8 @@ export default {
             if(account?.provider === "github") {
                 return serviceAuthGithub({user, account})
             }
+
+            return true
         },
 
         async jwt({token, user}: jwtParams) {
