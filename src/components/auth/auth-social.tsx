@@ -1,8 +1,12 @@
 "use client"
 
+<<<<<<< HEAD
 import { AuthOauth } from "@/actions/oauth"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { useMutation } from "@tanstack/react-query"
+=======
+import { signIn } from "next-auth/react"
+>>>>>>> dev
 import { FaGithub } from "react-icons/fa"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from "sonner"
@@ -11,6 +15,7 @@ import { Button } from "../ui/button"
 
 
 export const AuthSocial = () => {
+<<<<<<< HEAD
     const {mutate} = useMutation({
         mutationKey: ['authOauth'],
         mutationFn: (provider: OauthProviders) => AuthOauth(provider)
@@ -33,6 +38,8 @@ export const AuthSocial = () => {
     //     })
     // }
 
+=======
+>>>>>>> dev
     const handleOauth = (provider: OauthProviders) => {
         mutate(provider, {
             onSuccess: (data) => {
@@ -47,7 +54,7 @@ export const AuthSocial = () => {
 
     return (
         <div className="w-full flex items-center gap-x-2">
-            <Button size="lg" className="w-1/2" variant="outline">
+            <Button size="lg" className="w-1/2" variant="outline" onClick={() => handleOauth("google")}>
                 <FcGoogle className="w-5 h-5" />
             </Button>
             <Button size="lg" className="w-1/2" variant="outline" onClick={() => handleOauth("github")}>

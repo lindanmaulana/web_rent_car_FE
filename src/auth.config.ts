@@ -5,6 +5,7 @@ import type { Account, NextAuthConfig, Session, User } from "next-auth"
 import { JWT } from "next-auth/jwt"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google"
 interface jwtParams {
     token: JWT
     user?: User
@@ -23,10 +24,16 @@ export default {
             return await serviceAuthCredentials(credentials as typeLoginSchema)
         }
     }),
+    
     GithubProvider({
         clientId: process.env.GITHUB_CLIENT_ID as string,
         clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }) 
+    }),
+
+    GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    })
 ],
 
     callbacks: {
@@ -34,6 +41,12 @@ export default {
             if(account?.provider === "github") {
                 return serviceAuthGithub({user, account})
             }
+
+            if(account?.provider === "google") {
+                return serviceAuthGoogle({user, account})
+            }
+
+            return true
         },
 
         async jwt({token, user}: jwtParams) {
@@ -66,15 +79,15 @@ export default {
 } satisfies NextAuthConfig
 
 
-const serviceAuthGithub = async ({user}: OauthParams) => {
-    const validatedFields = OauthSchema.safeParse(user)
+const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
+    const validatedFields = LoginSchema.safeParse(credentials)
 
     try {
         if(validatedFields.success) {
-            const result = await UtilsAuthOauth(validatedFields.data)
-
+            const result = await UtilsAuthLogin(validatedFields.data)
+            console.log({resultAja: result})
             if(!result || result.errors) return null
-            
+
             return result
         }
 
@@ -84,20 +97,38 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
     }
 }
 
-const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
-    const validatedFields = LoginSchema.safeParse(credentials)
+const serviceAuthGithub = async ({user}: OauthParams) => {
+    const validatedFields = OauthSchema.safeParse(user)
 
     try {
         if(validatedFields.success) {
-            const result = await UtilsAuthLogin(validatedFields.data)
+            const result = await UtilsAuthOauth(validatedFields.data)
 
-            if(!result || result.errors) return null
+            if(!result || result.errors) throw new Error(result.errors)
+            
+            return result
+        }
+
+        return false
+    } catch {
+        return false
+    }
+}
+
+const serviceAuthGoogle = async ({user}: OauthParams) => {
+    const validatedFields = OauthSchema.safeParse(user)
+
+    try {
+        if(validatedFields.success) {
+            const result = await UtilsAuthOauth(validatedFields.data)
+
+            if(!result || result.errors) throw new Error(result.errors)
 
             return result
         }
 
-        return null
+        return false
     } catch {
-        return null
+        return false
     }
 }

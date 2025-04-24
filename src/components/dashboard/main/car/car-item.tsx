@@ -94,14 +94,11 @@ export const DashboardMainCarItem = ({data, session}: DashboardMainCarItemProps)
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <Button>Select</Button>
-                            </TableCell>
-                            <TableCell>
                                 <div className="flex items-center gap-2">
                                     <Button size="sm" asChild>
-                                        <Link href={`${pathname}/update/${car.id}`}>Update</Link>
+                                        <Link href={`${pathname}/update/${car.id}`} className="text-xs">Update</Link>
                                     </Button>
-                                    <Button variant="destructive" size="sm" onClick={() => handleDelete(car.id)}>Delete</Button>
+                                    <Button variant="destructive" size="sm" onClick={() => handleDelete(car.id)} className="text-xs">Delete</Button>
                                 </div>
                             </TableCell>
                         </TableRow>
