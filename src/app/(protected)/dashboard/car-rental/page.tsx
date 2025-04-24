@@ -19,9 +19,9 @@ const PageDashboardCarRental = () => {
     useToastSmart({isLoading: isAnyLoading, isError: isAnyError, error: isAnyErrorMessage})
 
     if(status === "loading") toast.loading("loading session...")
-    
     if(isAnyLoading) return LoadingUi({message: "Loading data..."})
     if(isAnyError) return ErrorUi({message: isAnyErrorMessage})
+        
     return (
         <DashboardMainCar dataCar={dataCar} session={session} setParams={setParams} />
     )

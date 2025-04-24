@@ -85,7 +85,7 @@ const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
     try {
         if(validatedFields.success) {
             const result = await UtilsAuthLogin(validatedFields.data)
-            console.log({resultAja: result})
+
             if(!result || result.errors) return null
 
             return result

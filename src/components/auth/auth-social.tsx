@@ -1,54 +1,17 @@
 "use client"
 
-<<<<<<< HEAD
-import { AuthOauth } from "@/actions/oauth"
-import { UtilsErrorConsumeAPI } from "@/utils/errors"
-import { useMutation } from "@tanstack/react-query"
-=======
 import { signIn } from "next-auth/react"
->>>>>>> dev
 import { FaGithub } from "react-icons/fa"
 import { FcGoogle } from "react-icons/fc"
-import { toast } from "sonner"
 import { OauthProviders } from "../../../types/auth"
 import { Button } from "../ui/button"
 
 
 export const AuthSocial = () => {
-<<<<<<< HEAD
-    const {mutate} = useMutation({
-        mutationKey: ['authOauth'],
-        mutationFn: (provider: OauthProviders) => AuthOauth(provider)
-    })
-
-    // const {mutate} = useMutation({
-    //     mutationKey: ['authOauth'],
-    //     mutationFn: (provider: OauthProviders) => AuthOauth(provider)
-    // })
-
-    // const handleOauth = (provider: OauthProviders) => {
-    //     mutate(provider,{
-    //         onSuccess: (data) => {
-    //                 console.log({data})
-    //         },
-
-    //         onError: (err) => {
-    //             console.log(UtilsErrorConsumeAPI(err))
-    //         }
-    //     })
-    // }
-
-=======
->>>>>>> dev
     const handleOauth = (provider: OauthProviders) => {
-        mutate(provider, {
-            onSuccess: (data) => {
-                toast.success("Success")
-            },
-
-            onError: (err) => {
-                toast.error(UtilsErrorConsumeAPI(err))
-            }
+        signIn(provider, {
+            redirect: false,
+            callbackUrl: "/"
         })
     }
 
