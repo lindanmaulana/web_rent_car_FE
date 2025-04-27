@@ -6,6 +6,7 @@ import { JWT } from "next-auth/jwt"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
+import { oauthGithubConfig, oauthGoogleConfig } from "./privatConfig"
 interface jwtParams {
     token: JWT
     user?: User
@@ -26,24 +27,40 @@ export default {
     }),
     
     GithubProvider({
-        clientId: process.env.GITHUB_CLIENT_ID as string,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        clientId: oauthGithubConfig.GITHUB_CLIENT_ID,
+        clientSecret: oauthGithubConfig.GITHUB_CLIENT_SECRET,
     }),
 
     GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        clientId: oauthGoogleConfig.GOOGLE_CLIENT_ID,
+        clientSecret: oauthGoogleConfig.GOOGLE_CLIENT_SECRET
     })
 ],
 
     callbacks: {
         async signIn({user, account}) {
             if(account?.provider === "github") {
-                return serviceAuthGithub({user, account})
+                const newAccount = await serviceAuthGithub({user, account})
+
+                user.role = newAccount.role
+                user.image = newAccount.image
+                user.token = newAccount.token
+                user.provider = account.provider
+                user.providerAccountId = account.providerAccountId
+
+                return newAccount
             }
 
             if(account?.provider === "google") {
-                return serviceAuthGoogle({user, account})
+                const newAccount = await serviceAuthGoogle({user, account})
+                
+                user.role = newAccount.role
+                user.image = newAccount.image
+                user.token = newAccount.token
+                user.provider = account.provider
+                user.providerAccountId = account.providerAccountId
+
+                return newAccount
             }
 
             return true
@@ -52,14 +69,12 @@ export default {
         async jwt({token, user}: jwtParams) {
                 if(user) {
                     token.id = user.id!
+                    token.name = user.name!
                     token.email = user.email!
                     token.role = user.role
+                    token.image = user.image!
                     token.token = user.token
                 }
-
-                console.log({token})
-                console.log({user})
-
             return token
         },
 
@@ -69,13 +84,25 @@ export default {
             session.user.email = token.email
             session.user.role = token.role
             session.user.image = token.image
-            session.user.provider = token.provider
-            session.user.providerAccountId = token.providerAccountId
             session.user.token = token.token
-
             return session
         }
+    },
+    pages: {
+        signIn: "/auth/login",
     }
+    
+    // cookies: {
+    //     sessionToken: {
+    //         name: "webrentalmobil",
+    //         options: {
+    //             httpOnly: true,
+    //             sameSite: "none",
+    //             secure: process.env.NODE_ENV === "production",
+    //             path: "/"
+    //         }
+    //     }
+    // }
 } satisfies NextAuthConfig
 
 
@@ -83,15 +110,16 @@ const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
     const validatedFields = LoginSchema.safeParse(credentials)
 
     try {
-        if(validatedFields.success) {
-            const result = await UtilsAuthLogin(validatedFields.data)
-
-            if(!result || result.errors) return null
-
-            return result
+        if(!validatedFields.success) {
+            throw new Error("Invalid credentials")
         }
 
-        return null
+        const newUser = {...validatedFields.data, provider: "credentials"}
+        const result = await UtilsAuthLogin(newUser)
+
+        if(!result || result.errors) return null
+
+        return result
     } catch {
         return null
     }
@@ -101,15 +129,13 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
     const validatedFields = OauthSchema.safeParse(user)
 
     try {
-        if(validatedFields.success) {
-            const result = await UtilsAuthOauth(validatedFields.data)
+        if(!validatedFields.success) throw new Error("Invalid credentials")
 
-            if(!result || result.errors) throw new Error(result.errors)
+        const result = await UtilsAuthOauth(validatedFields.data)
+
+        if(!result || result.errors) throw new Error(result.errors)
             
-            return result
-        }
-
-        return false
+        return result
     } catch {
         return false
     }
@@ -119,15 +145,13 @@ const serviceAuthGoogle = async ({user}: OauthParams) => {
     const validatedFields = OauthSchema.safeParse(user)
 
     try {
-        if(validatedFields.success) {
-            const result = await UtilsAuthOauth(validatedFields.data)
+        if(!validatedFields.success) throw new Error("Invalid credentials")
 
-            if(!result || result.errors) throw new Error(result.errors)
+        const result = await UtilsAuthOauth(validatedFields.data)
 
-            return result
-        }
+        if(!result || result.errors) throw new Error(result.errors)
 
-        return false
+        return result
     } catch {
         return false
     }

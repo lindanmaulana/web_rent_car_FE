@@ -11,6 +11,8 @@ export const useCarGetAll = ({params}: useCarGetAllProps) => {
         queryFn: () => UtilsCarGetAll({params})
     })
 
+    console.log({data, isLoading, isError, error})
+
     return {
         data,
         isLoading,

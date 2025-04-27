@@ -21,6 +21,9 @@ const PageDashboardCarRental = () => {
     if(status === "loading") toast.loading("loading session...")
     if(isAnyLoading) return LoadingUi({message: "Loading data..."})
     if(isAnyError) return ErrorUi({message: isAnyErrorMessage})
+
+
+        console.log({SESSION: session, status})
         
     return (
         <DashboardMainCar dataCar={dataCar} session={session} setParams={setParams} />

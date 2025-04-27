@@ -27,8 +27,11 @@ export const UtilsCarGetAll = async ({params}: UtilsCarGetAllParams) => {
     try {
         const response = await axiosInstance.get(`/cars?${params}`)
 
+        console.log({RESPONSE: response.data})
+
         return response.data.data
     } catch (err) {
+        console.log("DI CATCH WOY ERROR NYA", err)
         UtilsErrorService(err)
     }
 }

@@ -12,7 +12,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { toast } from "sonner"
 import { Car } from "../../../../../types/car"
-import { baseURLImage } from "@/config"
+import {APIURLIMAGE} from "@/publicConfig"
 
 interface DashboardMainCarItemProps {
     data: Car[]
@@ -51,7 +51,7 @@ export const DashboardMainCarItem = ({data, session}: DashboardMainCarItemProps)
             <Table className="w-full bg-red-50">
                 <TableBody>
                     {data.length > 0 ? data.map((car: Car) => {
-                        const CarThumbnail = `${baseURLImage}${car.thumbnail}`
+                        const CarThumbnail = `${APIURLIMAGE}${car.thumbnail}`
                     return (
                         <TableRow key={car.id} className="bg-white">
                             <TableCell>

@@ -16,6 +16,7 @@ export default auth(async function middleware(req: NextRequest) {
     const isAdminRoute = nextUrl.pathname.startsWith(ROUTESPREFIXADMIN)
     const isAuthRoute = ROUTESAUTH.includes(nextUrl.pathname)
 
+
     if(isApiRoute) {
         return;
     }
@@ -29,6 +30,7 @@ export default auth(async function middleware(req: NextRequest) {
     }
 
     if(isLoggedIn) {
+        console.log({ceklagi: token})
         if(token) {
             if(isPublicRoute && token.role === "ADMIN") {
                 return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
@@ -36,6 +38,16 @@ export default auth(async function middleware(req: NextRequest) {
 
             if(isAdminRoute && token.role === "USER") {
                 return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+            }
+
+            if(!token.role) {
+                const response = NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+                
+                response.cookies.set("next-auth.session-token", "", { maxAge: 0 });
+                response.cookies.set("__Secure-next-auth.session-token", "", { maxAge: 0 });
+                response.cookies.set("next-auth.csrf-token", "", { maxAge: 0 });
+
+                return response
             }
         } else {
             return NextResponse.redirect(new URL("/auth/login", nextUrl))
@@ -56,3 +68,4 @@ export const config = {
         '/(api|trpc)(.*)'
     ]
 }
+

@@ -27,6 +27,7 @@ export const UtilsAuthRegister = async (data: typeRegisterSchema) => {
 export const UtilsAuthOauth = async (data: typeOauthSchema) => {
     try {
         const response = await axiosInstance.post("/auth/oauth", data)
+        console.log({RESPONSEOAUTH: response.data})
 
         return response.data.data
     } catch (err) {

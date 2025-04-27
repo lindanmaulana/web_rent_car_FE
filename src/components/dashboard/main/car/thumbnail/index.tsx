@@ -1,24 +1,24 @@
 "use client"
 
+import { ButtonLoading } from "@/components/button-loading"
 import { ContentCrud } from "@/components/dashboard/crud/content-crud"
 import { Card, CardContent } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
-import { baseURLImage } from "@/config"
 import { cn } from "@/lib/utils"
+import { APIURLIMAGE } from "@/publicConfig"
 import { CarUpdateThumbnailSchema, TypeCarUpdateThumbnailSchema } from "@/schemas/car"
 import { UtilsCarUpdate } from "@/utils/car"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { ImagePlus } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { ImagePlus } from "lucide-react"
-import Link from "next/link"
 import { Car } from "../../../../../../types/car"
-import { ButtonLoading } from "@/components/button-loading"
 
 interface UpdateThumbnail {
     thumbnail: string
@@ -58,7 +58,7 @@ export const ThumbnailCar = ({data, token}: ThumbnailCarProps) => {
         <ContentCrud title="Thumbnail" titleAction="Thumbnail Car">
             <div className="w-full space-y-4">
                 <AspectRatio ratio={16 / 12}>
-                    <Image src={data.thumbnail ? `${baseURLImage}${data.thumbnail}` : "/images/car-default.png" } alt={data.model} className="w-full h-full rounded" width={120} height={120} priority />
+                    <Image src={data.thumbnail ? `${APIURLIMAGE}${data.thumbnail}` : "/images/car-default.png" } alt={data.model} className="w-full h-full rounded" width={120} height={120} priority />
                 </AspectRatio>
 
                 <div>
@@ -74,7 +74,7 @@ export const ThumbnailCar = ({data, token}: ThumbnailCarProps) => {
                         >
                             <CarouselContent className="w-full flex items-center">
                                     {data.image?.map(car => {
-                                        const imgUrl = `${baseURLImage}${car.url}`
+                                        const imgUrl = `${APIURLIMAGE}${car.url}`
                                         return (
                                     <CarouselItem key={car.id} className="w-full basis-2/4 flex items-center gap-4">
                                         <FormField 
