@@ -1,4 +1,5 @@
 import { signOut } from "@/auth"
+import { AlertConfirmation } from "@/components/alert-confirmation"
 import { Navbar } from "@/components/dashboard/navbar"
 import { ChartNoAxesGantt } from "lucide-react"
 import { ReactNode } from "react"
@@ -15,7 +16,9 @@ const PageDashboardLayout = ({children}: PageDashboardLayoutProps) => {
     return (
         <div className="w-full flex h-screen overflow-hidden pt-22">
             <Navbar>
-                <button onClick={handleLogout} className="w-full font-semibold text-sm px-5 rounded-md flex items-center gap-2 text-red-500"> <ChartNoAxesGantt size={20} /> logout</button>
+                <AlertConfirmation title="Apakah anda yakin ingin logout ?" description="Anda akan keluar dari akun anda perlu login kembali untuk melanjutkan" handleConfirm={handleLogout}>
+                    <button className="cursor-pointer w-full font-semibold text-sm px-5 rounded-md flex items-center gap-2 text-red-500"> <ChartNoAxesGantt size={20} /> logout</button>
+                </AlertConfirmation>
             </Navbar>
             <div className="flex-1 bg-white-blue p-6 h-full overflow-y-auto">
                 {children}
