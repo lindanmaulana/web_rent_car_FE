@@ -18,8 +18,10 @@ import { Toaster } from "sonner"
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            refetchOnWindowFocus: false
-        }
+            refetchOnWindowFocus: false,
+            // suspense: true,
+            // useErrorBoundary: true
+        },
     }
 })
 
