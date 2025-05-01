@@ -2,39 +2,41 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
+import { searchParamsCar } from "."
 
 interface DashboardMainCarHeaderProps {
-    setParams: (params: string) => void
+    setParams: (params: searchParamsCar) => void
+    params: searchParamsCar
 }
-export const DashboardMainCarHeader = ({setParams}: DashboardMainCarHeaderProps) => {
 
+export const DashboardMainCarHeader = ({params, setParams}: DashboardMainCarHeaderProps) => {
     const handleChangeSeats = (seats: string) => {
         switch(seats) {
             case "reset":
-                setParams("")
+                setParams({...params, seats: ''})
             break;
             default: 
-            setParams(`seats=${seats}`)
+            setParams({...params, seats: `seats=${seats}`})
         }
     }
 
     const handleChangeYear = (year: string) => {
         switch(year) {
             case "reset":
-                setParams('')
+                setParams({...params, year: ''})
             break;
             default: 
-                setParams(`year=${year}`)
+                setParams({...params, year: `year=${year}`})
         }
     }
 
     const handleChangeStatus = (status: string) => {
         switch(status) {
             case "reset":
-                setParams("")
+                setParams({...params, status: ''})
             break;
             default:
-                setParams(`status=${status}`)
+                setParams({...params, status: `status=${status}`})
         }
     }
 

@@ -1,10 +1,9 @@
 import { TypeCarCreateSchema, TypeCarUpdateSchema } from "@/schemas/car"
 import { axiosInstance, setToken } from "./axios-instance"
 import { UtilsErrorService } from "./errors"
+import { searchParamsCar } from "@/components/dashboard/main/car"
 
-interface UtilsCarGetAllParams {
-    params?: string
-}
+
 
 export const UtilsCarCreate = async (data: TypeCarCreateSchema, token?: string) => {
     
@@ -23,15 +22,19 @@ export const UtilsCarCreate = async (data: TypeCarCreateSchema, token?: string) 
     }
 }
 
-export const UtilsCarGetAll = async ({params}: UtilsCarGetAllParams) => {
-    try {
-        const response = await axiosInstance.get(`/cars?${params}`)
+interface UtilsCarGetAllParams {
+    params?: searchParamsCar
+}
 
-        console.log({RESPONSE: response.data})
+export const UtilsCarGetAll = async ({params}: UtilsCarGetAllParams) => {
+    const dataParams = [params?.seats && params.seats, params?.status && params.status, params?.year && params?.year]
+    const routeParams = dataParams.filter(param => param).join("&")
+
+    try {
+        const response = await axiosInstance.get(`/cars?${routeParams}`)
 
         return response.data.data
     } catch (err) {
-        console.log("DI CATCH WOY ERROR NYA", err)
         UtilsErrorService(err)
     }
 }

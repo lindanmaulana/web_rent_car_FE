@@ -15,10 +15,11 @@ import { usePathname } from "next/navigation"
 import { toast } from "sonner"
 import { Car } from "../../../../../types/car"
 import { ErrorUi } from "@/components/feedbacks/error-ui"
+import { searchParamsCar } from "."
 
 interface DashboardMainCarItemProps {
     session: Session | null
-    params: string
+    params: searchParamsCar
 }
 export const DashboardMainCarItem = ({session, params}: DashboardMainCarItemProps) => {
     const {data, isError} = useCarGetAll({params})
