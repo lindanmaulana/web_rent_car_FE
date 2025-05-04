@@ -2,7 +2,6 @@
 
 import { useSession } from "next-auth/react"
 import { Suspense, useState } from "react"
-import { toast } from "sonner"
 import { DashboardMainCarHeader } from "./car-header"
 import { DashboardMainCarItem } from "./car-item"
 import { LoadingCar } from "./car-loading"
@@ -19,8 +18,8 @@ export const DashboardMainCar = () => {
         year: '',
         seats: ''
     })
-
-    if(session.status === "loading") toast.loading("Session loading...")
+    
+    console.log({session})
     return (
         <div className="flex flex-col gap-4">
             <DashboardMainCarHeader params={params} setParams={setParams} />

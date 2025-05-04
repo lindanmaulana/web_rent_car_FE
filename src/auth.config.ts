@@ -85,24 +85,13 @@ export default {
             session.user.role = token.role
             session.user.image = token.image
             session.user.token = token.token
+
             return session
         }
     },
     pages: {
         signIn: "/auth/login",
     }
-    
-    // cookies: {
-    //     sessionToken: {
-    //         name: "webrentalmobil",
-    //         options: {
-    //             httpOnly: true,
-    //             sameSite: "none",
-    //             secure: process.env.NODE_ENV === "production",
-    //             path: "/"
-    //         }
-    //     }
-    // }
 } satisfies NextAuthConfig
 
 

@@ -67,7 +67,7 @@ export const UtilsCarUpdate = async (params: UtilsCarUpdateParams) => {
 
         return response.data
     } catch (err) {
-        UtilsErrorService(err)
+        throw new Error(UtilsErrorService(err))
     }
 }
 
