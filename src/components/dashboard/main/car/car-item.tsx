@@ -39,12 +39,12 @@ export const DashboardMainCarItem = ({session, params}: DashboardMainCarItemProp
                 label: "Delete",
                 onClick: () => mutate(id, {
                     onSuccess: (data) => {
-                        toast(data.message)
+                        toast.success(data.message)
                         queryClient.invalidateQueries({queryKey: ["getAllCar"]})
                     },
                     
                     onError: (err) => {
-                        toast(UtilsErrorConsumeAPI(err))
+                        toast.error(UtilsErrorConsumeAPI(err))
                     }
                 })
             },

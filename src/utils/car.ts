@@ -64,10 +64,10 @@ export const UtilsCarUpdate = async (params: UtilsCarUpdateParams) => {
 
     try {
         const response = await axiosInstance.patch(`/cars/${params.id}`, params.data)
-
+        console.log("Masuk try")
         return response.data
     } catch (err) {
-        UtilsErrorService(err)
+        throw new Error(UtilsErrorService(err))
     }
 }
 

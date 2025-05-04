@@ -1,5 +1,5 @@
 import { LoginSchema, OauthSchema, typeLoginSchema } from "@/schemas/auth"
-import { UtilsAuthLogin, UtilsAuthOauth } from "@/utils/auth"
+import { UtilsAuthLogin, UtilsAuthOauth, UtilsAuthRefreshToken } from "@/utils/auth"
 import type { Profile } from "@auth/core/types"
 import type { Account, NextAuthConfig, Session, User } from "next-auth"
 import { JWT } from "next-auth/jwt"
@@ -47,6 +47,7 @@ export default {
                 user.token = newAccount.token
                 user.provider = account.provider
                 user.providerAccountId = account.providerAccountId
+                user.accessTokenExpires = newAccount.accessTokenExpires
 
                 return newAccount
             }
@@ -59,6 +60,8 @@ export default {
                 user.token = newAccount.token
                 user.provider = account.provider
                 user.providerAccountId = account.providerAccountId
+                user.refresh_token = newAccount.refresh_token
+                user.accessTokenExpires = newAccount.accessTokenExpires
 
                 return newAccount
             }
@@ -74,7 +77,28 @@ export default {
                     token.role = user.role
                     token.image = user.image!
                     token.token = user.token
+                    token.provider = user.provider
+                    token.accessTokenExpires = user.accessTokenExpires
+                    token.refresh_token = user.refresh_token
                 }
+
+                // console.log("Sebelum masuk ke refreshToken")
+                // console.log(Date.now() < token.accessTokenExpires)
+                // console.log({DateNow: Date.now()})
+                // console.log({AccessToken: token.accessTokenExpires})
+
+                // if(Date.now() > token.accessTokenExpires) {
+                //     console.log("Masuk Ke Refresh Lowh")
+                //     const refresh_token = await serviceAuthRefreshToken(token)
+                //     token.id = refresh_token.id
+                //     token.name = refresh_token.name
+                //     token.email = refresh_token.email
+                //     token.role = refresh_token.role
+                //     token.image = refresh_token.image
+                //     token.provider = refresh_token.provider
+                //     token.accessTokenExpires = refresh_token.accessTokenExpires
+                // }
+
             return token
         },
 
@@ -85,24 +109,25 @@ export default {
             session.user.role = token.role
             session.user.image = token.image
             session.user.token = token.token
+            session.user.accessTokenExpires = token.accessTokenExpires
             return session
+        }
+    },
+    cookies: {
+        sessionToken: {
+            name: "authjs.session-token",
+            options: {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+                maxAge: 60 * 60 * 1000
+            }
         }
     },
     pages: {
         signIn: "/auth/login",
     }
-    
-    // cookies: {
-    //     sessionToken: {
-    //         name: "webrentalmobil",
-    //         options: {
-    //             httpOnly: true,
-    //             sameSite: "none",
-    //             secure: process.env.NODE_ENV === "production",
-    //             path: "/"
-    //         }
-    //     }
-    // }
+
 } satisfies NextAuthConfig
 
 
@@ -118,6 +143,8 @@ const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
         const result = await UtilsAuthLogin(newUser)
 
         if(!result || result.errors) return null
+
+        console.log({RESULTCREDENTIALS: result})
 
         return result
     } catch {
@@ -154,5 +181,17 @@ const serviceAuthGoogle = async ({user}: OauthParams) => {
         return result
     } catch {
         return false
+    }
+}
+
+const serviceAuthRefreshToken = async (token: JWT): Promise<JWT> => {
+    try {
+        const result = await UtilsAuthRefreshToken()
+
+        return result
+    } catch (err) {
+        console.log({"Error": `ErrorRefresh: ${err}`})
+
+        return token
     }
 }

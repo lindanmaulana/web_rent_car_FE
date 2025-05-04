@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { DashboardMainCarHeader } from "./car-header"
 import { DashboardMainCarItem } from "./car-item"
@@ -20,7 +20,14 @@ export const DashboardMainCar = () => {
         seats: ''
     })
 
-    if(session.status === "loading") toast.loading("Session loading...")
+    console.log({session})
+
+    useEffect(() => {
+        if(session.status === "loading") toast.loading("Session loading...")
+
+    }, [session.status])
+
+
     return (
         <div className="flex flex-col gap-4">
             <DashboardMainCarHeader params={params} setParams={setParams} />

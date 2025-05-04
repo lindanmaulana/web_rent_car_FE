@@ -30,7 +30,6 @@ export default auth(async function middleware(req: NextRequest) {
     }
 
     if(isLoggedIn) {
-        console.log({ceklagi: token})
         if(token) {
             if(isPublicRoute && token.role === "ADMIN") {
                 return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
