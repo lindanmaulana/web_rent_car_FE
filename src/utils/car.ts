@@ -27,7 +27,7 @@ interface UtilsCarGetAllParams {
 }
 
 export const UtilsCarGetAll = async ({params}: UtilsCarGetAllParams) => {
-    const dataParams = [params?.seats && params.seats, params?.status && params.status, params?.year && params?.year]
+    const dataParams = [params?.seats && params.seats, params?.status && params.status, params?.year && params?.year, params?.keyword && params.keyword]
     const routeParams = dataParams.filter(param => param).join("&")
 
     try {

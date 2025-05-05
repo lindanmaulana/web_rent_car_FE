@@ -3,7 +3,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
 import { searchParamsCar } from "."
-
+import { useMemo } from "react"
+import debounce from "lodash.debounce"
 interface DashboardMainCarHeaderProps {
     setParams: (params: searchParamsCar) => void
     params: searchParamsCar
@@ -40,11 +41,20 @@ export const DashboardMainCarHeader = ({params, setParams}: DashboardMainCarHead
         }
     }
 
+    const debounceSearch = useMemo(() => debounce((keyword: string) => {
+        setParams({...params, keyword: `keyword=${keyword}`})
+
+    }, 1000), [setParams, params])
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        debounceSearch(e.target.value)
+    }
+
     return (
         <div className="flex items-center justify-between">
             <div className="w-1/2 flex items-center gap-3">
                 <div className="relative w-full bg-white">
-                    <Input type="text" placeholder="Search..." />
+                    <Input type="text" placeholder="Search..." onChange={handleSearch} />
                 </div>
                 <Select onValueChange={handleChangeSeats}>
                     <SelectTrigger className="bg-white">

@@ -10,13 +10,15 @@ export interface searchParamsCar {
     status: string
     year: string
     seats: string
+    keyword: string
 }
 export const DashboardMainCar = () => {
     const session = useSession()
     const [params, setParams] = useState<searchParamsCar>({
         status: '',
         year: '',
-        seats: ''
+        seats: '',
+        keyword: ''
     })
     
     console.log({session})
