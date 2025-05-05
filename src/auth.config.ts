@@ -1,5 +1,5 @@
 import { LoginSchema, OauthSchema, typeLoginSchema } from "@/schemas/auth"
-import { UtilsAuthLogin, UtilsAuthOauth, UtilsAuthRefreshToken } from "@/utils/auth"
+import { UtilsAuth } from "@/utils/auth"
 import type { Profile } from "@auth/core/types"
 import type { Account, NextAuthConfig, Session, User } from "next-auth"
 import { JWT } from "next-auth/jwt"
@@ -81,23 +81,31 @@ export default {
                     token.accessTokenExpires = user.accessTokenExpires
                     token.refresh_token = user.refresh_token
                 }
+                console.log("CEK CRASH APP")
+                console.log({token})
+                console.log({user})
 
-                // console.log("Sebelum masuk ke refreshToken")
-                // console.log(Date.now() < token.accessTokenExpires)
-                // console.log({DateNow: Date.now()})
-                // console.log({AccessToken: token.accessTokenExpires})
+                console.log("Sebelum masuk ke refreshToken")
+                console.log(Date.now() < token.accessTokenExpires)
+                console.log({DateNow: Date.now()})
+                console.log({AccessToken: token.accessTokenExpires})
+                console.log({cektoken: token.token})
 
-                // if(Date.now() > token.accessTokenExpires) {
-                //     console.log("Masuk Ke Refresh Lowh")
-                //     const refresh_token = await serviceAuthRefreshToken(token)
-                //     token.id = refresh_token.id
-                //     token.name = refresh_token.name
-                //     token.email = refresh_token.email
-                //     token.role = refresh_token.role
-                //     token.image = refresh_token.image
-                //     token.provider = refresh_token.provider
-                //     token.accessTokenExpires = refresh_token.accessTokenExpires
-                // }
+                if(token.accessTokenExpires && Date.now() > token.accessTokenExpires) {
+                    console.log("Masuk Ke Refresh Lowh")
+                    const refresh_token = await serviceAuthRefreshToken(token)
+                    token.id = refresh_token.id
+                    token.name = refresh_token.name
+                    token.email = refresh_token.email
+                    token.role = refresh_token.role
+                    token.image = refresh_token.image
+                    token.token = refresh_token.token
+                    token.provider = refresh_token.provider
+                    token.accessTokenExpires = refresh_token.accessTokenExpires
+
+                    console.log("REFRESH BE")
+                    console.log({refresh_token})
+                }
 
             return token
         },
@@ -109,19 +117,8 @@ export default {
             session.user.role = token.role
             session.user.image = token.image
             session.user.token = token.token
-            session.user.accessTokenExpires = token.accessTokenExpires
+
             return session
-        }
-    },
-    cookies: {
-        sessionToken: {
-            name: "authjs.session-token",
-            options: {
-                httpOnly: true,
-                secure: false,
-                sameSite: "lax",
-                maxAge: 60 * 60 * 1000
-            }
         }
     },
     pages: {
@@ -140,11 +137,10 @@ const serviceAuthCredentials = async (credentials: typeLoginSchema) => {
         }
 
         const newUser = {...validatedFields.data, provider: "credentials"}
-        const result = await UtilsAuthLogin(newUser)
+
+        const result = await UtilsAuth.Login(newUser)
 
         if(!result || result.errors) return null
-
-        console.log({RESULTCREDENTIALS: result})
 
         return result
     } catch {
@@ -158,7 +154,7 @@ const serviceAuthGithub = async ({user}: OauthParams) => {
     try {
         if(!validatedFields.success) throw new Error("Invalid credentials")
 
-        const result = await UtilsAuthOauth(validatedFields.data)
+        const result = await UtilsAuth.Oauth(validatedFields.data)
 
         if(!result || result.errors) throw new Error(result.errors)
             
@@ -174,7 +170,7 @@ const serviceAuthGoogle = async ({user}: OauthParams) => {
     try {
         if(!validatedFields.success) throw new Error("Invalid credentials")
 
-        const result = await UtilsAuthOauth(validatedFields.data)
+        const result = await UtilsAuth.Oauth(validatedFields.data)
 
         if(!result || result.errors) throw new Error(result.errors)
 
@@ -184,9 +180,13 @@ const serviceAuthGoogle = async ({user}: OauthParams) => {
     }
 }
 
+// Refresh token
 const serviceAuthRefreshToken = async (token: JWT): Promise<JWT> => {
     try {
-        const result = await UtilsAuthRefreshToken()
+        // const result = await UtilsAuthRefreshToken({refresh_token: token.refresh_token})
+        const result = await UtilsAuth.RefreshToken({refresh_token: token.refresh_token})
+
+        if(result.errors) return token
 
         return result
     } catch (err) {

@@ -1,12 +1,17 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Rental } from "../../../../../types/rental"
+import { useRentalGetAll } from "@/hooks/rental"
 import { Session } from "next-auth"
+import { Rental } from "../../../../../types/rental"
+import { ErrorUi } from "@/components/feedbacks/error-ui"
 
 interface DashboardMainCarItemProps {
-    data: Rental[]
     session: Session | null
 }
-export const DashboardMainRentalItem = ({data, session}: DashboardMainCarItemProps) => {
+export const DashboardMainRentalItem = ({session}: DashboardMainCarItemProps) => {
+    const {data, isError} = useRentalGetAll()
+
+    if(isError) return <ErrorUi />
+
     return (
         <div className="w-full">
             <Table className="w-full">
@@ -21,10 +26,10 @@ export const DashboardMainRentalItem = ({data, session}: DashboardMainCarItemPro
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data?.map((rental, index: number) => (
+                    {data.data?.map((rental: Rental, index: number) => (
                         <TableRow key={rental.id}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{rental.user.name}</TableCell>
+                            <TableCell>{rental.user?.name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -32,11 +37,3 @@ export const DashboardMainRentalItem = ({data, session}: DashboardMainCarItemPro
         </div>
     )
 }
-
-// id: string
-// user_id: string
-// car_id: string
-// start_date: Date
-// end_date: Date
-// total_price: Decimal
-// status: RentalStatus

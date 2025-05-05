@@ -45,5 +45,6 @@ declare module "next-auth/jwt" {
         providerAccountId: string | ""
         token: string
         accessTokenExpires: number
+        refresh_token: string
     }
 }
