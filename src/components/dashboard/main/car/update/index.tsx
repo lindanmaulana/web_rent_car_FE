@@ -1,22 +1,22 @@
 "use client"
 
 import { ButtonLoading } from "@/components/button-loading"
-import { ContentCrud } from "@/components/dashboard/crud/content-crud"
+import { Crud } from "@/components/dashboard/crud"
+import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CarUpdateSchema, TypeCarUpdateSchema } from "@/schemas/car"
 import { UtilsCarUpdate } from "@/utils/car"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
+import { ImagePlus } from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Car } from "../../../../../../types/car"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ImagePlus } from "lucide-react"
 
 interface CarRentalUpdateProps {
     idCar: string
@@ -57,7 +57,7 @@ export const CarRentalUpdate = ({idCar, dataCar, token}: CarRentalUpdateProps) =
     })
     
     return (
-        <ContentCrud title="Car" titleAction="Update car">
+        <Crud title="Car" titleAction="Update car">
             <Form {...form}>
                 <form onSubmit={handleForm} className="space-y-6">
                 <div className="space-y-4">
@@ -169,6 +169,6 @@ export const CarRentalUpdate = ({idCar, dataCar, token}: CarRentalUpdateProps) =
                     <ButtonLoading isLoading={isPending} type="submit">Update</ButtonLoading>
                 </form>
             </Form>
-        </ContentCrud>
+        </Crud>
     )
 }

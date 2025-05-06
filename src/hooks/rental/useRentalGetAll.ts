@@ -1,16 +1,14 @@
 import { UtilsRentalGetAll } from "@/utils/rental"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 
 export const useRentalGetAll = () => {
-    const {data, isLoading, isError, error} = useQuery({
+    const {data, isError} = useSuspenseQuery({
         queryKey: ['rentalGetAll'],
         queryFn: () => UtilsRentalGetAll()
     })
 
     return {
         data,
-        isLoading,
         isError,
-        error
     }
 }

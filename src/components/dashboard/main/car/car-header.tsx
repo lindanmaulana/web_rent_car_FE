@@ -5,12 +5,12 @@ import Link from "next/link"
 import { searchParamsCar } from "."
 import { useMemo } from "react"
 import debounce from "lodash.debounce"
-interface DashboardMainCarHeaderProps {
-    setParams: (params: searchParamsCar) => void
+interface CarHeaderProps {
+    setParams: (param: searchParamsCar) => void
     params: searchParamsCar
 }
 
-export const DashboardMainCarHeader = ({params, setParams}: DashboardMainCarHeaderProps) => {
+export const DashboardMainCarHeader = ({params, setParams}: CarHeaderProps) => {
     const handleChangeSeats = (seats: string) => {
         switch(seats) {
             case "reset":

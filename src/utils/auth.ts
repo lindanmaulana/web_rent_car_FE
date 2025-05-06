@@ -1,39 +1,53 @@
-import { typeLoginSchema, typeOauthSchema, typeRegisterSchema } from "@/schemas/auth"
+import { typeLoginSchema, typeOauthSchema, typeRefreshTokenSchema, typeRegisterSchema } from "@/schemas/auth"
 import { axiosInstance } from "./axios-instance"
-import { UtilsErrorAuthentication, UtilsErrorService } from "./errors"
+import { UtilsErrorAuthentication } from "./errors"
 
-export const UtilsAuthLogin = async (data: typeLoginSchema) => {
-    try {
-        const response = await axiosInstance.post("/auth/login", data)
-        
-        return response.data.data
-    } catch (err) {
-        return {
-            errors: UtilsErrorAuthentication(err)
+export class UtilsAuth {
+    static async Login(data: typeLoginSchema) {
+        try {
+            const response = await axiosInstance.post("/auth/login", data, {
+                withCredentials: true
+            })
+
+            return response.data.data
+        } catch (err) {
+            return {
+                errors: UtilsErrorAuthentication(err)
+            }
         }
     }
-}
 
-export const UtilsAuthRegister = async (data: typeRegisterSchema) => {
-    try {
-        const response = await axiosInstance.post("/auth/register", data)
+    static async Register(data: typeRegisterSchema) {
+        try {
+            const response = await axiosInstance.post("/auth/register", data)
 
-        return response.data.data
-    } catch (err) {
-        throw new Error(UtilsErrorService(err))
+            return response.data
+        } catch (err) {
+            throw new Error(UtilsErrorAuthentication(err))
+        }
     }
-}
 
-export const UtilsAuthOauth = async (data: typeOauthSchema) => {
-    try {
-        const response = await axiosInstance.post("/auth/oauth", data)
-        console.log({RESPONSEOAUTH: response.data})
+    static async Oauth(data: typeOauthSchema) {
+        try {
+            const response = await axiosInstance.post("/auth/oauth", data)
 
-        return response.data.data
-    } catch (err) {
-        
-        return {
-            errors: UtilsErrorService(err)
+            return response.data.data
+        } catch (err) {
+            return {
+                errors: UtilsErrorAuthentication(err)
+            }
+        }
+    }
+
+    static async RefreshToken(data: typeRefreshTokenSchema) {
+        try {
+            const response = await axiosInstance.post("/auth/refresh-token", data)
+
+            return response.data.data
+        } catch (err) {
+            return {
+                errors: UtilsErrorAuthentication(err)
+            }
         }
     }
 }

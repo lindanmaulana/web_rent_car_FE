@@ -14,6 +14,7 @@ declare module "next-auth" {
             provider: string | ""
             providerAccountId: string | ""
             token: string
+            accessTokenExpires: number
         }
     }
 
@@ -26,6 +27,8 @@ declare module "next-auth" {
         provider: string | ""
         providerAccountId: string | ""
         token: string
+        refresh_token: string
+        accessTokenExpires: number
     }
 
 }
@@ -41,5 +44,7 @@ declare module "next-auth/jwt" {
         provider: string | ""
         providerAccountId: string | ""
         token: string
+        accessTokenExpires: number
+        refresh_token: string
     }
 }
