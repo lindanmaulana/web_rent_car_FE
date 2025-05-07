@@ -38,8 +38,8 @@ export const LoginForm = () => {
 
     const handleFormLogin = form.handleSubmit((values: typeLoginSchema) => {
         mutate(values, {
-            onSuccess: (data) => {
-                toast.success(data.message)
+            onSuccess: () => {
+                toast.success("Login successfully")
                 router.push("/")
             },
 

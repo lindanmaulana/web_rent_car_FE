@@ -1,18 +1,18 @@
 "use client"
 
+import { Crud } from "@/components/dashboard/crud"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { ContentCrud } from "@/components/dashboard/crud/content-crud"
-import { useMutation } from "@tanstack/react-query"
 import { UtilsCarCreate } from "@/utils/car"
-import { toast } from "sonner"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 
 export const CarRentalAdd = () => {
@@ -53,7 +53,7 @@ export const CarRentalAdd = () => {
     if(status === "loading") return null;
 
     return (
-        <ContentCrud title="Car" titleAction="New Car">
+        <Crud title="Car" titleAction="New Car">
             <Form {...form}>
                 <form onSubmit={handleForm} className="space-y-6">
                     <div className="space-y-4">
@@ -139,6 +139,6 @@ export const CarRentalAdd = () => {
                     <Button type="submit">Create</Button>
                 </form>
             </Form>
-        </ContentCrud>
+        </Crud>
     )
 }

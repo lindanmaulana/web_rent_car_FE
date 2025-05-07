@@ -1,7 +1,8 @@
+import { APIURL } from "@/publicConfig";
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_BASEURL,
+    baseURL: APIURL,
 })
 
 export const setContentType = (data: unknown) => {

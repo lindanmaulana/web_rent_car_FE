@@ -1,48 +1,62 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
-
-interface DashboardMainCarHeaderProps {
-    setParams: (params: string) => void
+import { searchParamsCar } from "."
+import { useMemo } from "react"
+import debounce from "lodash.debounce"
+interface CarHeaderProps {
+    setParams: (param: searchParamsCar) => void
+    params: searchParamsCar
 }
-export const DashboardMainCarHeader = ({setParams}: DashboardMainCarHeaderProps) => {
 
+export const DashboardMainCarHeader = ({params, setParams}: CarHeaderProps) => {
     const handleChangeSeats = (seats: string) => {
         switch(seats) {
             case "reset":
-                setParams("")
+                setParams({...params, seats: ''})
             break;
             default: 
-            setParams(`seats=${seats}`)
+            setParams({...params, seats: `seats=${seats}`})
         }
     }
 
     const handleChangeYear = (year: string) => {
         switch(year) {
             case "reset":
-                setParams('')
+                setParams({...params, year: ''})
             break;
             default: 
-                setParams(`year=${year}`)
+                setParams({...params, year: `year=${year}`})
         }
     }
 
     const handleChangeStatus = (status: string) => {
         switch(status) {
             case "reset":
-                setParams("")
+                setParams({...params, status: ''})
             break;
             default:
-                setParams(`status=${status}`)
+                setParams({...params, status: `status=${status}`})
         }
+    }
+
+    const debounceSearch = useMemo(() => debounce((keyword: string) => {
+        setParams({...params, keyword: `keyword=${keyword}`})
+
+    }, 1000), [setParams, params])
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        debounceSearch(e.target.value)
     }
 
     return (
         <div className="flex items-center justify-between">
             <div className="w-1/2 flex items-center gap-3">
                 <div className="relative w-full bg-white">
-                    <Input type="text" placeholder="Search..." />
+                    <Input type="text" placeholder="Search..." onChange={handleSearch} />
                 </div>
                 <Select onValueChange={handleChangeSeats}>
                     <SelectTrigger className="bg-white">

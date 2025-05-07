@@ -1,17 +1,20 @@
 "use client"
 
+import { AuthAlert } from "@/components/auth-alert"
 import { CardAuth } from "@/components/auth/card-auth"
+import { ButtonLoading } from "@/components/button-loading"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RegisterSchema, typeRegisterSchema } from "@/schemas/auth"
-import { UtilsAuthRegister } from "@/utils/auth"
+import { UtilsAuth } from "@/utils/auth"
+import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { alert } from "../../../../types/alert"
-import { ButtonLoading } from "@/components/button-loading"
 
 export const RegisterForm = () => {
     const router = useRouter()
@@ -22,7 +25,7 @@ export const RegisterForm = () => {
 
     const {mutate, isPending} = useMutation({
         mutationKey: ["authRegister"],
-        mutationFn: (values: typeRegisterSchema) => UtilsAuthRegister(values)
+        mutationFn: (values: typeRegisterSchema) => UtilsAuth.Register(values)
     })
 
     const form = useForm<typeRegisterSchema>({
@@ -37,12 +40,12 @@ export const RegisterForm = () => {
     const handleFormRegister = form.handleSubmit((values: typeRegisterSchema) => {
         mutate(values, {
             onSuccess: (data) => {
-                console.log({data})
+                toast.success(data.message)
                 router.push("/auth/login")
             },
 
             onError: (err) => {
-                console.log({err})
+                setAlert({message: UtilsErrorConsumeAPI(err), type: "error"})
             }
         })
     })
@@ -94,6 +97,7 @@ export const RegisterForm = () => {
                             )}
                         />
                     </div>
+                    <AuthAlert message={alert.message} type={alert.type} />
                     <ButtonLoading type="submit" isLoading={isPending} className="w-full">Register</ButtonLoading>
                 </form>
             </Form>

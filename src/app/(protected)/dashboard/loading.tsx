@@ -1,10 +1,8 @@
-import { TbLoaderQuarter } from "react-icons/tb"
+import { LoadingUi } from "@/components/feedbacks/loading-ui"
 
 const PageDashboardLoading = () => {
     return (
-        <div className="w-full min-h-screen flex items-center justify-center">
-            <p>Loading please waitt.. <TbLoaderQuarter className="animate-spin" /></p>
-        </div>
+        <LoadingUi />
     )
 }
 

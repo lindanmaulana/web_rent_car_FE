@@ -1,20 +1,26 @@
 "use client"
 import { UtilsCarGetAll } from "@/utils/car"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { Car } from "../../../types/car"
+import { searchParamsCar } from "@/components/dashboard/main/car"
 
 interface useCarGetAllProps {
-    params?: string
+    params?: searchParamsCar
 }
-export const useCarGetAll = ({params}: useCarGetAllProps) => {
-    const {data, isLoading, isError, error} = useQuery({
+
+interface userCarGetAllResponse {
+    data: Car[]
+    isError: boolean
+}
+
+export const useCarGetAll = ({params}: useCarGetAllProps): userCarGetAllResponse => {
+    const {data, isError} = useSuspenseQuery({
         queryKey: ["getAllCar", params],
         queryFn: () => UtilsCarGetAll({params})
-    })
+    }) as userCarGetAllResponse
 
     return {
         data,
-        isLoading,
-        isError,
-        error
+        isError
     }
 }
