@@ -80,7 +80,7 @@ export default {
                     token.provider = user.provider
                     token.accessTokenExpires = user.accessTokenExpires
                     token.refresh_token = user.refresh_token
-                }
+                }   
 
                 if(token.accessTokenExpires && Date.now() > token.accessTokenExpires) {
                     const refresh_token = await serviceAuthRefreshToken(token)

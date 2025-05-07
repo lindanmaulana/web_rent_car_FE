@@ -1,8 +1,9 @@
 "use client"
 import { useSession } from "next-auth/react"
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { DashboardMainRentalHeader } from "./rental-header"
 import { DashboardMainRentalItem } from "./rental-item"
+import { toast } from "sonner"
 
 export interface searchParamsRental {
     car_id: string
@@ -18,6 +19,12 @@ export const DashboardMainRental = () => {
         end_date: "",
         status: ''
     })
+
+    useEffect(() => {
+        if(session.status === "loading") toast.loading("Session loading")
+    
+        if(session.status === "unauthenticated") throw new Error("Session invalid please login again...")
+    }, [session.status])
 
     return (
         <div className="flex flex-col gap-4">

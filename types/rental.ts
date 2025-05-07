@@ -12,4 +12,3 @@ export interface Rental {
     status: RentalStatus 
     user?: User
 }
-

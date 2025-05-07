@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { ReactNode } from "react"
-import SessionClient from "./sessionClient"
+import { SessionProvider } from "next-auth/react"
 
 interface SessionAppProps {
     children: ReactNode
@@ -8,9 +8,9 @@ interface SessionAppProps {
 const SessionApp = async ({children}: SessionAppProps) => {
     const session = await auth()
     return (
-        <SessionClient session={session}>
+        <SessionProvider refetchOnWindowFocus={false} session={session}>
             {children}
-        </SessionClient>
+        </SessionProvider>
     )
 }
 

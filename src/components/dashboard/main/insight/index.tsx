@@ -1,8 +1,6 @@
-"use client"
-
 import Image from "next/image"
 
-export const LoadingUi = () => {
+export const DashboardMainInsight = () => {
     return (
         <div className="w-full h-full min-h-[446px] flex items-center justify-center">
             <Image src="/car-loading.png" alt="loading car" width="300" height="200" className="animate-bounce delay-100 motion-safe:animate-bounce" />

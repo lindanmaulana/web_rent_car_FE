@@ -6,7 +6,7 @@ interface ErrorUiProps {
 export const ErrorUi = ({message}: ErrorUiProps) => {
     return (
         <div>
-
+            {message}
         </div>
     )
 }

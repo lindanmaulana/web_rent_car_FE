@@ -1,9 +1,9 @@
 import { LoadingUi } from "@/components/feedbacks/loading-ui"
 
-const PageDashboardLoading = () => {
+const PageDashboardRentalLoading = () => {
     return (
         <LoadingUi />
     )
 }
 
-export default PageDashboardLoading
+export default PageDashboardRentalLoading

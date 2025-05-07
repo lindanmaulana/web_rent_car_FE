@@ -29,8 +29,21 @@ export default auth(async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
+    console.log({isLoggedIn})
+    console.log({token})
+
     if(isLoggedIn) {
         if(token) {
+            if(Date.now() > token.exp! * 1000) {
+                const response = NextResponse.redirect(new URL("/auth/login", nextUrl))
+
+                response.cookies.set("next-auth.session-token", "", { maxAge: 0 });
+                response.cookies.set("__Secure-next-auth.session-token", "", { maxAge: 0 });
+                response.cookies.set("next-auth.csrf-token", "", { maxAge: 0 });
+
+                return response
+            }
+
             if(isPublicRoute && token.role === "ADMIN") {
                 return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
             }
