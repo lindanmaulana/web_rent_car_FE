@@ -1,3 +1,4 @@
+import { Payment } from "./payment"
 import { User } from "./user"
 
 export type RentalStatus = "PENDING" | "APPROVE" | "REJECTED" | "COMPLETED"
@@ -11,4 +12,5 @@ export interface Rental {
     total_price: string
     status: RentalStatus 
     user?: User
+    payment?: Payment
 }

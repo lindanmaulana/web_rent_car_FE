@@ -5,7 +5,7 @@ export const useRentalGetAll = ({token}: RentalGetAllParams) => {
     const {data, isError, error} = useSuspenseQuery({
         queryKey: ['rentalGetAll'],
         queryFn: () => UtilsRentalGetAll({token})
-    })
+    }) 
 
     return {
         data,

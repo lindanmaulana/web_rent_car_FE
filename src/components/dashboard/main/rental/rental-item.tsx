@@ -58,6 +58,7 @@ export const DashboardMainRentalItem = ({session}: DashboardMainCarItemProps) =>
                         <TableHead>End Date</TableHead>
                         <TableHead>Total Price</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Payment Status</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -73,6 +74,7 @@ export const DashboardMainRentalItem = ({session}: DashboardMainCarItemProps) =>
                             <TableCell>{endDate}</TableCell>
                             <TableCell>{rental.total_price}</TableCell>
                             <TableCell>{rental.status}</TableCell>
+                            <TableCell><p className="text-orange-500">{rental.payment ? rental.payment.status : "Pending"}</p></TableCell>
                             <TableCell>
                                 <div>
                                     <Button size="sm" onClick={() => handleApprove(rental.id)} className="bg-green-500 cursor-pointer">Approve</Button>

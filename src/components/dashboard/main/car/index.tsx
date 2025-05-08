@@ -8,10 +8,10 @@ import { LoadingCar } from "./car-loading"
 import { toast } from "sonner"
 
 export interface searchParamsCar {
-    status: string
-    year: string
-    seats: string
-    keyword: string
+    status?: string
+    year?: string
+    seats?: string
+    keyword?: string
 }
 export const DashboardMainCar = () => {
     const session = useSession()
