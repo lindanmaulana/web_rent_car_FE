@@ -1,9 +1,7 @@
-import { DashboardMain } from "@/components/dashboard/main/dashboard"
+import { DashboardMain } from "@/features/admin/dashboard/main/dashboard";
 
 const PageDashboard = () => {
-    return (
-            <DashboardMain />
-    )
-}
+  return <DashboardMain />;
+};
 
-export default PageDashboard
+export default PageDashboard;

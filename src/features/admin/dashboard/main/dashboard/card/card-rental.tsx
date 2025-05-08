@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaUserClock } from "react-icons/fa";
-import { Rental } from "../../../../../../types/rental";
+import { Rental } from "../../../../../../../types/rental";
 
 interface CardRentalProps {
   session: Session | null;

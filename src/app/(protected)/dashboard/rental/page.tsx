@@ -1,9 +1,7 @@
-import { DashboardMainRental } from "@/components/dashboard/main/rental"
+import { DashboardMainRental } from "@/features/admin/dashboard/main/rental";
 
 const PageDashboardRental = () => {
-    return (
-        <DashboardMainRental />
-    )
-}
+  return <DashboardMainRental />;
+};
 
-export default PageDashboardRental
+export default PageDashboardRental;

@@ -1,9 +1,7 @@
-import { RentalAdd } from "@/components/dashboard/main/rental/add"
+import { RentalAdd } from "@/features/admin/dashboard/main/rental/add";
 
 const PageDashboardRentalAdd = () => {
-    return (
-        <RentalAdd />
-    )
-}
+  return <RentalAdd />;
+};
 
-export default PageDashboardRentalAdd
+export default PageDashboardRentalAdd;

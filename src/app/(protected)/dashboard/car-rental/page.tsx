@@ -1,9 +1,7 @@
-import { DashboardMainCar } from "@/components/dashboard/main/car"
+import { DashboardMainCar } from "@/features/admin/dashboard/main/car";
 
 const PageDashboardCarRental = () => {
-    return (
-        <DashboardMainCar />
-    )
-}
+  return <DashboardMainCar />;
+};
 
-export default PageDashboardCarRental
+export default PageDashboardCarRental;

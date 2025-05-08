@@ -1,4 +1,4 @@
-import { CarRentalAdd } from "@/components/dashboard/main/car/add";
+import { CarRentalAdd } from "@/features/admin/dashboard/main/car/add";
 
 const PageDashboardCarRentalAdd = () => {
   return <CarRentalAdd />;

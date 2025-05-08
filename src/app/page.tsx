@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { HomePage } from "@/features/client/home";
 
 export default async function Home() {
   const handleLogout = async () => {
@@ -14,6 +15,8 @@ export default async function Home() {
           Logout
         </Button>
       </form>
+
+      <HomePage />
     </div>
   );
 }
