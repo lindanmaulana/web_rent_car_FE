@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { queryHelpers } from "@/utils/queryHelpers";
-import { CarRentalUpdate } from "@/features/admin/dashboard/main/car/update";
+import { CarRentalUpdate } from "@/features/admin/dashboard/main/inventory/car/update";
 
 const PageDashboardCarRentalUpdate = () => {
   const { id } = useParams<{ id: string }>();

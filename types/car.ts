@@ -2,7 +2,14 @@ import { Images } from "./image"
 
 export interface Car {
     id: string
-    brand: string
+    category: {
+        id: string
+        name: string
+    }
+    brand: {
+        id: string
+        name: string
+    }
     model: string
     year: number
     license_plate: string

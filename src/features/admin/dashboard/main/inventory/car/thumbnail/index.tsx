@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonLoading } from "@/components/button-loading";
-import { ContentCrud } from "@/features/admin/dashboard/crud/content-crud";
+import { ContentCrud } from "@/components/dashboard/crud/content-crud";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,

@@ -94,7 +94,7 @@ export const DashboardMainCarItem = ({
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <span className="text-xs text-slate-blue">{car.brand}</span>
+                    <span className="text-xs text-slate-blue">{car.brand.name}</span>
                     <h5 className="text-xl font-semibold text-primary">
                       {car.model}
                     </h5>
@@ -118,7 +118,7 @@ export const DashboardMainCarItem = ({
                       />
                       <span className="text-xs text-slate-blue">Brand</span>
                       <h4 className="text-base text-primary font-semibold">
-                        {car.brand}
+                        {car.brand.name}
                       </h4>
                     </div>
                   </TableCell>

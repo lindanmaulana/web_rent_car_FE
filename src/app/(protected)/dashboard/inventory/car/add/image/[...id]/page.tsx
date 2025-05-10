@@ -1,6 +1,6 @@
 "use client";
 
-import { CarRentalAddImage } from "@/features/admin/dashboard/main/car/add/image";
+import { CarRentalAddImage } from "@/features/admin/dashboard/main/inventory/car/add/image";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";

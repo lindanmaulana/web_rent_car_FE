@@ -1,6 +1,6 @@
 "use client";
 
-import { Crud } from "@/features/admin/dashboard/crud";
+import { Crud } from "@/components/dashboard/crud";
 
 export const RentalAdd = () => {
   return (

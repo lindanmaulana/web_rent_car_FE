@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonLoading } from "@/components/button-loading";
-import { ContentCrud } from "@/features/admin/dashboard/crud/content-crud";
+import { ContentCrud } from "@/components/dashboard/crud/content-crud";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

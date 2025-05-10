@@ -58,7 +58,7 @@ export const DashboardMainChart = () => {
       });
 
       return {
-        brand: car.brand,
+        brand: car.brand.name,
         model: car.model,
         amount: rentalChart.length,
       };

@@ -1,7 +1,6 @@
 "use client";
 
-import { ButtonLoading } from "@/components/button-loading";
-import { Crud } from "@/features/admin/dashboard/crud";
+import { Crud } from "@/components/dashboard/crud";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,59 +11,43 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { CarUpdateSchema, TypeCarUpdateSchema } from "@/schemas/car";
-import { UtilsCarUpdate } from "@/utils/car";
+import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car";
+import { UtilsCarCreate } from "@/utils/car";
 import { UtilsErrorConsumeAPI } from "@/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { ImagePlus } from "lucide-react";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Car } from "../../../../../../../types/car";
 
-interface CarRentalUpdateProps {
-  idCar: string;
-  dataCar: Car;
-  token?: string;
-}
-export const CarRentalUpdate = ({
-  idCar,
-  dataCar,
-  token,
-}: CarRentalUpdateProps) => {
+export const CarRentalAdd = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["updateCar"],
-    mutationFn: (values) => UtilsCarUpdate({ data: values, id: idCar, token }),
+
+  const { mutate } = useMutation({
+    mutationKey: ["carAdd"],
+    mutationFn: (values) => UtilsCarCreate(values, session?.user.token),
   });
 
-  const form = useForm<TypeCarUpdateSchema>({
-    resolver: zodResolver(CarUpdateSchema),
+  const form = useForm<TypeCarCreateSchema>({
+    resolver: zodResolver(CarCreateSchema),
     defaultValues: {
-      brand: dataCar.brand,
-      model: dataCar.model,
-      year: dataCar.year,
-      license_plate: dataCar.license_plate,
-      seats: dataCar.seats,
-      price_per_day: dataCar.price_per_day,
-      status: dataCar.status,
+      brand: "",
+      model: "",
+      year: "",
+      license_plate: "",
+      seats: "",
+      price_per_day: "",
     },
   });
 
-  const handleForm = form.handleSubmit((values: TypeCarUpdateSchema) => {
+  const handleForm = form.handleSubmit((values: TypeCarCreateSchema) => {
     mutate(values, {
       onSuccess: (data) => {
         toast.success(data.message);
-        router.back();
+        form.reset();
+        router.replace("/dashboard/car-rental");
       },
 
       onError: (err) => {
@@ -73,8 +56,10 @@ export const CarRentalUpdate = ({
     });
   });
 
+  if (status === "loading") return null;
+
   return (
-    <Crud title="Car" titleAction="Update car">
+    <Crud title="Car" titleAction="New Car">
       <Form {...form}>
         <form onSubmit={handleForm} className="space-y-6">
           <div className="space-y-4">
@@ -134,54 +119,19 @@ export const CarRentalUpdate = ({
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-8">
-              <FormField
-                control={form.control}
-                name="seats"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Seats</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="seats..." type="number" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="AVAILABLE">Available</SelectItem>
-                          <SelectItem value="UNAVAILABLE">
-                            Unavailable
-                          </SelectItem>
-                          <SelectItem value="MAINTENANCE">
-                            Maintenance
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <Button className="bg-green-500 self-end" asChild>
-                <Link href={`/dashboard/car-rental/add/image/${idCar}`}>
-                  Add <ImagePlus />{" "}
-                </Link>
-              </Button>
-            </div>
+            <FormField
+              control={form.control}
+              name="seats"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Seats</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="seats..." type="number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="price_per_day"
@@ -200,9 +150,7 @@ export const CarRentalUpdate = ({
               )}
             />
           </div>
-          <ButtonLoading isLoading={isPending} type="submit">
-            Update
-          </ButtonLoading>
+          <Button type="submit">Create</Button>
         </form>
       </Form>
     </Crud>

@@ -8,7 +8,7 @@ import { queryHelpers } from "@/utils/queryHelpers";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { ThumbnailCar } from "@/features/admin/dashboard/main/car/thumbnail";
+import { ThumbnailCar } from "@/features/admin/dashboard/main/inventory/car/thumbnail";
 
 const PageDashboardCarRentalThumbnail = () => {
   const { id } = useParams<{ id: string }>();
