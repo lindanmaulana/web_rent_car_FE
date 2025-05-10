@@ -13,9 +13,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useCarBrandGetAll } from "@/hooks/car-brand";
-import { useCategoryGetAll } from "@/hooks/category";
+import { useCategoryGetAll } from "@/hooks/car-category";
 import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car";
 import { UtilsCarCreate } from "@/utils/car";
 import { UtilsErrorConsumeAPI } from "@/utils/errors";
@@ -28,12 +35,22 @@ import { toast } from "sonner";
 
 export const CarRentalAdd = () => {
   const { data: session, status } = useSession();
-  const {data: categoryData, isLoading: categoryLoading, isError: categoryError, error: categoryErrorMessage} = useCategoryGetAll()
-  const {data: carBrandData, isLoading: carBrandLoading, isError: carBrandError, error: carBrandErrorMessage} = useCarBrandGetAll()
+  const {
+    data: categoryData,
+    isLoading: categoryLoading,
+    isError: categoryError,
+    error: categoryErrorMessage,
+  } = useCategoryGetAll();
+  const {
+    data: carBrandData,
+    isLoading: carBrandLoading,
+    isError: carBrandError,
+    error: carBrandErrorMessage,
+  } = useCarBrandGetAll();
   const router = useRouter();
 
-  const loading = categoryLoading || carBrandLoading 
-  const error = categoryError || carBrandError
+  const loading = categoryLoading || carBrandLoading;
+  const error = categoryError || carBrandError;
 
   const { mutate } = useMutation({
     mutationKey: ["carAdd"],
@@ -69,9 +86,13 @@ export const CarRentalAdd = () => {
 
   if (status === "loading") return null;
 
-  if(loading) return <LoadingUi />
-  if(error) return <ErrorUi message={categoryErrorMessage?.message || carBrandErrorMessage?.message} />
-
+  if (loading) return <LoadingUi />;
+  if (error)
+    return (
+      <ErrorUi
+        message={categoryErrorMessage?.message || carBrandErrorMessage?.message}
+      />
+    );
 
   return (
     <Crud title="Car" titleAction="New Car">
@@ -93,23 +114,29 @@ export const CarRentalAdd = () => {
                 )}
               />
               <div className="flex items-center gap-x-4">
-                <FormField 
+                <FormField
                   control={form.control}
                   name="car_category_id"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Car Category</FormLabel>
                       <FormControl>
-                        <Select 
+                        <Select
                           value={field.value}
-                          onValueChange={field.onChange}>
+                          onValueChange={field.onChange}
+                        >
                           <SelectTrigger>
-                            <SelectValue placeholder="Category..."/>
+                            <SelectValue placeholder="Category..." />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               {categoryData.data?.map((category) => (
-                                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                                <SelectItem
+                                  key={category.id}
+                                  value={category.id}
+                                >
+                                  {category.name}
+                                </SelectItem>
                               ))}
                             </SelectGroup>
                           </SelectContent>
@@ -118,23 +145,29 @@ export const CarRentalAdd = () => {
                     </FormItem>
                   )}
                 />
-                <FormField 
+                <FormField
                   control={form.control}
                   name="car_brand_id"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Car Brand</FormLabel>
                       <FormControl>
-                        <Select 
+                        <Select
                           value={field.value}
-                          onValueChange={field.onChange}>
+                          onValueChange={field.onChange}
+                        >
                           <SelectTrigger>
-                            <SelectValue placeholder="Brand..."/>
+                            <SelectValue placeholder="Brand..." />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
                               {carBrandData.data?.map((carBrand) => (
-                                <SelectItem key={carBrand.id} value={carBrand.id}>{carBrand.name}</SelectItem>
+                                <SelectItem
+                                  key={carBrand.id}
+                                  value={carBrand.id}
+                                >
+                                  {carBrand.name}
+                                </SelectItem>
                               ))}
                             </SelectGroup>
                           </SelectContent>

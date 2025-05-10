@@ -1,8 +1,8 @@
+import { DashboardMainCategory } from "@/features/admin/dashboard/main/inventory/category"
+
 const PageDashboardInventoryCategory = () => {
     return (
-        <div>
-            Category
-        </div>
+        <DashboardMainCategory />
     )
 }
 

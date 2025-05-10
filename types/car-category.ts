@@ -1,5 +1,5 @@
 
-export interface Category {
+export interface CarCategory {
     id: string
     name: string
     description: string
