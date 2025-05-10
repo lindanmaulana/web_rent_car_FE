@@ -1,6 +1,8 @@
 "use client";
 
 import { Crud } from "@/components/dashboard/crud";
+import { ErrorUi } from "@/components/feedbacks/error-ui";
+import { LoadingUi } from "@/components/feedbacks/loading-ui";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,6 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useCarBrandGetAll } from "@/hooks/car-brand";
+import { useCategoryGetAll } from "@/hooks/category";
 import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car";
 import { UtilsCarCreate } from "@/utils/car";
 import { UtilsErrorConsumeAPI } from "@/utils/errors";
@@ -23,7 +28,12 @@ import { toast } from "sonner";
 
 export const CarRentalAdd = () => {
   const { data: session, status } = useSession();
+  const {data: categoryData, isLoading: categoryLoading, isError: categoryError, error: categoryErrorMessage} = useCategoryGetAll()
+  const {data: carBrandData, isLoading: carBrandLoading, isError: carBrandError, error: carBrandErrorMessage} = useCarBrandGetAll()
   const router = useRouter();
+
+  const loading = categoryLoading || carBrandLoading 
+  const error = categoryError || carBrandError
 
   const { mutate } = useMutation({
     mutationKey: ["carAdd"],
@@ -33,7 +43,8 @@ export const CarRentalAdd = () => {
   const form = useForm<TypeCarCreateSchema>({
     resolver: zodResolver(CarCreateSchema),
     defaultValues: {
-      brand: "",
+      car_category_id: "",
+      car_brand_id: "",
       model: "",
       year: "",
       license_plate: "",
@@ -47,7 +58,7 @@ export const CarRentalAdd = () => {
       onSuccess: (data) => {
         toast.success(data.message);
         form.reset();
-        router.replace("/dashboard/car-rental");
+        router.replace("/dashboard/inventory/car");
       },
 
       onError: (err) => {
@@ -58,37 +69,82 @@ export const CarRentalAdd = () => {
 
   if (status === "loading") return null;
 
+  if(loading) return <LoadingUi />
+  if(error) return <ErrorUi message={categoryErrorMessage?.message || carBrandErrorMessage?.message} />
+
+
   return (
     <Crud title="Car" titleAction="New Car">
       <Form {...form}>
         <form onSubmit={handleForm} className="space-y-6">
           <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="brand"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="brand..." type="text" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="model"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Model</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="model..." type="text" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-center justify-between gap-x-5">
+              <FormField
+                control={form.control}
+                name="model"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Model</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="model..." type="text" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center gap-x-4">
+                <FormField 
+                  control={form.control}
+                  name="car_category_id"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Car Category</FormLabel>
+                      <FormControl>
+                        <Select 
+                          value={field.value}
+                          onValueChange={field.onChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Category..."/>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {categoryData.data?.map((category) => (
+                                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={form.control}
+                  name="car_brand_id"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Car Brand</FormLabel>
+                      <FormControl>
+                        <Select 
+                          value={field.value}
+                          onValueChange={field.onChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Brand..."/>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {carBrandData.data?.map((carBrand) => (
+                                <SelectItem key={carBrand.id} value={carBrand.id}>{carBrand.name}</SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <FormField
               control={form.control}
               name="year"

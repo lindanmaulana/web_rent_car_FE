@@ -7,6 +7,7 @@ interface SessionAppProps {
 }
 const SessionApp = async ({children}: SessionAppProps) => {
     const session = await auth()
+    
     return (
         <SessionProvider refetchOnWindowFocus={false} session={session}>
             {children}

@@ -1,7 +1,7 @@
 import { TypeCarCreateSchema, TypeCarUpdateSchema } from "@/schemas/car";
 import { axiosInstance, setToken } from "./axios-instance";
 import { UtilsErrorService } from "./errors";
-import { searchParamsCar } from "@/features/admin/dashboard/main/car";
+import { searchParamsCar } from "@/features/admin/dashboard/main/inventory/car";
 
 export const UtilsCarCreate = async (
   data: TypeCarCreateSchema,
@@ -18,7 +18,7 @@ export const UtilsCarCreate = async (
 
     return response.data;
   } catch (err) {
-    UtilsErrorService(err);
+    throw new Error(UtilsErrorService(err));
   }
 };
 

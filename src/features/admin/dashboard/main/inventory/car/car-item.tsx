@@ -20,7 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
-import { Car } from "../../../../../../types/car";
+import { Car } from "../../../../../../../types/car";
 import { ErrorUi } from "@/components/feedbacks/error-ui";
 import { searchParamsCar } from ".";
 

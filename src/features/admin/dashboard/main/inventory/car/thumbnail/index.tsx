@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonLoading } from "@/components/button-loading";
-import { ContentCrud } from "@/components/dashboard/crud/content-crud";
+import { Crud } from "@/components/dashboard/crud";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -25,7 +25,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Car } from "../../../../../../../types/car";
+import { Car } from "../../../../../../../../types/car";
 
 interface UpdateThumbnail {
   thumbnail: string;
@@ -67,7 +67,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
   });
 
   return (
-    <ContentCrud title="Thumbnail" titleAction="Thumbnail Car">
+    <Crud title="Thumbnail" titleAction="Thumbnail Car">
       <div className="w-full space-y-4">
         <AspectRatio ratio={16 / 12}>
           <Image
@@ -164,6 +164,6 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
           </form>
         </Form>
       </div>
-    </ContentCrud>
+    </Crud>
   );
 };

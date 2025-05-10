@@ -1,0 +1,1 @@
+export * from "@/hooks/car-brand/useCarBrandGetAll"

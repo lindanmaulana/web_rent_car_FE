@@ -1,7 +1,8 @@
 import { z, ZodType } from "zod";
 
 export const CarCreateSchema: ZodType = z.object({
-    brand: z.string().min(1, "Brand is required").optional(),
+    car_category_id: z.string().min(1, "Car category id is required"),
+    car_brand_id: z.string().min(1, "Car brand id is required") ,
     model: z.string().min(1, "Model is required"),
     year: z.coerce.number().positive().refine(val => !isNaN(val), {
         message: "Year is required"

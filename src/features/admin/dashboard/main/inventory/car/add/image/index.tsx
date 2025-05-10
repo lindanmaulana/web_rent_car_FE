@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonLoading } from "@/components/button-loading";
-import { ContentCrud } from "@/components/dashboard/crud/content-crud";
+import { Crud } from "@/components/dashboard/crud";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -69,7 +69,7 @@ export const CarRentalAddImage = ({ id, token }: CarRentalAddImageProps) => {
     }
   };
   return (
-    <ContentCrud title="Image Car" titleAction="New Image Car">
+    <Crud title="Image Car" titleAction="New Image Car">
       <Form {...form}>
         <form onSubmit={handleForm} className="h-full">
           <FormField
@@ -126,6 +126,6 @@ export const CarRentalAddImage = ({ id, token }: CarRentalAddImageProps) => {
           </ButtonLoading>
         </form>
       </Form>
-    </ContentCrud>
+    </Crud>
   );
 };

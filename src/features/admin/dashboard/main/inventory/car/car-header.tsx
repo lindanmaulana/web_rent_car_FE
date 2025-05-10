@@ -101,7 +101,7 @@ export const DashboardMainCarHeader = ({params, setParams}: CarHeaderProps) => {
             </div>
             <div>
                 <Button size="sm" asChild>
-                    <Link href="/dashboard/car-rental/add">Add Car</Link>
+                    <Link href="/dashboard/inventory/car/add">Add Car</Link>
                 </Button>
             </div>
         </div>

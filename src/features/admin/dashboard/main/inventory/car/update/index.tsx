@@ -29,7 +29,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Car } from "../../../../../../../types/car";
+import { Car } from "../../../../../../../../types/car";
 
 interface CarRentalUpdateProps {
   idCar: string;
@@ -50,7 +50,7 @@ export const CarRentalUpdate = ({
   const form = useForm<TypeCarUpdateSchema>({
     resolver: zodResolver(CarUpdateSchema),
     defaultValues: {
-      brand: dataCar.brand,
+      brand: dataCar.brand.name,
       model: dataCar.model,
       year: dataCar.year,
       license_plate: dataCar.license_plate,
