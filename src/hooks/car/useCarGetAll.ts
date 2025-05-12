@@ -13,9 +13,7 @@ interface userCarGetAllResponse {
   isError: boolean;
 }
 
-export const useCarGetAll = ({
-  params,
-}: useCarGetAllProps): userCarGetAllResponse => {
+export const useCarGetAll = ({ params }: useCarGetAllProps): userCarGetAllResponse => {
   const { data, isError } = useSuspenseQuery({
     queryKey: ["getAllCar", params],
     queryFn: () => UtilsCarGetAll({ params }),

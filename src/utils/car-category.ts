@@ -1,5 +1,19 @@
+
 import { axiosInstance, setToken } from "./axios-instance"
 import { UtilsErrorService } from "./errors"
+
+export interface UtilsCarCategoryGetAllFilterParams {
+    params?: string
+}
+export const UtilsCarCategoryGetAllFilter = async ({params}: UtilsCarCategoryGetAllFilterParams) => {
+    try {
+        const response = await axiosInstance.get(`/car-categories?${params?.toString()}`)
+
+        return response.data
+    } catch (err) {
+        throw new Error(UtilsErrorService(err))
+    }
+}
 
 export const UtilsCarCategoryGetAll = async () => {
     try {

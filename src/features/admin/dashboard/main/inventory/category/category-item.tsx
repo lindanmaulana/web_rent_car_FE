@@ -9,11 +9,15 @@ import { UtilsCarCategoryDelete } from "@/utils/car-category"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
+import { useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 
 export const DashboardMainCategoryItem = () => {
+    const params = useSearchParams()
+
     const {data: session, status} = useSession()
-    const {data, isError, error} = useCategoryGetAllSuspense()
+    const {data, isError, error} = useCategoryGetAllSuspense({params: params ? params.toString() : ''})
+
     const {mutate} = useMutation({
         mutationKey: ['carCategoryDelete'],
         mutationFn: (id: string) => UtilsCarCategoryDelete({id, token: session?.user.token})
@@ -62,8 +66,8 @@ export const DashboardMainCategoryItem = () => {
                             <TableCell>{category.description}</TableCell>
                             <TableCell>
                                 <div className="flex items-center justify-end gap-x-3">
-                                    <Button size="sm" >Update</Button>
-                                    <Button size="sm" onClick={() => handleDelete(category.id, category.name)}>Delete</Button>
+                                    <Button size="sm" className="text-xs" >Update</Button>
+                                    <Button size="sm" variant="destructive" onClick={() => handleDelete(category.id, category.name)} className="text-xs">Delete</Button>
                                 </div>
                             </TableCell>
                         </TableRow>

@@ -7,6 +7,7 @@ import Link from "next/link"
 import { searchParamsCar } from "."
 import { useMemo } from "react"
 import debounce from "lodash.debounce"
+import { RiFunctionAddFill } from "react-icons/ri"
 interface CarHeaderProps {
     setParams: (param: searchParamsCar) => void
     params: searchParamsCar
@@ -101,7 +102,7 @@ export const DashboardMainCarHeader = ({params, setParams}: CarHeaderProps) => {
             </div>
             <div>
                 <Button size="sm" asChild>
-                    <Link href="/dashboard/inventory/car/add">Add Car</Link>
+                    <Link href="/dashboard/inventory/car/add" className="flex items-center gap-2"><RiFunctionAddFill /> Add</Link>
                 </Button>
             </div>
         </div>
