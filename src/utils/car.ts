@@ -1,7 +1,6 @@
 import { TypeCarCreateSchema, TypeCarUpdateSchema } from "@/schemas/car";
 import { axiosInstance, setToken } from "./axios-instance";
 import { UtilsErrorService } from "./errors";
-import { searchParamsCar } from "@/features/admin/dashboard/main/inventory/car";
 
 export const UtilsCarCreate = async (
   data: TypeCarCreateSchema,
@@ -22,21 +21,24 @@ export const UtilsCarCreate = async (
   }
 };
 
+// interface UtilsCarGetAllParams {
+//   params?: searchParamsCar;
+// }
 interface UtilsCarGetAllParams {
-  params?: searchParamsCar;
+  params?: string;
 }
 
 export const UtilsCarGetAll = async ({ params }: UtilsCarGetAllParams) => {
-  const dataParams = [
-    params?.seats && params.seats,
-    params?.status && params.status,
-    params?.year && params?.year,
-    params?.keyword && params.keyword,
-  ];
-  const routeParams = dataParams.filter((param) => param).join("&");
+  // const dataParams = [
+  //   params?.seats && params.seats,
+  //   params?.status && params.status,
+  //   params?.year && params?.year,
+  //   params?.keyword && params.keyword,
+  // ];
+  // const routeParams = dataParams.filter((param) => param).join("&");
 
   try {
-    const response = await axiosInstance.get(`/cars?${routeParams}`);
+    const response = await axiosInstance.get(`/cars?${params}`);
 
     return response.data.data;
   } catch (err) {
@@ -93,6 +95,6 @@ export const UtilsCarDelete = async ({ id, token }: UtilsCarDeleteParams) => {
 
     return response.data;
   } catch (err) {
-    UtilsErrorService(err);
+    throw new Error(UtilsErrorService(err))
   }
 };

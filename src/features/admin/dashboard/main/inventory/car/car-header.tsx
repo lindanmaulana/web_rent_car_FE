@@ -1,104 +1,107 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
-import { searchParamsCar } from "."
-import { useMemo } from "react"
-import debounce from "lodash.debounce"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
 import { RiFunctionAddFill } from "react-icons/ri"
-interface CarHeaderProps {
-    setParams: (param: searchParamsCar) => void
-    params: searchParamsCar
+import { CARSEATS, CARSTATUS, CARYEAR } from "../../../../../../../types/car"
+
+const DEFAULTVALUE = {
+    seats: "reset",
+    status: "reset",
+    year: "reset"
 }
 
-export const DashboardMainCarHeader = ({params, setParams}: CarHeaderProps) => {
-    const handleChangeSeats = (seats: string) => {
-        switch(seats) {
-            case "reset":
-                setParams({...params, seats: ''})
-            break;
-            default: 
-            setParams({...params, seats: `seats=${seats}`})
+interface SearchParams {
+    seats: string
+    status: string
+    year: string
+}
+
+export const DashboardMainCarHeader = () => {
+    const paramsRoute = useSearchParams()
+    const pathname = usePathname()
+    const router = useRouter()
+
+    const actionParamsRoute = useMemo(() => ({
+        seats: paramsRoute.get("seats") || DEFAULTVALUE.seats,
+        status: paramsRoute.get("status") || DEFAULTVALUE.status,
+        year: paramsRoute.get("year") || DEFAULTVALUE.year,
+    }), [paramsRoute])
+
+    const [params, setParams] = useState<SearchParams>(actionParamsRoute)
+
+    useEffect(() => {
+        if(
+            params.seats !== actionParamsRoute.seats ||
+            params.status !== actionParamsRoute.status ||
+            params.year !== actionParamsRoute.year) {
+                setParams(actionParamsRoute)
+            }
+    }, [actionParamsRoute, params])
+
+    const handleParams = (key: string, value: string) => {
+        const paramsURL = new URLSearchParams(window.location.search)
+        
+        if(value === "reset") {
+            setParams({...params, [key]: value})
+            paramsURL.delete(key)
+        } else {
+            setParams({...params, [key]: value})
+            paramsURL.set(key, value)
         }
+        
+        router.push(`${pathname}?${paramsURL.toString()}`)
     }
 
-    const handleChangeYear = (year: string) => {
-        switch(year) {
-            case "reset":
-                setParams({...params, year: ''})
-            break;
-            default: 
-                setParams({...params, year: `year=${year}`})
-        }
-    }
+    const handleResetParams = () => {
+        setParams(DEFAULTVALUE)
 
-    const handleChangeStatus = (status: string) => {
-        switch(status) {
-            case "reset":
-                setParams({...params, status: ''})
-            break;
-            default:
-                setParams({...params, status: `status=${status}`})
-        }
-    }
+        router.push(pathname)
+    } 
 
-    const debounceSearch = useMemo(() => debounce((keyword: string) => {
-        setParams({...params, keyword: `keyword=${keyword}`})
-
-    }, 1000), [setParams, params])
-
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debounceSearch(e.target.value)
-    }
-
+    const isParamsSeats: boolean = params.seats !== "reset" && !CARSEATS.includes(params.seats)
     return (
         <div className="flex items-center justify-between">
-            <div className="w-1/2 flex items-center gap-3">
-                <div className="relative w-full bg-white">
-                    <Input type="text" placeholder="Search..." onChange={handleSearch} />
-                </div>
-                <Select onValueChange={handleChangeSeats}>
+            <div className="w-2/3 flex items-center gap-3">
+                <Select onValueChange={(e) => handleParams("seats", e)} value={params.seats}>
                     <SelectTrigger className="bg-white">
                         <SelectValue placeholder="Seats" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="reset">Seats</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                        <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5</SelectItem>
-                        <SelectItem value="6">6</SelectItem>
-                        <SelectItem value="7">7</SelectItem>
+                        {CARSEATS?.map(seat => (
+                            <SelectItem key={seat} value={seat}>{seat}</SelectItem>
+                        ))}
+
+                        {isParamsSeats && <SelectItem value={params.seats}>{params.seats}</SelectItem> }
                     </SelectContent>
                 </Select>
-                <Select onValueChange={handleChangeYear}>
+                <Select onValueChange={(e) => handleParams("year", e)} value={params.year}>
                     <SelectTrigger className="bg-white">
                         <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="reset">Year</SelectItem>
-                        <SelectItem value="2010">2018</SelectItem>
-                        <SelectItem value="2019">2019</SelectItem>
-                        <SelectItem value="2020">2020</SelectItem>
-                        <SelectItem value="2021">2021</SelectItem>
-                        <SelectItem value="2022">2022</SelectItem>
-                        <SelectItem value="2023">2023</SelectItem>
-                        <SelectItem value="2024">2024</SelectItem>
+                        {CARYEAR?.map(year => (
+                            <SelectItem key={year} value={year}>{year}</SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
-                <Select onValueChange={handleChangeStatus}>
+                <Select onValueChange={(e) => handleParams("status", e)} value={params.status}>
                     <SelectTrigger>
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="reset">Status</SelectItem>
-                        <SelectItem value="AVAILABLE">Available</SelectItem>
-                        <SelectItem value="UNAVAILABLE">Unavailable</SelectItem>
-                        <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                        {CARSTATUS?.map(status => (
+                            <SelectItem key={status} value={status.toUpperCase()} className="capitalize">{status}</SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
+                <Button size="sm" variant="destructive" className="text-sm rounded" onClick={handleResetParams}>Reset</Button>
             </div>
             <div>
                 <Button size="sm" asChild>

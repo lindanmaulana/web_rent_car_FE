@@ -49,7 +49,7 @@ export const DashboardMainChart = () => {
   const { data: dataRental } = useRentalGetAll({
     token: session.data?.user.token,
   });
-  const { data: dataCar } = useCarGetAll({ params: { keyword: "" } });
+  const { data: dataCar } = useCarGetAll({params: ''});
 
   useEffect(() => {
     const carChart = dataCar.map((car) => {
@@ -86,7 +86,7 @@ export const DashboardMainChart = () => {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="brand"
+              dataKey="model"
               tickLine={false}
               tickMargin={10}
               axisLine={false}

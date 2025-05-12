@@ -18,21 +18,16 @@ import {
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Car } from "../../../../../../../types/car";
 import { ErrorUi } from "@/components/feedbacks/error-ui";
-import { searchParamsCar } from ".";
-
 interface DashboardMainCarItemProps {
   session: Session | null;
-  params: searchParamsCar;
 }
-export const DashboardMainCarItem = ({
-  session,
-  params,
-}: DashboardMainCarItemProps) => {
-  const { data, isError } = useCarGetAll({ params });
+export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
+  const params = useSearchParams()
+  const { data, isError } = useCarGetAll({ params: params.toString() });
   const pathname = usePathname();
   const queryClient = useQueryClient();
 

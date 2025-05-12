@@ -21,3 +21,7 @@ export interface Car {
     createdAt: Date
     updatedAt: Date
 }
+
+export const CARSEATS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+export const CARYEAR = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"];
+export const CARSTATUS = ["available", "unavailable", "maintenance"]

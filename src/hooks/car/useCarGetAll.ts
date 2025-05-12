@@ -2,10 +2,8 @@
 import { UtilsCarGetAll } from "@/utils/car";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Car } from "../../../types/car";
-import { searchParamsCar } from "@/features/admin/dashboard/main/inventory/car";
-
 interface useCarGetAllProps {
-  params?: searchParamsCar;
+  params?: string;
 }
 
 interface userCarGetAllResponse {

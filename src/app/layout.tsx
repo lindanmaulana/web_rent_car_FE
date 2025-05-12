@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import App from "./app";
 import "./globals.css";
 import SessionApp from "./sessionApp";
+import { SearchSync } from "@/components/searchsync";
 
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({
         className={`antialiased`}
       >
         <SessionApp>
+          <SearchSync />
           <App>
             {children}  
           </App>

@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ROUTESAUTH } from "@/routes"
+import { useSearchStore } from "@/stores/searchStore"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Search, Settings2 } from "lucide-react"
 import { useSession } from "next-auth/react"
-import { usePathname } from "next/navigation"
-import { ReactNode } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import React, { ReactNode, useEffect, useState } from "react"
 import { FaHeart } from "react-icons/fa"
 import { IoIosNotifications } from "react-icons/io"
 import { MdSettings } from "react-icons/md"
@@ -30,7 +31,34 @@ interface AppProps {
 }
 const App = ({children}: AppProps) => {
     const {data, status} = useSession()
+    const router = useRouter()
     const pathname = usePathname()
+    const keyword = useSearchStore((s) => (s.keyword))
+    const setKeyword = useSearchStore((s) => (s.setKeyword))
+    const [paramsKeyword, setParamsKeyword] = useState<string>(keyword)
+
+    useEffect(() => {
+        setParamsKeyword(keyword)
+    }, [keyword])
+
+    const handleChangeParams = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+
+        setParamsKeyword(value)
+    }
+
+    const handleParams = () => {
+        const urlParams = new URLSearchParams(window.location.search)
+
+        urlParams.set("keyword", paramsKeyword)
+
+        router.push(`${pathname}?${urlParams.toString()}`)
+    }
+
+    const handleReset = () => {
+        setKeyword("")
+        router.push(pathname)
+    }
 
     if(status === "loading") return null
 
@@ -43,9 +71,15 @@ const App = ({children}: AppProps) => {
                     <h3 className="text-3xl">Morent</h3>
                     <div className="relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" />
-                        <Input placeholder="Search something here" type="text" className="px-10 rounded-full" />
+                        <Input placeholder="Search something here" type="text" className="px-10 rounded-full" onChange={handleChangeParams} value={paramsKeyword} />
                         <Settings2 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5" />
                     </div>
+
+                    {keyword ? (
+                        <Button variant="destructive" onClick={handleReset}>Reset</Button>
+                    ): (
+                        <Button onClick={handleParams}>Search</Button>
+                    )}
                 </div>
                 <div className="flex items-center gap-3">   
                     <Button variant="outline" className="w-9 h-9 rounded-full"><FaHeart className="text-slate-blue" /></Button>
