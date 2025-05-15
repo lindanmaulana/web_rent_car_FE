@@ -5,7 +5,7 @@ import { DashboardMainCategoryHeader } from "./category-header"
 import { DashboardMainCategoryItem } from "./category-item"
 
 
-export const DashboardMainCategory = () => {
+export const DashboardMainCarCategory = () => {
     return (
         <div className="flex flex-col gap-4">
             <DashboardMainCategoryHeader  />

@@ -42,7 +42,7 @@ export const UtilsCarGetAll = async ({ params }: UtilsCarGetAllParams) => {
 
     return response.data.data;
   } catch (err) {
-    UtilsErrorService(err);
+    throw new Error(UtilsErrorService(err));
   }
 };
 
@@ -55,7 +55,7 @@ export const UtilsCarGetOne = async ({ id }: UtilsCarGetOneParams) => {
 
     return response.data.data;
   } catch (err) {
-    UtilsErrorService(err);
+    throw new Error(UtilsErrorService(err));
   }
 };
 

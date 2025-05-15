@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCarBrandGetAll } from "@/hooks/car-brand";
-import { useCategoryGetAll } from "@/hooks/car-category";
+import { useCarCategoryGetAll } from "@/hooks/car-category";
 import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car";
 import { UtilsCarCreate } from "@/utils/car";
 import { UtilsErrorConsumeAPI } from "@/utils/errors";
@@ -40,7 +40,7 @@ export const CarRentalAdd = () => {
     isLoading: categoryLoading,
     isError: categoryError,
     error: categoryErrorMessage,
-  } = useCategoryGetAll();
+  } = useCarCategoryGetAll();
   const {
     data: carBrandData,
     isLoading: carBrandLoading,

@@ -3,15 +3,16 @@ import { axiosInstance, setToken } from "./axios-instance"
 import { UtilsErrorService } from "./errors"
 
 export interface RentalGetAllParams {
+    params?: string
     token?: string
 }
-export const UtilsRentalGetAll = async ({token}: RentalGetAllParams) => {
+export const UtilsRentalGetAll = async ({token, params}: RentalGetAllParams) => {
     if(token) {
         setToken(token)
     }
 
     try {
-        const response = await axiosInstance.get("/rentals")
+        const response = await axiosInstance.get(`/rentals?${params}`)
 
         return response.data
     } catch (err) {

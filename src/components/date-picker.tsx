@@ -23,7 +23,7 @@ export const DatePicker = ({title, date, setDate}: DatePickerProps) => {
                 </Button>
             </PopoverTrigger>
             <PopoverContent>
-                <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                <Calendar mode="single" selected={date} defaultMonth={date} onSelect={setDate} initialFocus />
             </PopoverContent>
         </Popover>
     )

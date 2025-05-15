@@ -1,8 +1,8 @@
-import { UtilsCarCategoryGetAll, UtilsCarCategoryGetAllFilter, UtilsCarCategoryGetAllFilterParams } from "@/utils/car-category"
+import { UtilsCarCategoryGetAll, UtilsCarCategoryGetAllFilter } from "@/utils/car-category"
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { CarCategory } from "../../../types/car-category"
 
-interface useCategoryGetAllResponse {
+interface useCarCategoryGetAllResponse {
     data: {
         data: CarCategory[]
     },
@@ -13,11 +13,11 @@ interface useCategoryGetAllResponse {
     }
 }
 
-export const useCategoryGetAll = () => {
+export const useCarCategoryGetAll = () => {
     const {data, isLoading, isError, error} = useQuery({
         queryKey: ['CarCategoryGetAll'],
         queryFn: () => UtilsCarCategoryGetAll()
-    }) as useCategoryGetAllResponse
+    }) as useCarCategoryGetAllResponse
 
     return {
         data,
@@ -27,11 +27,11 @@ export const useCategoryGetAll = () => {
     }
 }
 
-export const useCategoryGetAllSuspense = (params: UtilsCarCategoryGetAllFilterParams) => {
+export const useCarCategoryGetAllSuspense = () => {
     const {data, isError, error} = useSuspenseQuery({
-        queryKey: ['carCategoryGetAllSuspense', params.params],
-        queryFn: () => UtilsCarCategoryGetAllFilter(params)
-    }) as useCategoryGetAllResponse
+        queryKey: ['carCategoryGetAllSuspense'],
+        queryFn: () => UtilsCarCategoryGetAllFilter()
+    }) as useCarCategoryGetAllResponse
 
     return {
         data,

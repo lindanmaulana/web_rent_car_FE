@@ -19,19 +19,13 @@ export const NavbarMainMenu = () => {
 
     return (
         <CardNavbar headerTitle="MAIN MENU">
-            {/* {navbarListMainMenu?.map(menu => (
-                <li key={menu.id} className={`${pathname === menu.url ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2`}>
-                    <menu.icon className="text-xl" />
-                    <Link href={menu.url} className="text-md">{menu.title}</Link>
-                </li>
-            ))} */}
             {navbarListMainMenu?.map(menu => {
                 return (
                     <Fragment key={menu.id}>
                         {!menu.isSubmenu ? (
                             <li key={menu.id} className={`${pathname === menu.url ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2`}>
                                 <menu.icon className="text-xl" />
-                                <Link href={menu.url} className="text-md">{menu.title}</Link>
+                                <Link href={menu.url} className="text-md w-full">{menu.title}</Link>
                             </li>
                         ): (
                             <li key={menu.id} className={"text-[#90A3BF] cursor-pointer flex flex-col gap-3"}>
@@ -47,16 +41,12 @@ export const NavbarMainMenu = () => {
                                         {menu.subMenu && menu.subMenu.map(list => (
                                             <li key={list.id} className={`${pathname === list.subUrl ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2`}>
                                                 <list.icon className="text-xl" />
-                                                <Link href={list.subUrl} className="text-md">{list.subTitle}</Link>
+                                                <Link href={list.subUrl} className="text-md w-full">{list.subTitle}</Link>
                                             </li>
                                         ))}
                                     </ul>
                                 )}
                             </li>
-                            // <li key={menu.id} className={`${pathname === menu.url ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2`}>
-                            //     <menu.icon className="text-xl" />
-                            //     <Link href={menu.url} className="text-md">{menu.title}</Link>
-                            // </li>
                         )}
                     </Fragment>
                 )

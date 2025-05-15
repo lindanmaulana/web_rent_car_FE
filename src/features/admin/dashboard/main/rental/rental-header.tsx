@@ -1,44 +1,76 @@
 "use client"
 import { DatePicker } from "@/components/date-picker"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
-import { searchParamsRental } from "."
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
-interface RentalHeaderProps {
-    setParams: (param: searchParamsRental) => void
-    params: searchParamsRental
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import debounce from "lodash.debounce"
+import Link from "next/link"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import React, { useMemo } from "react"
+
+const DEFAULTRENTALDATE = {
+    start_date: "start_date",
+    end_date: "end_date"
 }
-export const DashboardMainRentalHeader = ({params, setParams}: RentalHeaderProps) => {
-    const [startDate, setStartDate] = useState<Date>()
-    const [endDate, setEndDate] = useState<Date>()
 
-    const handleChangeStartDate = (date?: Date): void => {
-        setStartDate(date)
-        setParams({...params, start_date: `start_date=${date?.toISOString()}`})
-    }
+export const DashboardMainRentalHeader = () => {
+    const pathname = usePathname()
+    const router = useRouter()
+    const urlParams = useSearchParams()
 
-    const handleChangeEndDate = (date?: Date): void => {
-        setEndDate(date)
-        setParams({...params, end_date: `end_date=${date?.toISOString()}`})
-    }
-
-    const handleChangeStatus = (status: string) => {
-        switch(status) {
-            case "reset":
-                setParams({...params, status: ''})
-            break;
-            default: 
-                setParams({...params, status: `status=${status}`})
+     const debounceSearch = useMemo(() => debounce((key: string, param: string) => {
+        const urlParam = new URLSearchParams(window.location.search)
+        
+        if(param) {
+            urlParam.set(key, param)
+        } else {
+            urlParam.delete(key)
         }
+
+        router.replace(`${pathname}?${urlParam.toString()}`)
+    }, 500) ,[pathname, router])
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+
+        debounceSearch("keyword", value)
+    }
+
+    const handleChangeDate = (key: string, date?: Date): void => {
+        const urlParams = new URLSearchParams(window.location.search)
+
+        if(date) {
+            urlParams.set(key, date.toISOString())
+        } else {
+            urlParams.delete(key)
+        }
+
+        router.replace(`${pathname}?${urlParams.toString()}`)
+    }
+
+    const handleChangeStatus = (key: string, status: string) => {
+        const urlParams = new URLSearchParams(window.location.search)
+
+        if(status === "reset") {
+            urlParams.delete(key)
+        } else {
+            urlParams.set(key, status)
+        }
+
+        router.replace(`${pathname}?${urlParams.toString()}`)
+    }
+
+    const handleReset = () => {
+        router.replace(pathname)
     }
 
     return (
         <div className="flex items-center justify-between">
-            <div className="w-1/2 flex items-center gap-3">
-                <DatePicker title="Mulai sewa" date={startDate} setDate={handleChangeStartDate} />
-                <DatePicker title="Selesai sewa" date={endDate} setDate={handleChangeEndDate} />
-                <Select onValueChange={handleChangeStatus}>
+            <div className="min-w-1/2 flex items-center gap-3">
+                <Input type="text" placeholder="Search by name..." onChange={handleSearch} defaultValue={urlParams?.get("keyword") || ""} />
+                <DatePicker title="Mulai sewa" date={urlParams?.get("start_date") ? new Date(urlParams.get("start_date") ?? "") : undefined} setDate={(e) => handleChangeDate(DEFAULTRENTALDATE.start_date, e) } />
+                <DatePicker title="Selesai sewa" date={urlParams?.get("end_date") ? new Date(urlParams.get("end_date") ?? "") : undefined} setDate={(e) => handleChangeDate(DEFAULTRENTALDATE.end_date, e) } />
+                <Select onValueChange={(e) => handleChangeStatus("status", e)} defaultValue={urlParams?.get("status") || "reset"}>
                     <SelectTrigger>
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
@@ -49,6 +81,7 @@ export const DashboardMainRentalHeader = ({params, setParams}: RentalHeaderProps
                         <SelectItem value="COMPLETED">Completed</SelectItem>
                     </SelectContent>
                 </Select>
+                <Button variant="destructive" onClick={handleReset}>Reset</Button>
             </div>  
             <div>
                 <Button size="sm" asChild>
@@ -58,9 +91,3 @@ export const DashboardMainRentalHeader = ({params, setParams}: RentalHeaderProps
         </div>
     )
 }
-
-// car_id: "",
-// start_date: "",
-// end_date: "",
-// status: ''
-

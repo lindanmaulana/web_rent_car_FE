@@ -1,4 +1,5 @@
 'use client'
+
 import { useSearchStore } from "@/stores/searchStore"
 import { useSearchParams } from "next/navigation"
 import { useEffect } from "react"
@@ -15,6 +16,7 @@ export const SearchSync = () => {
             setKeyword(keywordURL)
         }
 
-    }, [keyword, keywordURL, setKeyword])
+    }, [keyword])
+
     return null
 }

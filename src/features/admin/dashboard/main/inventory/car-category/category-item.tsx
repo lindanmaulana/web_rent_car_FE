@@ -4,19 +4,16 @@ import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { LoadingUi } from "@/components/feedbacks/loading-ui"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useCategoryGetAllSuspense } from "@/hooks/car-category"
+import { useCarCategoryGetAllSuspense } from "@/hooks/car-category"
 import { UtilsCarCategoryDelete } from "@/utils/car-category"
 import { UtilsErrorConsumeAPI } from "@/utils/errors"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
-import { useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 
 export const DashboardMainCategoryItem = () => {
-    const params = useSearchParams()
-
     const {data: session, status} = useSession()
-    const {data, isError, error} = useCategoryGetAllSuspense({params: params ? params.toString() : ''})
+    const {data, isError, error} = useCarCategoryGetAllSuspense()
 
     const {mutate} = useMutation({
         mutationKey: ['carCategoryDelete'],

@@ -1,6 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { ButtonDelete } from "@/components/buttons/button-delete";
+import { ButtonUpdate } from "@/components/buttons/button-update";
+import { ErrorUi } from "@/components/feedbacks/error-ui";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useCarGetAll } from "@/hooks/car";
 import { APIURLIMAGE } from "@/publicConfig";
@@ -21,7 +23,6 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Car } from "../../../../../../../types/car";
-import { ErrorUi } from "@/components/feedbacks/error-ui";
 interface DashboardMainCarItemProps {
   session: Session | null;
 }
@@ -31,7 +32,7 @@ export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["deleteCar"],
     mutationFn: (id: string) =>
       UtilsCarDelete({ id, token: session?.user.token }),
@@ -158,22 +159,8 @@ export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Button size="sm" asChild>
-                        <Link
-                          href={`${pathname}/update/${car.id}`}
-                          className="text-xs"
-                        >
-                          Update
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(car.id)}
-                        className="text-xs"
-                      >
-                        Delete
-                      </Button>
+                      <ButtonUpdate pathname={pathname} id={car.id}>Update</ButtonUpdate>
+                      <ButtonDelete id={car.id} onclick={() => handleDelete(car.id)} isLoading={isPending}>Delete</ButtonDelete>
                     </div>
                   </TableCell>
                 </TableRow>

@@ -11,7 +11,7 @@ interface ButtonLoadingProps {
 export const ButtonLoading = (props: ButtonLoadingProps) => {
     const {isLoading, type, className, children} = props
     return (
-        <Button type={type} className={`${className} cursor-pointer`}>
+        <Button type={type} className={`${className} cursor-pointer`} disabled={isLoading}>
             {isLoading ? (
                 <TbLoaderQuarter className="animate-spin" />
             ): (

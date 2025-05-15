@@ -42,7 +42,7 @@ export const DashboardMainCategoryHeader = () => {
                 <Button onClick={handleReset} size="sm" variant="destructive" className="text-sm rounded">Reset</Button>
             </div>
             <Button asChild>
-                <Link href={'/dashboard/inventory/category/add'} className="flex items-center gap-2"><RiFunctionAddFill /> Add</Link>
+                <Link href={'/dashboard/inventory/car-category/add'} className="flex items-center gap-2"><RiFunctionAddFill /> Add</Link>
             </Button>
         </div>
     )

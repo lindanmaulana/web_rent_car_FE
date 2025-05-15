@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Session } from "next-auth";
 import { toast } from "sonner";
 import { Rental } from "../../../../../../types/rental";
+import { useSearchParams } from "next/navigation";
 
 interface DashboardMainCarItemProps {
   session: Session | null;
@@ -26,9 +27,9 @@ export const DashboardMainRentalItem = ({
   session,
 }: DashboardMainCarItemProps) => {
   const queryClient = useQueryClient();
-  const { data, isError, error } = useRentalGetAll({
-    token: session?.user.token,
-  });
+  const urlParams = useSearchParams()
+  console.log(urlParams.toString())
+  const { data, isError, error } = useRentalGetAll({ token: session?.user.token, params: urlParams?.toString()});
   const mutate = useRentalUpdate();
 
   if (isError) return <ErrorUi message={error?.message} />;

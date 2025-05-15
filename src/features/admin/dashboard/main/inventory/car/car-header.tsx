@@ -1,7 +1,10 @@
 "use client"
 
+import { SkeletonCarHeader } from "@/components/dashboard/skeleton/car/skeleton-car-header"
+import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useCarCategoryGetAll } from "@/hooks/car-category"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
@@ -9,12 +12,14 @@ import { RiFunctionAddFill } from "react-icons/ri"
 import { CARSEATS, CARSTATUS, CARYEAR } from "../../../../../../../types/car"
 
 const DEFAULTVALUE = {
+    category: "reset",
     seats: "reset",
     status: "reset",
     year: "reset"
 }
 
 interface SearchParams {
+    category: string
     seats: string
     status: string
     year: string
@@ -24,8 +29,10 @@ export const DashboardMainCarHeader = () => {
     const paramsRoute = useSearchParams()
     const pathname = usePathname()
     const router = useRouter()
+    const {data: dataCarCategory, isLoading, isError, error} = useCarCategoryGetAll()
 
     const actionParamsRoute = useMemo(() => ({
+        category: paramsRoute.get("category") || DEFAULTVALUE.category,
         seats: paramsRoute.get("seats") || DEFAULTVALUE.seats,
         status: paramsRoute.get("status") || DEFAULTVALUE.status,
         year: paramsRoute.get("year") || DEFAULTVALUE.year,
@@ -62,10 +69,25 @@ export const DashboardMainCarHeader = () => {
         router.push(pathname)
     } 
 
+    if(isLoading) return <SkeletonCarHeader />
+
+    if(isError) return <ErrorUi message={error.message} />
+
     const isParamsSeats: boolean = params.seats !== "reset" && !CARSEATS.includes(params.seats)
     return (
         <div className="flex items-center justify-between">
             <div className="w-2/3 flex items-center gap-3">
+                <Select onValueChange={(e) => handleParams("category", e)} value={params.category}>
+                    <SelectTrigger className="bg-white">
+                        <SelectValue placeholder="Car Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="reset">Car Category</SelectItem>
+                        {dataCarCategory.data?.map(carCategory => (
+                            <SelectItem key={carCategory.id} value={carCategory.id}>{carCategory.name}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
                 <Select onValueChange={(e) => handleParams("seats", e)} value={params.seats}>
                     <SelectTrigger className="bg-white">
                         <SelectValue placeholder="Seats" />

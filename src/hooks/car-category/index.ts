@@ -1,1 +1,1 @@
-export * from "@/hooks/car-category/useCategoryGetAll";
+export * from "@/hooks/car-category/useCarCategoryGetAll";
