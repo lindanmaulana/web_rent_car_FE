@@ -46,14 +46,15 @@ export const DashboardMainChart = () => {
     },
   ]);
 
-  const { data: dataRental } = useRentalGetAll({
+  const rentalGetAll = useRentalGetAll({
     token: session.data?.user.token,
   });
-  const { data: dataCar } = useCarGetAll({params: ''});
+
+  const carGetAll = useCarGetAll({params: ''});
 
   useEffect(() => {
-    const carChart = dataCar.map((car) => {
-      const rentalChart = dataRental.data.filter((rental: Rental) => {
+    const carChart = carGetAll.data.data.map((car) => {
+      const rentalChart = rentalGetAll.data.data.filter((rental: Rental) => {
         return rental.car_id === car.id;
       });
 
@@ -67,7 +68,7 @@ export const DashboardMainChart = () => {
     const sortDataCar = carChart.sort((a, b) => b.amount - a.amount);
 
     setChartRentalData(sortDataCar);
-  }, [dataCar, dataRental]);
+  }, [carGetAll.data, rentalGetAll.data]);
 
   return (
     <Card>

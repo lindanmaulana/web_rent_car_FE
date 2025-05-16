@@ -2,6 +2,8 @@
 
 import { ButtonLoading } from "@/components/button-loading";
 import { Crud } from "@/components/dashboard/crud";
+import { ErrorUi } from "@/components/feedbacks/error-ui";
+import { LoadingUi } from "@/components/feedbacks/loading-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -9,23 +11,24 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { useCarGetOne } from "@/hooks/car";
 import { cn } from "@/lib/utils";
 import { APIURLIMAGE } from "@/publicConfig";
 import {
   CarUpdateThumbnailSchema,
   TypeCarUpdateThumbnailSchema,
 } from "@/schemas/car";
-import { UtilsCarUpdate } from "@/utils/car";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsCarUpdate } from "@/utils/services/car";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ImagePlus } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Car } from "../../../../../../../../types/car";
 
 interface UpdateThumbnail {
   thumbnail: string;
@@ -33,18 +36,20 @@ interface UpdateThumbnail {
 }
 
 interface ThumbnailCarProps {
-  data: Car;
-  token?: string;
+  id: string;
 }
-export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
+export const ThumbnailCar = ({ id }: ThumbnailCarProps) => {
+  const session = useSession();
+  const carGetOne = useCarGetOne({ id });
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutation({
+
+  const mutation = useMutation({
     mutationKey: ["updateCarThumbnail"],
     mutationFn: (values: UpdateThumbnail) =>
       UtilsCarUpdate({
         data: { thumbnail: values.thumbnail },
-        id: data.id,
-        token,
+        id,
+        token: session.data?.user.token,
       }),
   });
 
@@ -53,7 +58,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
   });
 
   const handleForm = form.handleSubmit((values) => {
-    mutate(values, {
+    mutation.mutate(values, {
       onSuccess: (data) => {
         toast.success(data.message);
         queryClient.invalidateQueries({ queryKey: ["getOneCar"] });
@@ -66,17 +71,20 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
     });
   });
 
+  if (session.status === "loading" || carGetOne.isLoading) return <LoadingUi />;
+  if (carGetOne.isError) return <ErrorUi message={carGetOne.error?.message} />;
+  console.log({ carGetOne });
   return (
     <Crud title="Thumbnail" titleAction="Thumbnail Car">
       <div className="w-full space-y-4">
         <AspectRatio ratio={16 / 12}>
           <Image
             src={
-              data.thumbnail
-                ? `${APIURLIMAGE}${data.thumbnail}`
+              carGetOne.data.data.thumbnail
+                ? `${APIURLIMAGE}${carGetOne.data.data.thumbnail}`
                 : "/images/car-default.png"
             }
-            alt={data.model}
+            alt={carGetOne.data.data.model}
             className="w-full h-full rounded"
             width={120}
             height={120}
@@ -85,7 +93,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
         </AspectRatio>
 
         <div>
-          <h4 className="text-2xl">Image {data.model}</h4>
+          <h4 className="text-2xl">Image {carGetOne.data.data.model}</h4>
         </div>
 
         <Form {...form}>
@@ -97,7 +105,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
               className="w-full"
             >
               <CarouselContent className="w-full flex items-center">
-                {data.image?.map((car) => {
+                {carGetOne.data.data.image?.map((car) => {
                   const imgUrl = `${APIURLIMAGE}${car.url}`;
                   return (
                     <CarouselItem
@@ -146,7 +154,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
                 })}
                 <CarouselItem className="basis-1/4">
                   <Link
-                    href={`/dashboard/car-rental/add/image/${data.id}`}
+                    href={`/dashboard/car-rental/add/image/${carGetOne.data.data.id}`}
                     className="w-full"
                   >
                     <Card className="hover:bg-green-500 group flex items-center justify-center">
@@ -158,7 +166,7 @@ export const ThumbnailCar = ({ data, token }: ThumbnailCarProps) => {
                 </CarouselItem>
               </CarouselContent>
             </Carousel>
-            <ButtonLoading type="submit" isLoading={isPending}>
+            <ButtonLoading type="submit" isLoading={mutation.isPending}>
               Set thumbnail
             </ButtonLoading>
           </form>

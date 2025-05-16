@@ -24,8 +24,8 @@ import {
 import { useCarBrandGetAll } from "@/hooks/car-brand";
 import { useCarCategoryGetAll } from "@/hooks/car-category";
 import { CarCreateSchema, TypeCarCreateSchema } from "@/schemas/car";
-import { UtilsCarCreate } from "@/utils/car";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsCarCreate } from "@/utils/services/car";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -34,27 +34,17 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const CarRentalAdd = () => {
-  const { data: session, status } = useSession();
-  const {
-    data: categoryData,
-    isLoading: categoryLoading,
-    isError: categoryError,
-    error: categoryErrorMessage,
-  } = useCarCategoryGetAll();
-  const {
-    data: carBrandData,
-    isLoading: carBrandLoading,
-    isError: carBrandError,
-    error: carBrandErrorMessage,
-  } = useCarBrandGetAll();
+  const session = useSession();
   const router = useRouter();
+  const carCategory = useCarCategoryGetAll();
+  const carBrand = useCarBrandGetAll();
 
-  const loading = categoryLoading || carBrandLoading;
-  const error = categoryError || carBrandError;
+  const isLoading = carCategory.isLoading || carBrand.isLoading;
+  const isError = carCategory.isError || carBrand.isError;
 
-  const { mutate } = useMutation({
+  const mutation = useMutation({
     mutationKey: ["carAdd"],
-    mutationFn: (values) => UtilsCarCreate(values, session?.user.token),
+    mutationFn: (values) => UtilsCarCreate(values, session.data?.user.token),
   });
 
   const form = useForm<TypeCarCreateSchema>({
@@ -71,7 +61,7 @@ export const CarRentalAdd = () => {
   });
 
   const handleForm = form.handleSubmit((values: TypeCarCreateSchema) => {
-    mutate(values, {
+    mutation.mutate(values, {
       onSuccess: (data) => {
         toast.success(data.message);
         form.reset();
@@ -84,13 +74,11 @@ export const CarRentalAdd = () => {
     });
   });
 
-  if (status === "loading") return null;
-
-  if (loading) return <LoadingUi />;
-  if (error)
+  if (session.status === "loading" || isLoading) return <LoadingUi />;
+  if (isError)
     return (
       <ErrorUi
-        message={categoryErrorMessage?.message || carBrandErrorMessage?.message}
+        message={carCategory.error?.message || carBrand.error?.message}
       />
     );
 
@@ -130,7 +118,7 @@ export const CarRentalAdd = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              {categoryData.data?.map((category) => (
+                              {carCategory.data.data?.map((category) => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.id}
@@ -161,7 +149,7 @@ export const CarRentalAdd = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              {carBrandData.data?.map((carBrand) => (
+                              {carBrand.data.data?.map((carBrand) => (
                                 <SelectItem
                                   key={carBrand.id}
                                   value={carBrand.id}

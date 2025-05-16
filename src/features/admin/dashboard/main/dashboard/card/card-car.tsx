@@ -7,11 +7,11 @@ import { IoIosCar } from "react-icons/io";
 
 export const CardCar = () => {
     const [carAvailable, setCarAvailable] = useState<number>()
-    const {data} = useCarGetAll({params: {keyword: ''}})
+    const {data} = useCarGetAll({params: ""})
     const router = useRouter()
 
     useEffect(() => {
-        const carMapping = data.filter(car => car.status === "AVAILABLE")
+        const carMapping = data.data.filter(car => car.status === "AVAILABLE")
         setCarAvailable(carMapping.length)
     }, [data])
 
@@ -25,7 +25,7 @@ export const CardCar = () => {
             </span>
         </div>
         <div className="space-y-1">
-            <p className="text-3xl font-semibold">{data.length}</p>
+            <p className="text-3xl font-semibold">{data.data.length}</p>
             <p className="text-primary/60">{carAvailable} Available</p>
         </div>
       </CardContent>

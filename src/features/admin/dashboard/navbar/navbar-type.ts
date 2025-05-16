@@ -51,7 +51,7 @@ export const navbarListMainMenu: NavbarList[] = [
             id: 3,
             icon: FaAward,
             subTitle: "Brand",
-            subUrl: "/dashboard/inventory/brand"
+            subUrl: "/dashboard/inventory/car-brand"
         },
     ]
   },

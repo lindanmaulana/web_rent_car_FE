@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RegisterSchema, typeRegisterSchema } from "@/schemas/auth";
-import { UtilsAuth } from "@/utils/auth";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsAuth } from "@/utils/services/auth";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

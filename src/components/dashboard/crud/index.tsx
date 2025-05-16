@@ -6,10 +6,11 @@ interface CrudProps {
     title: string
     titleAction: string
     children: ReactNode
+    className?: string
 }
-export const Crud = ({title, titleAction, children}: CrudProps) => {
+export const Crud = ({title, titleAction, children, className}: CrudProps) => {
     return (
-        <div className="space-y-2">
+        <div className={`${className} space-y-2`}>
             <HeaderCrud title={title} titleAction={titleAction} />
             <ContentCrud>
                 {children}

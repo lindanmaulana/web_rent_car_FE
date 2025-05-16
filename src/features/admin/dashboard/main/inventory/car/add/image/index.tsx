@@ -7,8 +7,8 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImageAddSchema, TypeImageAddSchema } from "@/schemas/images";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
-import { UtilsImageCreate } from "@/utils/image";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
+import { UtilsImageCreate } from "@/utils/services/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { ImageUp, X } from "lucide-react";
@@ -30,7 +30,7 @@ export const CarRentalAddImage = ({ id, token }: CarRentalAddImageProps) => {
   const [preview, setPreview] = useState<string>("");
   const router = useRouter();
 
-  const { mutate, isPending } = useMutation({
+  const mutation = useMutation({
     mutationKey: ["createImage"],
     mutationFn: (values: AddImage) =>
       UtilsImageCreate({ file: values.image, id, token }),
@@ -41,9 +41,8 @@ export const CarRentalAddImage = ({ id, token }: CarRentalAddImageProps) => {
   });
 
   const handleForm = form.handleSubmit((values) => {
-    mutate(values, {
+    mutation.mutate(values, {
       onSuccess: (data) => {
-        console.log({ data });
         toast.success(data.message);
         router.back();
       },
@@ -121,7 +120,7 @@ export const CarRentalAddImage = ({ id, token }: CarRentalAddImageProps) => {
               </FormItem>
             )}
           />
-          <ButtonLoading type="submit" isLoading={isPending}>
+          <ButtonLoading type="submit" isLoading={mutation.isPending}>
             Add
           </ButtonLoading>
         </form>

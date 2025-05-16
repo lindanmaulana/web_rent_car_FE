@@ -1,6 +1,6 @@
 import { TypeCarCreateSchema, TypeCarUpdateSchema } from "@/schemas/car";
-import { axiosInstance, setToken } from "./axios-instance";
-import { UtilsErrorService } from "./errors";
+import { axiosInstance, setToken } from "../axios-instance";
+import { UtilsErrorService } from "../helpers/errors";
 
 export const UtilsCarCreate = async (
   data: TypeCarCreateSchema,
@@ -40,7 +40,7 @@ export const UtilsCarGetAll = async ({ params }: UtilsCarGetAllParams) => {
   try {
     const response = await axiosInstance.get(`/cars?${params}`);
 
-    return response.data.data;
+    return response.data;
   } catch (err) {
     throw new Error(UtilsErrorService(err));
   }
@@ -53,7 +53,7 @@ export const UtilsCarGetOne = async ({ id }: UtilsCarGetOneParams) => {
   try {
     const response = await axiosInstance.get(`/cars/${id}`);
 
-    return response.data.data;
+    return response.data;
   } catch (err) {
     throw new Error(UtilsErrorService(err));
   }
@@ -95,6 +95,6 @@ export const UtilsCarDelete = async ({ id, token }: UtilsCarDeleteParams) => {
 
     return response.data;
   } catch (err) {
-    throw new Error(UtilsErrorService(err))
+    throw new Error(UtilsErrorService(err));
   }
 };

@@ -23,6 +23,7 @@ export const CardRental = ({ session }: CardRentalProps) => {
 
     setRentalPending(rentalMapping.length);
   }, [data]);
+  
   return (
     <Card
       onClick={() => router.push("/dashboard/rental")}

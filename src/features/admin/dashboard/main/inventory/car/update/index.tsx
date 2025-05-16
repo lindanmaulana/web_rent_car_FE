@@ -2,6 +2,8 @@
 
 import { ButtonLoading } from "@/components/button-loading";
 import { Crud } from "@/components/dashboard/crud";
+import { ErrorUi } from "@/components/feedbacks/error-ui";
+import { LoadingUi } from "@/components/feedbacks/loading-ui";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,45 +21,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCarGetOne } from "@/hooks/car";
 import { CarUpdateSchema, TypeCarUpdateSchema } from "@/schemas/car";
-import { UtilsCarUpdate } from "@/utils/car";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsCarUpdate } from "@/utils/services/car";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { ImagePlus } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Car } from "../../../../../../../../types/car";
 
 interface CarRentalUpdateProps {
-  idCar: string;
-  dataCar: Car;
-  token?: string;
+  id: string;
 }
-export const CarRentalUpdate = ({
-  idCar,
-  dataCar,
-  token,
-}: CarRentalUpdateProps) => {
+export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
   const router = useRouter();
+  const session = useSession();
+  const carGetOne = useCarGetOne({ id });
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateCar"],
-    mutationFn: (values) => UtilsCarUpdate({ data: values, id: idCar, token }),
+    mutationFn: (data: TypeCarUpdateSchema) =>
+      UtilsCarUpdate({ data, id, token: session.data?.user.token }),
   });
 
   const form = useForm<TypeCarUpdateSchema>({
     resolver: zodResolver(CarUpdateSchema),
-    defaultValues: {
-      brand: dataCar.brand.name,
-      model: dataCar.model,
-      year: dataCar.year,
-      license_plate: dataCar.license_plate,
-      seats: dataCar.seats,
-      price_per_day: dataCar.price_per_day,
-      status: dataCar.status,
-    },
   });
 
   const handleForm = form.handleSubmit((values: TypeCarUpdateSchema) => {
@@ -73,6 +65,9 @@ export const CarRentalUpdate = ({
     });
   });
 
+  if (carGetOne.isLoading) return <LoadingUi />;
+  if (carGetOne.isError) return <ErrorUi message={carGetOne.error?.message} />;
+
   return (
     <Crud title="Car" titleAction="Update car">
       <Form {...form}>
@@ -85,7 +80,12 @@ export const CarRentalUpdate = ({
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="brand..." type="text" />
+                    <Input
+                      {...field}
+                      placeholder="brand..."
+                      type="text"
+                      defaultValue={carGetOne.data.data.brand.name}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +98,12 @@ export const CarRentalUpdate = ({
                 <FormItem>
                   <FormLabel>Model</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="model..." type="text" />
+                    <Input
+                      {...field}
+                      placeholder="model..."
+                      type="text"
+                      defaultValue={carGetOne.data.data.model}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,7 +116,12 @@ export const CarRentalUpdate = ({
                 <FormItem>
                   <FormLabel>Year</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="year..." type="text" />
+                    <Input
+                      {...field}
+                      placeholder="year..."
+                      type="text"
+                      defaultValue={carGetOne.data.data.year}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,6 +138,7 @@ export const CarRentalUpdate = ({
                       {...field}
                       placeholder="license plate..."
                       type="text"
+                      defaultValue={carGetOne.data.data.license_plate}
                     />
                   </FormControl>
                   <FormMessage />
@@ -142,7 +153,12 @@ export const CarRentalUpdate = ({
                   <FormItem>
                     <FormLabel>Seats</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="seats..." type="number" />
+                      <Input
+                        {...field}
+                        placeholder="seats..."
+                        type="number"
+                        defaultValue={carGetOne.data.data.seats}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,6 +174,7 @@ export const CarRentalUpdate = ({
                       <Select
                         value={field.value}
                         onValueChange={field.onChange}
+                        defaultValue={carGetOne.data.data.status}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select" />
@@ -177,7 +194,7 @@ export const CarRentalUpdate = ({
                 )}
               />
               <Button className="bg-green-500 self-end" asChild>
-                <Link href={`/dashboard/car-rental/add/image/${idCar}`}>
+                <Link href={`/dashboard/car-rental/add/image/${id}`}>
                   Add <ImagePlus />{" "}
                 </Link>
               </Button>
@@ -193,6 +210,7 @@ export const CarRentalUpdate = ({
                       {...field}
                       placeholder="price per day..."
                       type="number"
+                      defaultValue={carGetOne.data.data.price_per_day}
                     />
                   </FormControl>
                   <FormMessage />

@@ -1,21 +1,24 @@
-'use client'
+"use client";
 
-import { UtilsImageGetByIdCar } from "@/utils/image"
-import { useQuery } from "@tanstack/react-query"
+import { UtilsImageGetByIdCar } from "@/utils/services/image";
+import { useQuery } from "@tanstack/react-query";
 
 interface useImageGetByIdProps {
-    id: string
+  id: string;
 }
-export const useImageGetById = ({id}: useImageGetByIdProps, token?: string) => {
-    const {data, isLoading, isError, error} = useQuery({
-        queryKey: ["getById", id],
-        queryFn: () => UtilsImageGetByIdCar({id}, token)
-    })
+export const useImageGetById = (
+  { id }: useImageGetByIdProps,
+  token?: string
+) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getById", id],
+    queryFn: () => UtilsImageGetByIdCar({ id }, token),
+  });
 
-    return {
-        data,
-        isLoading,
-        isError,
-        error
-    }
-}
+  return {
+    data,
+    isLoading,
+    isError,
+    error,
+  };
+};

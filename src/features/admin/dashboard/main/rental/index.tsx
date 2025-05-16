@@ -1,9 +1,9 @@
 "use client"
 import { useSession } from "next-auth/react"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense } from "react"
 import { DashboardMainRentalHeader } from "./rental-header"
 import { DashboardMainRentalItem } from "./rental-item"
-import { toast } from "sonner"
+import { LoadingUi } from "@/components/feedbacks/loading-ui"
 
 export interface searchParamsRental {
     car_id: string
@@ -13,22 +13,12 @@ export interface searchParamsRental {
 }
 export const DashboardMainRental = () => {
     const session = useSession()
-    const [params, setParams] = useState<searchParamsRental>({
-        car_id: "",
-        start_date: "",
-        end_date: "",
-        status: ''
-    })
 
-    useEffect(() => {
-        if(session.status === "loading") toast.loading("Session loading")
-    
-        if(session.status === "unauthenticated") throw new Error("Session invalid please login again...")
-    }, [session.status])
+    if(session.status === "loading") return <LoadingUi />
 
     return (
         <div className="flex flex-col gap-4">
-            <DashboardMainRentalHeader params={params} setParams={setParams} />
+            <DashboardMainRentalHeader />
             <Suspense fallback={<p>Loading please waitt</p>}>
                 <DashboardMainRentalItem session={session.data} />
             </Suspense>

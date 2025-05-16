@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoginSchema, typeLoginSchema } from "@/schemas/auth";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

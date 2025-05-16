@@ -7,6 +7,7 @@ import debounce from "lodash.debounce"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import React, { useMemo } from "react"
+import { RiFunctionAddFill } from "react-icons/ri"
 
 const DEFAULTRENTALDATE = {
     start_date: "start_date",
@@ -85,7 +86,7 @@ export const DashboardMainRentalHeader = () => {
             </div>  
             <div>
                 <Button size="sm" asChild>
-                    <Link href="/dashboard/rental/add">Add</Link>
+                    <Link href="/dashboard/rental/add"><RiFunctionAddFill /> Add</Link>
                 </Button>
             </div>
         </div>

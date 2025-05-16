@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { signOut } from "next-auth/react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -19,7 +20,8 @@ const PageDashboardError = ({error}: PageDashboardErrorProps) => {
             <p className="max-w-78 text-sm text-center text-black/50">The page you are looking for does not exist or an unexpected error occurred</p>
             <div className="flex items-center gap-1">
                 <Button onClick={() => router.back()} size="sm" variant="link">Back</Button>
-                <Button onClick={() => router.replace("/dashboard")} size="sm" variant="ghost" className="bg-primary-blue text-white">Home</Button>
+                <Button onClick={() => router.refresh()} size="sm" variant="default">Refresh</Button>
+                <Button onClick={() => signOut()} size="sm" variant="ghost" className="bg-primary-blue text-white">Login</Button>
             </div>
         </div>
     )

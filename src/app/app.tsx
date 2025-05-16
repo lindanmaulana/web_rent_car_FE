@@ -1,5 +1,6 @@
 "use client"
 
+import { LoadingUi } from "@/components/feedbacks/loading-ui"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ROUTESAUTH } from "@/routes"
@@ -31,7 +32,10 @@ interface AppProps {
 const App = ({children}: AppProps) => {
     const {data, status} = useSession()
     const pathname = usePathname()
+
     if(status === "loading") return null
+
+    if(status === "unauthenticated") <LoadingUi />
 
     return (
         <QueryClientProvider client={queryClient}>

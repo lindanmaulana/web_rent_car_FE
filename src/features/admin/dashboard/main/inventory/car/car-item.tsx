@@ -6,8 +6,8 @@ import { ErrorUi } from "@/components/feedbacks/error-ui";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useCarGetAll } from "@/hooks/car";
 import { APIURLIMAGE } from "@/publicConfig";
-import { UtilsCarDelete } from "@/utils/car";
-import { UtilsErrorConsumeAPI } from "@/utils/errors";
+import { UtilsCarDelete } from "@/utils/services/car";
+import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Banknote,
@@ -26,8 +26,10 @@ import { Car } from "../../../../../../../types/car";
 interface DashboardMainCarItemProps {
   session: Session | null;
 }
-export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
-  const params = useSearchParams()
+export const DashboardMainCarItem = ({
+  session,
+}: DashboardMainCarItemProps) => {
+  const params = useSearchParams();
   const { data, isError } = useCarGetAll({ params: params.toString() });
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -63,11 +65,14 @@ export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
     <div className="w-full">
       <Table className="w-full bg-red-50">
         <TableBody>
-          {data.length > 0 ? (
-            data.map((car: Car) => {
+          {data.data.length > 0 ? (
+            data.data.map((car: Car) => {
               const CarThumbnail = `${APIURLIMAGE}${car.thumbnail}`;
               return (
-                <TableRow key={car.id} className="bg-white">
+                <TableRow
+                  key={car.id}
+                  className="odd:bg-gray-100 even:bg-white"
+                >
                   <TableCell>
                     <Link
                       href={`${pathname}/thumbnail/${car.id}`}
@@ -90,18 +95,20 @@ export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <span className="text-xs text-slate-blue">{car.brand.name}</span>
+                    <span className="text-xs text-slate-blue">
+                      {car.brand.name}
+                    </span>
                     <h5 className="text-xl font-semibold text-primary">
                       {car.model}
                     </h5>
                     <span
                       className={`${
                         car.status === "AVAILABLE"
-                          ? "bg-green-500"
-                          : car.status === "NONAVAILABLE"
-                          ? "bg-red-500"
-                          : "bg-gray-500"
-                      } text-white text-xs px-2 lowercase rounded`}
+                          ? "bg-green-200 text-green-700"
+                          : car.status === "UNAVAILABLE"
+                          ? "bg-red-200 text-red-700"
+                          : "bg-gray-200 text-gray-700"
+                      }  text-xs px-2 py-1 lowercase rounded-xl font-medium`}
                     >
                       {car.status}
                     </span>
@@ -159,8 +166,16 @@ export const DashboardMainCarItem = ({session}: DashboardMainCarItemProps) => {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <ButtonUpdate pathname={pathname} id={car.id}>Update</ButtonUpdate>
-                      <ButtonDelete id={car.id} onclick={() => handleDelete(car.id)} isLoading={isPending}>Delete</ButtonDelete>
+                      <ButtonUpdate pathname={pathname} id={car.id}>
+                        Update
+                      </ButtonUpdate>
+                      <ButtonDelete
+                        id={car.id}
+                        onclick={() => handleDelete(car.id)}
+                        isLoading={isPending}
+                      >
+                        Delete
+                      </ButtonDelete>
                     </div>
                   </TableCell>
                 </TableRow>

@@ -29,9 +29,6 @@ export default auth(async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    console.log({isLoggedIn})
-    console.log({token})
-
     if(isLoggedIn) {
         if(token) {
             if(Date.now() > token.exp! * 1000) {
@@ -61,6 +58,7 @@ export default auth(async function middleware(req: NextRequest) {
 
                 return response
             }
+            
         } else {
             return NextResponse.redirect(new URL("/auth/login", nextUrl))
         }
