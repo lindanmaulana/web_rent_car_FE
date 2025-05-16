@@ -1,1 +1,7 @@
 -> rental page
+
+{/* {wishlist?.id === id && wishlist.like ? (
+                    <IoMdHeart onClick={() => handleWishlist(id, false)} className="cursor-pointer size-5 z-10 text-red-500" />
+                ): (
+                    <IoMdHeartEmpty onClick={() => handleWishlist(id, true)} className="cursor-pointer size-5 z-10" />
+                )} */}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import App from "./app";
+import AuthSessionProvider from "./auth-session-provider";
 import "./globals.css";
-import SessionApp from "./sessionApp";
 
 
 export const metadata: Metadata = {
@@ -14,16 +13,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`antialiased`}
       >
-        <SessionApp>
-          <App>
-            {children}  
-          </App>
-        </SessionApp>
+        <AuthSessionProvider>
+          {children}  
+        </AuthSessionProvider>
       </body>
     </html>
   );

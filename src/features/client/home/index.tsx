@@ -1,4 +1,4 @@
-import { HomeCarRecomendation } from "./car-recomendation"
+import { HomeCarRecomendation } from "./car-rekomendation"
 import { HomeHeroBanner } from "./hero-banner"
 import { HomePopularCar } from "./popular-car"
 

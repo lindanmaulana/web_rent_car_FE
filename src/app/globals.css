@@ -8,7 +8,7 @@
   --color-white-blue: var(--color-white-blue);
   --color-primary-blue: var(--color-primary-blue);
   --color-sky: var(--color-sky);
-  --color-gray-bluish: var(--color-gray-bluish)
+  --color-gray-bluish: var(--color-gray-bluish);
 }
 
 @theme inline {
