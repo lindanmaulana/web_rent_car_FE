@@ -54,7 +54,7 @@ export const CarBrandUpdate = ({ id }: CarBrandUpdateProps) => {
       onSuccess: (data) => {
         toast.success(data.message);
         queryClient.invalidateQueries({ queryKey: ["carBrandGetAll"] });
-        router.replace("/dashboard/inventory/car-brand");
+        router.back();
       },
 
       onError: (err) => {

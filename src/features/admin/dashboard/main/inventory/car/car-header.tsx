@@ -69,14 +69,17 @@ export const DashboardMainCarHeader = () => {
         router.push(pathname)
     } 
 
-    if(isLoading) return <SkeletonCarHeader />
+    const isParamsSeats: boolean = params.seats !== "reset" && !CARSEATS.includes(params.seats)
+    const resetAction: boolean = paramsRoute.toString().endsWith("limit")
 
+    if(isLoading) return <SkeletonCarHeader />
     if(isError) return <ErrorUi message={error.message} />
 
-    const isParamsSeats: boolean = params.seats !== "reset" && !CARSEATS.includes(params.seats)
     return (
         <div className="flex items-center justify-between">
-            <div className="w-2/3 flex items-center gap-3">
+            <h2 className="text-2xl font-semibold">Car List</h2>
+            <div className="flex items-center gap-3">
+                {resetAction && <Button size="sm" variant="destructive" className="text-sm rounded" onClick={handleResetParams}>Reset</Button>}
                 <Select onValueChange={(e) => handleParams("category", e)} value={params.category}>
                     <SelectTrigger className="bg-white">
                         <SelectValue placeholder="Car Category" />
@@ -123,9 +126,6 @@ export const DashboardMainCarHeader = () => {
                         ))}
                     </SelectContent>
                 </Select>
-                <Button size="sm" variant="destructive" className="text-sm rounded" onClick={handleResetParams}>Reset</Button>
-            </div>
-            <div>
                 <Button size="sm" asChild>
                     <Link href="/dashboard/inventory/car/add" className="flex items-center gap-2"><RiFunctionAddFill /> Add</Link>
                 </Button>

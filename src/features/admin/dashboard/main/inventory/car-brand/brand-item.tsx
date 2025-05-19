@@ -19,6 +19,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { HiPencilSquare } from "react-icons/hi2";
+import { FaTrash } from "react-icons/fa";
 
 export const DashboardMainCarBrandItem = () => {
   const carBrandGetAll = useCarBrandGetAll();
@@ -77,14 +79,14 @@ export const DashboardMainCarBrandItem = () => {
               <TableCell>
                 <div className="flex items-center justify-end gap-x-3">
                   <ButtonUpdate pathname={pathname} id={brand.id}>
-                    Update
+                    <HiPencilSquare />
                   </ButtonUpdate>
                   <ButtonDelete
                     id={brand.id}
                     isLoading={mutation.isPending}
                     onclick={() => handleDelete(brand.id, brand.name)}
                   >
-                    Delete
+                    <FaTrash />
                   </ButtonDelete>
                 </div>
               </TableCell>

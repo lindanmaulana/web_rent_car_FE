@@ -19,6 +19,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { FaTrash } from "react-icons/fa";
+import { HiPencilSquare } from "react-icons/hi2";
 
 export const DashboardMainCategoryItem = () => {
   const { data: session, status } = useSession();
@@ -84,7 +86,7 @@ export const DashboardMainCategoryItem = () => {
               <TableCell>
                 <div className="flex items-center justify-end gap-x-3">
                   <ButtonUpdate pathname={pathname} id={category.id}>
-                    Update
+                    <HiPencilSquare />
                   </ButtonUpdate>
                   <Button
                     size="sm"
@@ -92,7 +94,7 @@ export const DashboardMainCategoryItem = () => {
                     onClick={() => handleDelete(category.id, category.name)}
                     className="text-xs"
                   >
-                    Delete
+                    <FaTrash />
                   </Button>
                 </div>
               </TableCell>

@@ -70,6 +70,8 @@ export const DashboardMainChart = () => {
     setChartRentalData(sortDataCar);
   }, [carGetAll.data, rentalGetAll.data]);
 
+  console.log({chartRentalData})
+  console.log({carGetAll})
   return (
     <Card>
       <CardHeader>
@@ -111,7 +113,7 @@ export const DashboardMainChart = () => {
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
           The unit with the highest rental this month is the{" "}
-          {chartRentalData[0].brand} <TrendingUp className="h-4 w-4" />
+          {/* {chartRentalData[0].brand} <TrendingUp className="h-4 w-4" /> */}
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total cars for rent

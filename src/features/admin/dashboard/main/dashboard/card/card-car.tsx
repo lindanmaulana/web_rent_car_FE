@@ -1,19 +1,15 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCarGetAll } from "@/hooks/car";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IoIosCar } from "react-icons/io";
 
 export const CardCar = () => {
-    const [carAvailable, setCarAvailable] = useState<number>()
-    const {data} = useCarGetAll({params: ""})
+    const urlParams = useSearchParams()
+
+    const {data} = useCarGetAll({params: urlParams.toString()})
     const router = useRouter()
 
-    useEffect(() => {
-        const carMapping = data.data.filter(car => car.status === "AVAILABLE")
-        setCarAvailable(carMapping.length)
-    }, [data])
 
   return (
     <Card onClick={() => router.push("/dashboard/car-rental")} className="bg-white rounded-md min-h-26 cursor-pointer">
@@ -25,8 +21,7 @@ export const CardCar = () => {
             </span>
         </div>
         <div className="space-y-1">
-            <p className="text-3xl font-semibold">{data.data.length}</p>
-            <p className="text-primary/60">{carAvailable} Available</p>
+            <p className="text-3xl font-semibold">{data.pagination?.totalItems}</p>
         </div>
       </CardContent>
     </Card>

@@ -2,8 +2,8 @@
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/"
-export const DEFAULT_ADMIN_REDIRECT = "/dashboard"
+export const DEFAULT_LOGIN_REDIRECT = "/?page=1&limit2"
+export const DEFAULT_ADMIN_REDIRECT = "/dashboard?page=1&limit=2"
 
 /**
  * An array of routes that are accesible to the public

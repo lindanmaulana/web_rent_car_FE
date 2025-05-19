@@ -65,7 +65,7 @@ export const CarRentalAdd = () => {
       onSuccess: (data) => {
         toast.success(data.message);
         form.reset();
-        router.replace("/dashboard/inventory/car");
+        router.back();
       },
 
       onError: (err) => {
@@ -92,7 +92,7 @@ export const CarRentalAdd = () => {
                 control={form.control}
                 name="model"
                 render={({ field }) => (
-                  <FormItem className="w-full">
+                  <FormItem className="w-2/3">
                     <FormLabel>Model</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="model..." type="text" />
@@ -101,7 +101,7 @@ export const CarRentalAdd = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex items-center gap-x-4">
+              <div className="w-1/3 flex items-center justify-end gap-x-4">
                 <FormField
                   control={form.control}
                   name="car_category_id"

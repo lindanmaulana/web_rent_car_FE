@@ -1,3 +1,15 @@
+export interface pagination {
+    currentPage: number
+    perPage: number
+    totalItems: number
+    totalPages: number
+    hashNextPage: boolean
+    hashPrevPage: boolean
+    nextPage: number | null
+    prevPage: number | null
+}
+
+
 export interface queryResponse<T> {
     data: {
         data: T
@@ -9,7 +21,8 @@ export interface queryResponse<T> {
 
 export interface queryResponses<T> {
     data: {
-        data: T[]
+        data: T[],
+        pagination?: pagination
     }
     isLoading?: boolean
     isError: boolean

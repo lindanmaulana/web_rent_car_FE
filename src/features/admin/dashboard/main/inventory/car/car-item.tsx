@@ -3,11 +3,12 @@
 import { ButtonDelete } from "@/components/buttons/button-delete";
 import { ButtonUpdate } from "@/components/buttons/button-update";
 import { ErrorUi } from "@/components/feedbacks/error-ui";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useCarGetAll } from "@/hooks/car";
 import { APIURLIMAGE } from "@/publicConfig";
-import { UtilsCarDelete } from "@/utils/services/car";
 import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
+import { UtilsCarDelete } from "@/utils/services/car";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Banknote,
@@ -20,27 +21,29 @@ import {
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FaAngleLeft, FaAngleRight, FaTrash } from "react-icons/fa";
+import { HiPencilSquare } from "react-icons/hi2";
 import { toast } from "sonner";
 import { Car } from "../../../../../../../types/car";
+import { Button } from "@/components/ui/button";
+
 interface DashboardMainCarItemProps {
   session: Session | null;
 }
-export const DashboardMainCarItem = ({
-  session,
-}: DashboardMainCarItemProps) => {
+export const DashboardMainCarItem = ({ session, }: DashboardMainCarItemProps) => {
   const params = useSearchParams();
-  const { data, isError } = useCarGetAll({ params: params.toString() });
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const router = useRouter()
+
+  const { data, isError } = useCarGetAll({ params: params.toString() });
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["deleteCar"],
     mutationFn: (id: string) =>
       UtilsCarDelete({ id, token: session?.user.token }),
   });
-
-  if (isError) return <ErrorUi />;
 
   const handleDelete = (id: string) => {
     toast("Confirmation delete this car ?", {
@@ -61,10 +64,24 @@ export const DashboardMainCarItem = ({
     });
   };
 
+  const totalPages = data.pagination?.totalPages ?? 1
+  const currentPage = data.pagination?.currentPage ?? 1
+  const paginationPages = Array.from({length: totalPages}, (_, i) => i + 1)
+
+  const handlePagination = (page: number) => {
+    const urlParams = new URLSearchParams(window.location.search)
+    
+    urlParams.set("page", page.toString())
+
+    router.replace(`${pathname}?${urlParams.toString()}`)
+  }
+
+  if (isError) return <ErrorUi />;
+
   return (
-    <div className="w-full">
+    <div className="w-full min-h-[340px] flex flex-col gap-4 justify-between">
       <Table className="w-full bg-red-50">
-        <TableBody>
+        <TableBody className="h-full">
           {data.data.length > 0 ? (
             data.data.map((car: Car) => {
               const CarThumbnail = `${APIURLIMAGE}${car.thumbnail}`;
@@ -74,10 +91,7 @@ export const DashboardMainCarItem = ({
                   className="odd:bg-gray-100 even:bg-white"
                 >
                   <TableCell>
-                    <Link
-                      href={`${pathname}/thumbnail/${car.id}`}
-                      className="relative"
-                    >
+                    <Link href={`${pathname}/thumbnail/${car.id}`} className="relative" >
                       <Image
                         src={
                           car.thumbnail
@@ -167,14 +181,14 @@ export const DashboardMainCarItem = ({
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <ButtonUpdate pathname={pathname} id={car.id}>
-                        Update
+                        <HiPencilSquare />
                       </ButtonUpdate>
                       <ButtonDelete
                         id={car.id}
                         onclick={() => handleDelete(car.id)}
                         isLoading={isPending}
                       >
-                        Delete
+                        <FaTrash />
                       </ButtonDelete>
                     </div>
                   </TableCell>
@@ -200,6 +214,24 @@ export const DashboardMainCarItem = ({
           )}
         </TableBody>
       </Table>
+
+      <Pagination className="flex items-center justify-end">
+        <PaginationContent>
+          <PaginationItem>
+            <Button variant={"ghost"} className="cursor-pointer" onClick={() => handlePagination(currentPage - 1)} disabled={!data.pagination?.hashPrevPage}><FaAngleLeft /></Button>
+          </PaginationItem>
+
+          {paginationPages.map(page => (
+            <PaginationItem key={page}>
+              <PaginationLink onClick={() => handlePagination(page)} isActive={currentPage === page} className="cursor-pointer">{page}</PaginationLink>
+            </PaginationItem>
+          ))}
+
+          <PaginationItem>
+            <Button variant={"ghost"} className="cursor-pointer" onClick={() => handlePagination(currentPage + 1)} disabled={!data.pagination?.hashNextPage}><FaAngleRight /></Button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };
