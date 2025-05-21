@@ -12,7 +12,7 @@ export const CardCar = () => {
 
 
   return (
-    <Card onClick={() => router.push("/dashboard/car-rental")} className="bg-white rounded-md min-h-26 cursor-pointer">
+    <Card onClick={() => router.push(`/dashboard/inventory/car?${urlParams.toString()}`)} className="bg-white rounded-md min-h-26 cursor-pointer">
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
             <h4 className="text-xl font-medium">Car</h4>

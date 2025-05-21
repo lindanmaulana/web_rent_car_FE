@@ -22,15 +22,16 @@ import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const CarCategoryAdd = () => {
   const { data, status } = useSession();
   const router = useRouter();
+  const urlParams = useSearchParams()
 
-  const { mutate, isPending } = useMutation({
+  const mutation = useMutation({
     mutationKey: ["carCategoryCreate"],
     mutationFn: (value: TypeCarCategoryAddSchema) =>
       UtilsCarCategory.create({ data: value, token: data?.user.token }),
@@ -45,11 +46,11 @@ export const CarCategoryAdd = () => {
   });
 
   const handleForm = form.handleSubmit((value: TypeCarCategoryAddSchema) => {
-    mutate(value, {
+    mutation.mutate(value, {
       onSuccess: (data) => {
         toast.success(data.message);
         form.reset();
-        router.replace("/dashboard/inventory/car-category");
+        router.replace(`/dashboard/inventory/car-category?${urlParams.toString()}`);
       },
 
       onError: (err) => {
@@ -92,7 +93,7 @@ export const CarCategoryAdd = () => {
               )}
             />
           </div>
-          <ButtonLoading type="submit" isLoading={isPending}>
+          <ButtonLoading type="submit" isLoading={mutation.isPending}>
             Submit
           </ButtonLoading>
         </form>

@@ -33,9 +33,9 @@ interface CarCategoryUpdateProps {
 }
 export const CarCategoryUpdate = ({ id }: CarCategoryUpdateProps) => {
   const session = useSession();
-  const carCategoryGetOne = useCarCategoryGetOne(id);
-  const queryClient = useQueryClient();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const carCategoryGetOne = useCarCategoryGetOne(id);
 
   const form = useForm<TypeCarCategoryUpdateSchema>({
     resolver: zodResolver(CarCategorySchema.UPDATE),
@@ -72,6 +72,7 @@ export const CarCategoryUpdate = ({ id }: CarCategoryUpdateProps) => {
 
   if (carCategoryGetOne.isError)
     return <ErrorUi message={carCategoryGetOne.error.message} />;
+  
   return (
     <Crud title="Car Category" titleAction="Update">
       <Form {...form}>

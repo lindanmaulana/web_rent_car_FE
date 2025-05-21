@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import { BsCalendar3 } from "react-icons/bs"
 import { IoMdHeart } from "react-icons/io"
 import { IoPeople } from "react-icons/io5"
@@ -16,11 +17,11 @@ interface CardCar {
     price: string
 }
 export const CardCar = (props: CardCar) => {
-    const { model, category, image, year, seats, price} = props
-
+    const {id ,model, category, image, year, seats, price} = props
     return (
-         <article className="h-97 flex flex-col justify-between bg-white p-6 rounded">
-            <div className="flex items-start justify-between">
+         <article className="h-97 hover:shadow transition-all duration-300 ease-linear">
+            <Link href={`/car/detail/${id}`} className="h-full flex flex-col justify-between bg-white p-6 rounded">
+                <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-y-px">
                     <h3 className="text-xl font-bold">{model}</h3>
                     <strong className="text-sm text-black/30 font-medium">{category}</strong>
@@ -43,6 +44,7 @@ export const CardCar = (props: CardCar) => {
                 </div>
             </div>
             </div>
+            </Link>
         </article>
     )
 }

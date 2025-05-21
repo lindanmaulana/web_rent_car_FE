@@ -73,7 +73,7 @@ export const ThumbnailCar = ({ id }: ThumbnailCarProps) => {
 
   if (session.status === "loading" || carGetOne.isLoading) return <LoadingUi />;
   if (carGetOne.isError) return <ErrorUi message={carGetOne.error?.message} />;
-  console.log({ carGetOne });
+  
   return (
     <Crud title="Thumbnail" titleAction="Thumbnail Car">
       <div className="w-full space-y-4">
@@ -154,7 +154,7 @@ export const ThumbnailCar = ({ id }: ThumbnailCarProps) => {
                 })}
                 <CarouselItem className="basis-1/4">
                   <Link
-                    href={`/dashboard/car-rental/add/image/${carGetOne.data.data.id}`}
+                    href={`/dashboard/inventory/car/add/image/${carGetOne.data.data.id}`}
                     className="w-full"
                   >
                     <Card className="hover:bg-green-500 group flex items-center justify-center">

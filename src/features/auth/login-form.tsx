@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { alert } from "../../../types/alert";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -47,7 +48,7 @@ export const LoginForm = () => {
     mutate(values, {
       onSuccess: () => {
         toast.success("Login successfully");
-        router.push("/");
+        router.replace(DEFAULT_LOGIN_REDIRECT);
       },
 
       onError: (err) => {

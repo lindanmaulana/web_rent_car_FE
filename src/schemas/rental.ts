@@ -4,7 +4,7 @@ export class RentalSchema {
         car_id: z.string().min(1, "Car ID is required"),
         start_date: z.string(),
         end_date: z.string(),
-        total_price: z.string(),
+        total_day: z.number().positive().min(1)
     })
 
     static readonly UPDATE: ZodType = z.object({
@@ -16,11 +16,12 @@ export class RentalSchema {
     })
 }
 
+export type TypeRentalCreateSchema = z.infer<typeof RentalSchema.CREATE>
 export type TypeRentalUpdateSchema = z.infer<typeof RentalSchema.UPDATE>
 
-// car_id?: string
-// start_date?: Date
-// end_date?: Date
-// status?: RentalStatus
-// total_day?: number
-// total_price?: Decimal
+    // car_id: string
+    // start_date: Date
+    // end_date: Date
+    // total_day: number
+    // total_price: Decimal
+    // status: RentalStatus

@@ -5,10 +5,12 @@ export interface Car {
     category: {
         id: string
         name: string
+        description: string
     }
     brand: {
         id: string
         name: string
+        country: string
     }
     model: string
     year: number

@@ -6,13 +6,16 @@ import { useCarGetAll } from "@/hooks/car"
 import { CardCar } from "../../components/card-car"
 import { APIURLIMAGE } from "@/publicConfig"
 import { UtilsFormatCurrency } from "@/utils/helpers/formatCurrency"
+import { useSearchParams } from "next/navigation"
 
 const HomeCarRecomendationCardItem = () => {
-    const carGetAll = useCarGetAll({params: ""})
+    const urlParams = useSearchParams()
+    const carGetAll = useCarGetAll({params: urlParams.toString()})
 
     if(carGetAll.isLoading) return <LoadingUi />
     if(carGetAll.isError) return <ErrorUi message={carGetAll.error?.message} />
     
+    console.log({carGetAll})
     return (
         <>
             {carGetAll.data?.data.map(car => {

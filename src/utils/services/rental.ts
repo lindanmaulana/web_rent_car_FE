@@ -1,11 +1,35 @@
-import { TypeRentalUpdateSchema } from "@/schemas/rental";
+import { TypeRentalCreateSchema, TypeRentalUpdateSchema } from "@/schemas/rental";
 import { axiosInstance, setToken } from "../axios-instance";
 import { UtilsErrorService } from "../helpers/errors";
+
+export interface RentalCreateParams {
+  token?: string
+  data?: TypeRentalCreateSchema
+}
 
 export interface RentalGetAllParams {
   params?: string;
   token?: string;
 }
+
+export interface RentalUpdateParams {
+  token?: string;
+  id: string;
+  data: TypeRentalUpdateSchema;
+}
+
+export const UtilsRentalCreate = async ({token, data}: RentalCreateParams) => {
+  if(token) setToken(token)
+
+  try {
+    const response = await axiosInstance.post("/rentals", data)
+
+    return response.data
+  } catch (err) {
+    throw new Error(UtilsErrorService(err))
+  }
+}
+
 export const UtilsRentalGetAll = async ({
   token,
   params,
@@ -21,11 +45,7 @@ export const UtilsRentalGetAll = async ({
   }
 };
 
-export interface RentalUpdateParams {
-  token?: string;
-  id: string;
-  data: TypeRentalUpdateSchema;
-}
+
 export const UtilsRentalUpdate = async ({
   id,
   token,
