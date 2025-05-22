@@ -1,10 +1,10 @@
 import { z, ZodType } from "zod";
 export class RentalSchema {
     static readonly CREATE: ZodType = z.object({
-        car_id: z.string().min(1, "Car ID is required"),
-        start_date: z.string(),
-        end_date: z.string(),
-        total_day: z.number().positive().min(1)
+        car_id: z.string().min(1),
+        start_date: z.date(),
+        end_date: z.date(),
+        total_day: z.string()
     })
 
     static readonly UPDATE: ZodType = z.object({

@@ -3,13 +3,15 @@
 import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { LoadingUi } from "@/components/feedbacks/loading-ui"
 import { Button } from "@/components/ui/button"
+import { BASECLIENT, BASECLIENTCARRENTAL } from "@/const/route"
 import { useCarGetOne } from "@/hooks/car"
 import { APIURLIMAGE } from "@/publicConfig"
 import { UtilsFormatCurrency } from "@/utils/helpers/formatCurrency"
 import clsx from "clsx"
 import { LucideStepBack } from "lucide-react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { Car } from "../../../../types/car"
 
@@ -19,9 +21,12 @@ interface CarDetailProps {
 
 export const CarDetail = ({id}: CarDetailProps) => {
     const dataCar = useCarGetOne({id})
-    const router = useRouter()
-
+    const urlParams = useSearchParams()
     const [preview, setPreview] = useState<string>()
+    
+    const handlePreview = (url: string) => {
+        setPreview(url)
+    }
 
     if(dataCar.isLoading) return <LoadingUi />
     if(dataCar.isError) return <ErrorUi message={dataCar.error?.message} />
@@ -30,15 +35,11 @@ export const CarDetail = ({id}: CarDetailProps) => {
     const pricePerDay = UtilsFormatCurrency(Number(data.price_per_day))
     const previewDefault = preview ? preview : data.thumbnail
 
-    const handlePreview = (url: string) => {
-        setPreview(url)
-    }
-
-    console.log({preview})
-
     return (
         <div className="space-y-4">
-            <Button onClick={() => router.back()} size={"sm"} variant={"outline"} className="text-sm"><LucideStepBack /> Back</Button>
+            <Button size={"sm"} variant={"outline"} className="text-sm" asChild>
+                <Link href={`${BASECLIENT}?${urlParams.toString()}`}><LucideStepBack /> Back</Link>
+            </Button>
             <div className="grid grid-cols-2 gap-10">
                 <div className="flex flex-col gap-3">
                     <figure className="aspect-video bg-white p-4 rounded-md overflow-hidden">
@@ -85,7 +86,9 @@ export const CarDetail = ({id}: CarDetailProps) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold tracking-wider">Rp{pricePerDay}/<span className="text-sm text-black/50">days</span></h2>
-                        <Button size={"lg"} className="bg-primary-blue rounded">Rent Now</Button>
+                        <Button size={"lg"} className="bg-primary-blue rounded" asChild>
+                            <Link href={`${BASECLIENTCARRENTAL}/${id}?${urlParams.toString()}`}>Rent Now</Link>
+                        </Button>
                     </div>
                 </div>
             </div>

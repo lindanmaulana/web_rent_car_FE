@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { HomeCarRecomendationCardItemDynamic } from "@/features/client/home/car-rekomendation/dynamic-car.item"
 import { LucideChevronsRight } from "lucide-react"
 import Link from "next/link"
+import { HomeCarRecomendationCardItemDynamic } from "./components/car-rekomendation/dynamic-car.item"
 
 export const HomeCarRecomendation = () => {
     

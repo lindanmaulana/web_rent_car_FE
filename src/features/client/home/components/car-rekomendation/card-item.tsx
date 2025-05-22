@@ -2,8 +2,8 @@
 
 import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { LoadingUi } from "@/components/feedbacks/loading-ui"
+import { CardCar } from "@/features/client/components/card-car"
 import { useCarGetAll } from "@/hooks/car"
-import { CardCar } from "../../components/card-car"
 import { APIURLIMAGE } from "@/publicConfig"
 import { UtilsFormatCurrency } from "@/utils/helpers/formatCurrency"
 import { useSearchParams } from "next/navigation"
@@ -15,7 +15,6 @@ const HomeCarRecomendationCardItem = () => {
     if(carGetAll.isLoading) return <LoadingUi />
     if(carGetAll.isError) return <ErrorUi message={carGetAll.error?.message} />
     
-    console.log({carGetAll})
     return (
         <>
             {carGetAll.data?.data.map(car => {
