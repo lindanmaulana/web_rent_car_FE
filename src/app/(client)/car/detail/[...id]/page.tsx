@@ -11,7 +11,7 @@ const PageCarDetail = async ({params}: Props) => {
     const {id} = params
 
     return (
-        <section className="py-26">
+        <section className="py-5">
             <div className="container max-w-6xl mx-auto">
                 <CarDetail id={id} />
             </div>

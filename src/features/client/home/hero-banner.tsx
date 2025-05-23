@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export const HomeHeroBanner = () => {
     return (
-        <section className="w-full h-screen">
+        <section className="w-full h-[468px] py-10">
             <div className="container max-w-6xl h-full mx-auto">
                 <div className="w-full h-full grid grid-cols-2 gap-8 place-content-center">
                     <article className="relative bg-sky rounded-[10px] p-6 h-[360px] flex flex-col gap-4 items-start">

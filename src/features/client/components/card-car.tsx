@@ -22,8 +22,8 @@ export const CardCar = (props: CardCar) => {
     const urlParams = useSearchParams()
 
     return (
-         <article className="h-97 hover:shadow transition-all duration-300 ease-linear">
-            <Link href={`/car/detail/${id}?${urlParams.toString()}`} className="h-full flex flex-col justify-between bg-white p-6 rounded">
+         <article className="h-86 hover:shadow-md shadow-primary-blue/30 transition-all duration-300 ease-linear overflow-hidden rounded-lg">
+            <Link href={`/car/detail/${id}?${urlParams.toString()}`} className="h-full flex flex-col justify-between bg-white-blue p-6">
                 <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-y-px">
                     <h3 className="text-xl font-bold">{model}</h3>

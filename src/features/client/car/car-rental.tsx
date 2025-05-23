@@ -103,7 +103,7 @@ export const CarRental = ({id}: CarRentalProps) => {
     const dataCar = carGetOne.data.data
     const subTotalIDR = UtilsFormatCurrency(subTotal)
     return (
-        <div className="min-h-screen w-full flex items-center justify-center pt-16">
+        <div className="min-h-screen w-full flex items-center justify-center">
             <Form {...form}>
                 <form onSubmit={handleForm} className="w-full space-y-6">
                    <div className="flex gap-8">

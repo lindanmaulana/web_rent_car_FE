@@ -9,7 +9,7 @@ const PageCarRental = async ({params}: Props) => {
     const {id} = await params
 
     return (
-        <section className="py-10">
+        <section className="py-5">
             <div className="container max-w-6xl mx-auto">
                 <CarRental id={id[0]} />
             </div>

@@ -15,7 +15,7 @@ export const Header = () => {
     
     if(session.status === "loading") return <LoadingUi />
     return (
-        <header className="w-full flex items-center justify-between p-6 shadow-sm fixed top-0 bg-white z-50">
+        <header className="w-full flex items-center justify-between p-6 shadow-sm sticky top-0 bg-white z-50">
             <div className="w-1/2 flex items-center gap-10">
                 <h3 className="text-3xl">Morent</h3>
                 <div className="relative w-full">
