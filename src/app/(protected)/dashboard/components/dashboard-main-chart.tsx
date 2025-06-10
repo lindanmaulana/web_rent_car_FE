@@ -1,32 +1,18 @@
-"use client";
+'use client';
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { useRentalGetAll } from "@/hooks/rental";
-import { useSession } from "next-auth/react";
-import { useCarGetAll } from "@/hooks/car";
-import { useEffect, useState } from "react";
-import { Rental } from "../../../../../../../types/rental";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { useCarGetAll } from '@/hooks/car';
+import { useRentalGetAll } from '@/hooks/rental';
+import { Session } from 'next-auth';
+import { useEffect, useState } from 'react';
+import { Rental } from '../../../../../types/rental';
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    label: 'Desktop',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
 
@@ -36,21 +22,23 @@ interface chartRental {
   amount: number;
 }
 
-export const DashboardMainChart = () => {
-  const session = useSession();
+interface DashboardMainChartProps {
+  session: Session | null;
+}
+export const DashboardMainChart = ({ session }: DashboardMainChartProps) => {
   const [chartRentalData, setChartRentalData] = useState<chartRental[]>([
     {
-      brand: "",
-      model: "",
+      brand: '',
+      model: '',
       amount: 0,
     },
   ]);
 
   const rentalGetAll = useRentalGetAll({
-    token: session.data?.user.token,
+    token: session?.user.token,
   });
 
-  const carGetAll = useCarGetAll({params: ''});
+  const carGetAll = useCarGetAll({ params: '' });
 
   useEffect(() => {
     const carChart = carGetAll.data.data.map((car) => {
@@ -70,8 +58,6 @@ export const DashboardMainChart = () => {
     setChartRentalData(sortDataCar);
   }, [carGetAll.data, rentalGetAll.data]);
 
-  console.log({chartRentalData})
-  console.log({carGetAll})
   return (
     <Card>
       <CardHeader>
@@ -88,36 +74,20 @@ export const DashboardMainChart = () => {
             }}
           >
             <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="model"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <XAxis dataKey="model" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value} />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Bar dataKey="amount" fill="var(--color-desktop)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
+              <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
             </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          The unit with the highest rental this month is the{" "}
+          The unit with the highest rental this month is the{' '}
           {/* {chartRentalData[0].brand} <TrendingUp className="h-4 w-4" /> */}
         </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total cars for rent
-        </div>
+        <div className="leading-none text-muted-foreground">Showing total cars for rent</div>
       </CardFooter>
     </Card>
   );

@@ -1,32 +1,22 @@
-"use client";
+'use client';
 
-import { ButtonLoading } from "@/components/button-loading";
-import { Crud } from "@/components/dashboard/crud";
-import { ErrorUi } from "@/components/feedbacks/error-ui";
-import { LoadingUi } from "@/components/feedbacks/loading-ui";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useCarCategoryGetOne } from "@/hooks/car-category";
-import {
-  CarCategorySchema,
-  TypeCarCategoryUpdateSchema,
-} from "@/schemas/car-category";
-import { UtilsCarCategory } from "@/utils/services/car-category";
-import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { ButtonLoading } from '@/components/button-loading';
+import { Crud } from '@/components/dashboard/layout/crud';
+import { ErrorUi } from '@/components/feedbacks/error-ui';
+import { LoadingUi } from '@/components/feedbacks/loading-ui';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useCarCategoryGetOne } from '@/hooks/car-category';
+import { CarCategorySchema, TypeCarCategoryUpdateSchema } from '@/schemas/car-category';
+import { UtilsCarCategory } from '@/utils/services/car-category';
+import { UtilsErrorConsumeAPI } from '@/utils/helpers/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 interface CarCategoryUpdateProps {
   id: string;
@@ -46,33 +36,28 @@ export const CarCategoryUpdate = ({ id }: CarCategoryUpdateProps) => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["carCategoryUpdate"],
-    mutationFn: (data: TypeCarCategoryUpdateSchema) =>
-      UtilsCarCategory.update({ id, token: session.data?.user.token, data }),
+    mutationKey: ['carCategoryUpdate'],
+    mutationFn: (data: TypeCarCategoryUpdateSchema) => UtilsCarCategory.update({ id, token: session.data?.user.token, data }),
   });
 
-  const handleSubmit = form.handleSubmit(
-    (values: TypeCarCategoryUpdateSchema) => {
-      mutate(values, {
-        onSuccess: (data) => {
-          toast.success(data.message);
-          queryClient.invalidateQueries({ queryKey: ["carCategoryGetAll"] });
-          router.replace("/dashboard/inventory/car-category");
-        },
+  const handleSubmit = form.handleSubmit((values: TypeCarCategoryUpdateSchema) => {
+    mutate(values, {
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ['carCategoryGetAll'] });
+        router.replace('/dashboard/inventory/car-category');
+      },
 
-        onError: (err) => {
-          toast.error(UtilsErrorConsumeAPI(err));
-        },
-      });
-    }
-  );
+      onError: (err) => {
+        toast.error(UtilsErrorConsumeAPI(err));
+      },
+    });
+  });
 
-  if (session.status === "loading" || carCategoryGetOne.isLoading)
-    return <LoadingUi />;
+  if (session.status === 'loading' || carCategoryGetOne.isLoading) return <LoadingUi />;
 
-  if (carCategoryGetOne.isError)
-    return <ErrorUi message={carCategoryGetOne.error.message} />;
-  
+  if (carCategoryGetOne.isError) return <ErrorUi message={carCategoryGetOne.error.message} />;
+
   return (
     <Crud title="Car Category" titleAction="Update">
       <Form {...form}>

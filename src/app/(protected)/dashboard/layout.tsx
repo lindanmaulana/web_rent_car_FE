@@ -1,18 +1,27 @@
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { AlertConfirmation } from "@/components/alert-confirmation";
 import { Navbar } from "@/features/admin/dashboard/navbar";
 import { ChartNoAxesGantt } from "lucide-react";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 interface PageDashboardLayoutProps {
   children: ReactNode;
 }
 
-const PageDashboardLayout = ({ children }: PageDashboardLayoutProps) => {
+const PageDashboardLayout = async ({ children }: PageDashboardLayoutProps) => {
+  const session = await auth()
+
+  if(!session) {
+    redirect("/auth/login")
+  }
+
   const handleLogout = async () => {
     "use server";
     await signOut({ redirectTo: "/auth/login" });
   };
+
+
   return (
     <div className="w-full flex h-screen overflow-hidden pt-22">
       <Navbar>

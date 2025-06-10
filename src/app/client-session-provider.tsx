@@ -23,13 +23,13 @@ const queryClient = new QueryClient({
 
 interface ClientSessionProviderProps {
     children: ReactNode
-    session: Session | null
+    // session: Session | null
 }
-const ClientSessionProvider = ({children, session}: ClientSessionProviderProps) => {
+const ClientSessionProvider = ({children}: ClientSessionProviderProps) => {
     const pathname = usePathname()
 
     return (
-        <SessionProvider session={session} refetchOnWindowFocus={false}>
+        <SessionProvider refetchOnWindowFocus={false}>
             <QueryClientProvider client={queryClient}>
                 <Toaster richColors position="top-center" />
                 <div className="min-h-screen flex flex-col bg-white-blue">

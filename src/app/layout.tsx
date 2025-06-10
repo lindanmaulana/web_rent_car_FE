@@ -13,15 +13,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body
         className={`antialiased`}
       >
-        <AuthSessionProvider>
-          {children}  
-        </AuthSessionProvider>
+          <AuthSessionProvider>
+            {children}  
+          </AuthSessionProvider>
       </body>
     </html>
   );

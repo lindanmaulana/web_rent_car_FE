@@ -112,6 +112,7 @@ export default {
   pages: {
     signIn: "/auth/login",
   },
+  
 } satisfies NextAuthConfig;
 
 const serviceAuthCredentials = async (credentials: typeLoginSchema) => {

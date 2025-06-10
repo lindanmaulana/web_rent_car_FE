@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth/login-form"
+import { LoginForm } from "@/app/auth/login/components/login-form"
 
 const PageAuthLogin = async () => {
     return (

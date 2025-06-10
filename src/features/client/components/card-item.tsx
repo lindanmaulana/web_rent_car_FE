@@ -8,7 +8,7 @@ import { APIURLIMAGE } from "@/publicConfig"
 import { UtilsFormatCurrency } from "@/utils/helpers/formatCurrency"
 import { useSearchParams } from "next/navigation"
 
-const HomeCarRecomendationCardItem = () => {
+const CarCarList = () => {
     const urlParams = useSearchParams()
     const carGetAll = useCarGetAll({params: urlParams.toString()})
 
@@ -27,4 +27,4 @@ const HomeCarRecomendationCardItem = () => {
     )
 }
 
-export default HomeCarRecomendationCardItem
+export default CarCarList

@@ -6,10 +6,8 @@ import { IoIosCar } from "react-icons/io";
 
 export const CardCar = () => {
     const urlParams = useSearchParams()
-
     const {data} = useCarGetAll({params: urlParams.toString()})
     const router = useRouter()
-
 
   return (
     <Card onClick={() => router.push(`/dashboard/inventory/car?${urlParams.toString()}`)} className="bg-white rounded-md min-h-26 cursor-pointer">

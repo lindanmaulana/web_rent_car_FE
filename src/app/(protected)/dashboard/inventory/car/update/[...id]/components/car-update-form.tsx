@@ -1,51 +1,36 @@
-"use client";
+'use client';
 
-import { ButtonLoading } from "@/components/button-loading";
-import { Crud } from "@/components/dashboard/crud";
-import { ErrorUi } from "@/components/feedbacks/error-ui";
-import { LoadingUi } from "@/components/feedbacks/loading-ui";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useCarGetOne } from "@/hooks/car";
-import { CarUpdateSchema, TypeCarUpdateSchema } from "@/schemas/car";
-import { UtilsCarUpdate } from "@/utils/services/car";
-import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { ImagePlus } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { ButtonLoading } from '@/components/button-loading';
+import { ErrorUi } from '@/components/feedbacks/error-ui';
+import { LoadingUi } from '@/components/feedbacks/loading-ui';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useCarGetOne } from '@/hooks/car';
+import { CarUpdateSchema, TypeCarUpdateSchema } from '@/schemas/car';
+import { UtilsErrorConsumeAPI } from '@/utils/helpers/errors';
+import { UtilsCarUpdate } from '@/utils/services/car';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { ImagePlus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
-interface CarRentalUpdateProps {
+interface CarUpdateFormProps {
   id: string;
 }
-export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
+export const CarUpdateForm = ({ id }: CarUpdateFormProps) => {
   const router = useRouter();
   const session = useSession();
   const carGetOne = useCarGetOne({ id });
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["updateCar"],
-    mutationFn: (data: TypeCarUpdateSchema) =>
-      UtilsCarUpdate({ data, id, token: session.data?.user.token }),
+    mutationKey: ['updateCar'],
+    mutationFn: (data: TypeCarUpdateSchema) => UtilsCarUpdate({ data, id, token: session.data?.user.token }),
   });
 
   const form = useForm<TypeCarUpdateSchema>({
@@ -69,7 +54,6 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
   if (carGetOne.isError) return <ErrorUi message={carGetOne.error?.message} />;
 
   return (
-    <Crud title="Car" titleAction="Update car">
       <Form {...form}>
         <form onSubmit={handleForm} className="space-y-6">
           <div className="space-y-4">
@@ -80,12 +64,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="brand..."
-                      type="text"
-                      defaultValue={carGetOne.data.data.brand.name}
-                    />
+                    <Input {...field} placeholder="brand..." type="text" defaultValue={carGetOne.data.data.brand.name} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,12 +77,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                 <FormItem>
                   <FormLabel>Model</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="model..."
-                      type="text"
-                      defaultValue={carGetOne.data.data.model}
-                    />
+                    <Input {...field} placeholder="model..." type="text" defaultValue={carGetOne.data.data.model} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,12 +90,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                 <FormItem>
                   <FormLabel>Year</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="year..."
-                      type="text"
-                      defaultValue={carGetOne.data.data.year}
-                    />
+                    <Input {...field} placeholder="year..." type="text" defaultValue={carGetOne.data.data.year} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,12 +103,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                 <FormItem>
                   <FormLabel>License Plate</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="license plate..."
-                      type="text"
-                      defaultValue={carGetOne.data.data.license_plate}
-                    />
+                    <Input {...field} placeholder="license plate..." type="text" defaultValue={carGetOne.data.data.license_plate} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,12 +117,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                   <FormItem>
                     <FormLabel>Seats</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="seats..."
-                        type="number"
-                        defaultValue={carGetOne.data.data.seats}
-                      />
+                      <Input {...field} placeholder="seats..." type="number" defaultValue={carGetOne.data.data.seats} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -171,22 +130,14 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        defaultValue={carGetOne.data.data.status}
-                      >
+                      <Select value={field.value} onValueChange={field.onChange} defaultValue={carGetOne.data.data.status}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="AVAILABLE">Available</SelectItem>
-                          <SelectItem value="UNAVAILABLE">
-                            Unavailable
-                          </SelectItem>
-                          <SelectItem value="MAINTENANCE">
-                            Maintenance
-                          </SelectItem>
+                          <SelectItem value="UNAVAILABLE">Unavailable</SelectItem>
+                          <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -195,7 +146,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
               />
               <Button className="bg-green-500 self-end" asChild>
                 <Link href={`/dashboard/car-rental/add/image/${id}`}>
-                  Add <ImagePlus />{" "}
+                  Add <ImagePlus />{' '}
                 </Link>
               </Button>
             </div>
@@ -206,12 +157,7 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
                 <FormItem>
                   <FormLabel>Price Per Day</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="price per day..."
-                      type="number"
-                      defaultValue={carGetOne.data.data.price_per_day}
-                    />
+                    <Input {...field} placeholder="price per day..." type="number" defaultValue={carGetOne.data.data.price_per_day} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -223,6 +169,5 @@ export const CarRentalUpdate = ({ id }: CarRentalUpdateProps) => {
           </ButtonLoading>
         </form>
       </Form>
-    </Crud>
   );
 };

@@ -18,6 +18,10 @@ export interface RentalUpdateParams {
   data: TypeRentalUpdateSchema;
 }
 
+export interface RentalGetOneParams {
+  id: string
+}
+
 export const UtilsRentalCreate = async ({token, data}: RentalCreateParams) => {
   if(token) setToken(token)
 
@@ -61,3 +65,14 @@ export const UtilsRentalUpdate = async ({
     throw new Error(UtilsErrorService(err));
   }
 };
+
+
+export const UtilsRentalGetOne = async ({id}: RentalGetOneParams) => {
+  try {
+    const response = await axiosInstance.get(`/rentals/${id}`)
+
+    return response.data
+  } catch (err) {
+    throw new Error(UtilsErrorService(err))
+  }
+}

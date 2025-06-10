@@ -20,7 +20,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -37,6 +37,7 @@ interface CarRentalProps {
 export const CarRental = ({id}: CarRentalProps) => {
     const session = useSession()
     const urlParams = useSearchParams()
+    const router = useRouter()
     const carGetOne = useCarGetOne({id})
     
     const [date, setDate] = useState<dateRental>()
@@ -68,6 +69,8 @@ export const CarRental = ({id}: CarRentalProps) => {
         createRental.mutate(newRental, {
             onSuccess: (data) => {
                 toast.success(data.message)
+
+                router.replace(`/transaction/${data.data.id}`)
             },
 
             onError: (err) => {

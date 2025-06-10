@@ -1,47 +1,36 @@
-"use client";
+'use client';
 
-import { ButtonLoading } from "@/components/button-loading";
-import { Crud } from "@/components/dashboard/crud";
-import { LoadingUi } from "@/components/feedbacks/loading-ui";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  CarCategorySchema,
-  TypeCarCategoryAddSchema,
-} from "@/schemas/car-category";
-import { UtilsCarCategory } from "@/utils/services/car-category";
-import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { ButtonLoading } from '@/components/button-loading';
+import { Crud } from '@/components/dashboard/layout/crud';
+import { LoadingUi } from '@/components/feedbacks/loading-ui';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { CarCategorySchema, TypeCarCategoryAddSchema } from '@/schemas/car-category';
+import { UtilsCarCategory } from '@/utils/services/car-category';
+import { UtilsErrorConsumeAPI } from '@/utils/helpers/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 export const CarCategoryAdd = () => {
   const { data, status } = useSession();
   const router = useRouter();
-  const urlParams = useSearchParams()
+  const urlParams = useSearchParams();
 
   const mutation = useMutation({
-    mutationKey: ["carCategoryCreate"],
-    mutationFn: (value: TypeCarCategoryAddSchema) =>
-      UtilsCarCategory.create({ data: value, token: data?.user.token }),
+    mutationKey: ['carCategoryCreate'],
+    mutationFn: (value: TypeCarCategoryAddSchema) => UtilsCarCategory.create({ data: value, token: data?.user.token }),
   });
 
   const form = useForm<TypeCarCategoryAddSchema>({
     resolver: zodResolver(CarCategorySchema.CREATE),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
     },
   });
 
@@ -59,7 +48,7 @@ export const CarCategoryAdd = () => {
     });
   });
 
-  if (status === "loading") return <LoadingUi />;
+  if (status === 'loading') return <LoadingUi />;
   return (
     <Crud title="Car Category" titleAction="Add ">
       <Form {...form}>

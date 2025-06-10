@@ -9,6 +9,7 @@ import { FaUserClock } from "react-icons/fa";
 interface CardRentalProps {
   session: Session | null;
 }
+
 export const CardRental = ({ session }: CardRentalProps) => {
   const { data } = useRentalGetAll({ token: session?.user.token });
   const router = useRouter();

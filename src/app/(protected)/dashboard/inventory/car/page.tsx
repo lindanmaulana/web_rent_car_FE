@@ -1,7 +1,13 @@
-import { DashboardMainCar } from "@/features/admin/dashboard/main/inventory/car";
+import { CarMain } from "./components/car-main";
+import { CarHeader } from "./components/car-header";
 
 const PageDashboardInventoryCar = () => {
-  return <DashboardMainCar />;
+  return (
+      <div className="flex flex-col gap-4">
+        <CarHeader />
+        <CarMain />
+      </div>
+  )
 };
 
 export default PageDashboardInventoryCar;

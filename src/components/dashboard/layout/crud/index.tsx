@@ -15,6 +15,6 @@ export const Crud = ({title, titleAction, children, className}: CrudProps) => {
             <ContentCrud>
                 {children}
             </ContentCrud>
-    </div>
+        </div>
     )
 }

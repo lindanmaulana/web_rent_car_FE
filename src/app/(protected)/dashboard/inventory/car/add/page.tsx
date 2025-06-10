@@ -1,7 +1,9 @@
-import { CarRentalAdd } from "@/features/admin/dashboard/main/inventory/car/add";
+import { CarAddForm } from "./components/car-add-form";
 
 const PageDashboardCarRentalAdd = () => {
-  return <CarRentalAdd />;
+  return (
+      <CarAddForm />
+  );
 };
 
 export default PageDashboardCarRentalAdd;

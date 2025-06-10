@@ -1,0 +1,19 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { LucideChevronsRight } from "lucide-react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+
+export const HomeCarRecomendationHeader = () => {
+    const urlParams = useSearchParams()
+
+    return (
+        <div className="flex items-center justify-between">
+            <h2 className="text-gray-bluish text-[16px] font-semibold text-left">Recomendation Car</h2>
+            <Button className="max-w-26 bg-primary-blue" size={"sm"}  asChild>
+                    <Link href={`/car?${urlParams.toString()}`} className="w-full flex items-center justify-end text-xs">Read More <LucideChevronsRight className="self-center" /></Link>
+            </Button>
+        </div>
+    )
+}

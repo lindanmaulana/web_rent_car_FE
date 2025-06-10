@@ -1,23 +1,27 @@
 "use client"
 
+import { ROUTESPREFIXADMIN } from "@/routes"
+import clsx from "clsx"
 import { Search, Settings2 } from "lucide-react"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
 import { FaHeart } from "react-icons/fa"
 import { IoIosNotifications } from "react-icons/io"
 import { MdSettings } from "react-icons/md"
-import { LoadingUi } from "./feedbacks/loading-ui"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 
 export const Header = () => {
     const session = useSession()
-    
-    if(session.status === "loading") return <LoadingUi />
+    const urlParams = useSearchParams()
+    const pathname = usePathname()
+
     return (
-        <header className="w-full flex items-center justify-between p-6 shadow-sm sticky top-0 bg-white z-50">
+        <header className={clsx(`w-full flex items-center justify-between p-6 shadow-sm top-0 bg-white z-50`, pathname.startsWith(ROUTESPREFIXADMIN) ? "fixed" : "sticky")}>
             <div className="w-1/2 flex items-center gap-10">
-                <h3 className="text-3xl">Morent</h3>
+                <Link href={`/?page=${urlParams.get("page")?.toString()}&limit=${urlParams.get("limit")?.toString()}`} className="text-3xl">Morent</Link>
                 <div className="relative w-full">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" />
                     <Input placeholder="Search something here" type="text" className="px-10 rounded-full" />

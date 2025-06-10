@@ -8,17 +8,17 @@ export const HomeWhyChooseUs = () => {
                     <article className="flex flex-col items-center justify-center gap-1 bg-white rounded py-3">
                         <MapPinned size={52} />
                         <h2 className="text-lg font-semibold">Availability</h2>
-                        <p className="max-w-1/2 text-center text-sm">Service is ready whenever you need it.</p>
+                        <p className="max-w-1/2 text-center text-sm text-primary/50">Service is ready whenever you need it.</p>
                     </article>
                     <article className="flex flex-col items-center justify-center gap-1 bg-white rounded py-3">
                         <Car size={52} />
                         <h2 className="text-lg font-semibold">Availability</h2>
-                        <p className="max-w-1/2 text-center text-sm">Service is ready whenever you need it.</p>
+                        <p className="max-w-1/2 text-center text-sm text-primary/50">Service is ready whenever you need it.</p>
                     </article>
                     <article className="flex flex-col items-center justify-center gap-1 bg-white rounded py-3">
                         <Wallet size={52} />
                         <h2 className="text-lg font-semibold">Availability</h2>
-                        <p className="max-w-1/2 text-center text-sm">Service is ready whenever you need it.</p>
+                        <p className="max-w-1/2 text-center text-sm text-primary/50">Service is ready whenever you need it.</p>
                     </article>
                 </article>
             </div>

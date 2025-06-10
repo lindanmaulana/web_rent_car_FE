@@ -1,6 +1,5 @@
 'use client';
 
-import { Crud } from '@/components/dashboard/layout/crud';
 import { ErrorUi } from '@/components/feedbacks/error-ui';
 import { LoadingUi } from '@/components/feedbacks/loading-ui';
 import { Button } from '@/components/ui/button';
@@ -10,8 +9,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useCarBrandGetAll } from '@/hooks/car-brand';
 import { useCarCategoryGetAll } from '@/hooks/car-category';
 import { CarCreateSchema, TypeCarCreateSchema } from '@/schemas/car';
-import { UtilsCarCreate } from '@/utils/services/car';
 import { UtilsErrorConsumeAPI } from '@/utils/helpers/errors';
+import { UtilsCarCreate } from '@/utils/services/car';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -19,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export const CarRentalAdd = () => {
+export const CarAddForm = () => {
   const session = useSession();
   const router = useRouter();
   const carCategory = useCarCategoryGetAll();
@@ -64,7 +63,6 @@ export const CarRentalAdd = () => {
   if (isError) return <ErrorUi message={carCategory.error?.message || carBrand.error?.message} />;
 
   return (
-    <Crud title="Car" titleAction="New Car">
       <Form {...form}>
         <form onSubmit={handleForm} className="space-y-6">
           <div className="space-y-4">
@@ -191,6 +189,5 @@ export const CarRentalAdd = () => {
           <Button type="submit">Create</Button>
         </form>
       </Form>
-    </Crud>
   );
 };

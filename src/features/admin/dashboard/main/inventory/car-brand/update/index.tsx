@@ -1,29 +1,22 @@
-"use client";
+'use client';
 
-import { ButtonLoading } from "@/components/button-loading";
-import { Crud } from "@/components/dashboard/crud";
-import { ErrorUi } from "@/components/feedbacks/error-ui";
-import { LoadingUi } from "@/components/feedbacks/loading-ui";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useCarBrandGetOne } from "@/hooks/car-brand/useCarBrandGetone";
-import { CarBrandSchema, TypeCarBrandSchemaUpdate } from "@/schemas/car-brand";
-import { UtilsCarBrand } from "@/utils/services/car-brand";
-import { UtilsErrorConsumeAPI } from "@/utils/helpers/errors";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { ButtonLoading } from '@/components/button-loading';
+import { Crud } from '@/components/dashboard/layout/crud';
+import { ErrorUi } from '@/components/feedbacks/error-ui';
+import { LoadingUi } from '@/components/feedbacks/loading-ui';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useCarBrandGetOne } from '@/hooks/car-brand/useCarBrandGetone';
+import { CarBrandSchema, TypeCarBrandSchemaUpdate } from '@/schemas/car-brand';
+import { UtilsCarBrand } from '@/utils/services/car-brand';
+import { UtilsErrorConsumeAPI } from '@/utils/helpers/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 interface CarBrandUpdateProps {
   id: string;
@@ -44,16 +37,15 @@ export const CarBrandUpdate = ({ id }: CarBrandUpdateProps) => {
   });
 
   const mutation = useMutation({
-    mutationKey: ["carBrandUpdate"],
-    mutationFn: (data: TypeCarBrandSchemaUpdate) =>
-      UtilsCarBrand.update({ token: session.data?.user.token, id, data }),
+    mutationKey: ['carBrandUpdate'],
+    mutationFn: (data: TypeCarBrandSchemaUpdate) => UtilsCarBrand.update({ token: session.data?.user.token, id, data }),
   });
 
   const handleSubmit = form.handleSubmit((values: TypeCarBrandSchemaUpdate) => {
     mutation.mutate(values, {
       onSuccess: (data) => {
         toast.success(data.message);
-        queryClient.invalidateQueries({ queryKey: ["carBrandGetAll"] });
+        queryClient.invalidateQueries({ queryKey: ['carBrandGetAll'] });
         router.back();
       },
 
@@ -77,12 +69,7 @@ export const CarBrandUpdate = ({ id }: CarBrandUpdateProps) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder="Name example..."
-                      defaultValue={carBrandGetOne.data.data.name}
-                    />
+                    <Input {...field} type="text" placeholder="Name example..." defaultValue={carBrandGetOne.data.data.name} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,11 +82,7 @@ export const CarBrandUpdate = ({ id }: CarBrandUpdateProps) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Name example..."
-                      defaultValue={carBrandGetOne.data.data.country}
-                    />
+                    <Textarea {...field} placeholder="Name example..." defaultValue={carBrandGetOne.data.data.country} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

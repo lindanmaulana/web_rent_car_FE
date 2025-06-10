@@ -25,7 +25,7 @@ interface SearchParams {
     year: string
 }
 
-export const DashboardMainCarHeader = () => {
+export const CarHeader = () => {
     const paramsRoute = useSearchParams()
     const pathname = usePathname()
     const router = useRouter()

@@ -1,9 +1,9 @@
-const PageCar = () => {
+import { CarPage } from "@/features/client/car"
+
+const Car = () => {
     return (
-        <div>
-            
-        </div>
+        <CarPage />
     )
 }
 
-export default PageCar
+export default Car

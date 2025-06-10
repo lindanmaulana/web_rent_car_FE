@@ -1,16 +1,17 @@
-'use client';
-import { LoadingUi } from '@/components/feedbacks/loading-ui';
-import { useSession } from 'next-auth/react';
-import { Suspense } from 'react';
-import { DashboardMainCard } from './components/dashboard-main-card';
-import { DashboardMainChart } from './components/dashboard-main-chart';
+"use client"
 
-const PageDashboard = () => {
-  const session = useSession();
+import { LoadingUi } from "@/components/feedbacks/loading-ui";
+import { useSession } from "next-auth/react";
+import { Suspense } from "react";
+import { DashboardMainCard } from "./dashboard-main-card";
+import { DashboardMainChart } from "./dashboard-main-chart";
 
-  if (session.status !== 'authenticated') return <LoadingUi />;
+export const DashboardMain = () => {
+    const session = useSession()
+
+    if(session.status === "unauthenticated") return <LoadingUi />
   return (
-    <div className="space-y-8">
+    <>
       <div className="w-full bg-primary-blue min-h-[180px] rounded px-5 relative">
         <h2 className="text-3xl text-white tracking-widest py-10">Rent LinmId</h2>
         <Suspense fallback={<p>Loading...</p>}>
@@ -22,8 +23,6 @@ const PageDashboard = () => {
           <DashboardMainChart session={session.data} />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
-
-export default PageDashboard;

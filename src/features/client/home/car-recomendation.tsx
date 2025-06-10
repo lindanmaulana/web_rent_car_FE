@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { LucideChevronsRight } from "lucide-react"
-import Link from "next/link"
-import { HomeCarRecomendationCardItemDynamic } from "./components/car-rekomendation/dynamic-car.item"
+import { HomeCarRecomendationHeader } from "@/features/client/home/components/car-rekomendation/header"
+import { DynamicCardCar } from "@/features/client/components/dynamic-card-car.item"
 
 export const HomeCarRecomendation = () => {
     
@@ -9,14 +7,9 @@ export const HomeCarRecomendation = () => {
         <section className="w-full py-8 bg-white">
             <div className="container max-w-6xl mx-auto">
                 <div className="space-y-5">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-gray-bluish text-[16px] font-semibold text-left">Recomendation Car</h2>
-                        <Button className="max-w-26 bg-primary-blue" size={"sm"}  asChild>
-                                <Link href={"/car"} className="w-full flex items-center justify-end text-xs">Read More <LucideChevronsRight className="self-center" /></Link>
-                        </Button>
-                    </div>
+                    <HomeCarRecomendationHeader />
                     <div className="grid grid-cols-4 gap-4">
-                        <HomeCarRecomendationCardItemDynamic />
+                        <DynamicCardCar />
                     </div>
                 </div>
             </div>
