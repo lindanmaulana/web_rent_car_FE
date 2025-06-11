@@ -32,7 +32,7 @@ const ClientSessionProvider = ({children}: ClientSessionProviderProps) => {
         <SessionProvider refetchOnWindowFocus={false}>
             <QueryClientProvider client={queryClient}>
                 <Toaster richColors position="top-center" />
-                <div className="min-h-screen flex flex-col bg-white-blue">
+                {/* <div className="min-h-screen flex flex-col bg-white-blue">
                     {!ROUTESAUTH.includes(pathname) && (
                         <Header />
                     )}
@@ -42,10 +42,30 @@ const ClientSessionProvider = ({children}: ClientSessionProviderProps) => {
                     {!pathname.startsWith(ROUTESPREFIXADMIN) && !ROUTESAUTH.includes(pathname) && (
                         <Footer />
                     )}
-                </div>
+                </div> */}
+                <section>
+                    {children}
+                </section>
             </QueryClientProvider>
         </SessionProvider>
     )
 }
 
 export default ClientSessionProvider
+
+//  <SessionProvider refetchOnWindowFocus={false}>
+//             <QueryClientProvider client={queryClient}>
+//                 <Toaster richColors position="top-center" />
+//                 <div className="min-h-screen flex flex-col bg-white-blue">
+//                     {!ROUTESAUTH.includes(pathname) && (
+//                         <Header />
+//                     )}
+//                     <main className="flex-1">
+//                         {children}
+//                     </main>
+//                     {!pathname.startsWith(ROUTESPREFIXADMIN) && !ROUTESAUTH.includes(pathname) && (
+//                         <Footer />
+//                     )}
+//                 </div>
+//             </QueryClientProvider>
+//         </SessionProvider>

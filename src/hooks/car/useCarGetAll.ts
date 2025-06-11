@@ -7,31 +7,31 @@ interface useCarGetAllProps {
   params?: string;
 }
 
-export const useCarGetAll = ({
-  params,
-}: useCarGetAllProps): queryResponses<Car> => {
-  const { data, isError } = useSuspenseQuery({
-    queryKey: ["getAllCar", params],
-    queryFn: () => UtilsCarGetAll({ params }),
-  });
-
-  return {
-    data,
-    isError,
-  };
-};
-
-
-// export const useCarGetAll = ({params}: useCarGetAllProps): queryResponses<Car> => {
-//   const {data, isLoading, isError, error} = useQuery({
+// export const useCarGetAll = ({
+//   params,
+// }: useCarGetAllProps): queryResponses<Car> => {
+//   const { data, isError } = useSuspenseQuery({
 //     queryKey: ["getAllCar", params],
-//     queryFn: () => UtilsCarGetAll({params})
-//   })
+//     queryFn: () => UtilsCarGetAll({ params }),
+//   });
 
 //   return {
 //     data,
-//     isLoading,
 //     isError,
-//     error
-//   }
-// }
+//   };
+// };
+
+
+export const useCarGetAll = ({params}: useCarGetAllProps): queryResponses<Car> => {
+  const {data, isLoading, isError, error} = useQuery({
+    queryKey: ["getAllCar", params],
+    queryFn: () => UtilsCarGetAll({params})
+  })
+
+  return {
+    data,
+    isLoading,
+    isError,
+    error
+  }
+}

@@ -1,7 +1,9 @@
+import { LoadingUi } from "@/components/feedbacks/loading-ui"
+
 const PageDashboardCarRentalLoading = () => {
     return (
         <div>
-            <h2>Loading please waitt....</h2>
+            <LoadingUi />
         </div>
     )
 }

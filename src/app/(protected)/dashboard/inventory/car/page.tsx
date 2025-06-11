@@ -1,11 +1,15 @@
-import { CarMain } from "./components/car-main";
-import { CarHeader } from "./components/car-header";
+import { getSession } from "@/actions/getSession";
+import { CarHeader } from "@/app/(protected)/dashboard/inventory/car/_components/car-header";
+import { CarList } from "@/app/(protected)/dashboard/inventory/car/_components/car-list";
 
-const PageDashboardInventoryCar = () => {
+const PageDashboardInventoryCar = async () => {
+  const session = await getSession()
+
+  const token = session.user.token
   return (
       <div className="flex flex-col gap-4">
         <CarHeader />
-        <CarMain />
+        <CarList token={token} />
       </div>
   )
 };

@@ -19,7 +19,7 @@ export const Header = () => {
     const pathname = usePathname()
 
     return (
-        <header className={clsx(`w-full flex items-center justify-between p-6 shadow-sm top-0 bg-white z-50`, pathname.startsWith(ROUTESPREFIXADMIN) ? "fixed" : "sticky")}>
+        <header className={`w-full flex items-center justify-between p-6 shadow-sm top-0 bg-white z-50`}>
             <div className="w-1/2 flex items-center gap-10">
                 <Link href={`/?page=${urlParams.get("page")?.toString()}&limit=${urlParams.get("limit")?.toString()}`} className="text-3xl">Morent</Link>
                 <div className="relative w-full">

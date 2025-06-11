@@ -1,4 +1,4 @@
-import { CarAddForm } from "./components/car-add-form";
+import { CarAddForm } from "./_components/car-add-form";
 
 const PageDashboardCarRentalAdd = () => {
   return (

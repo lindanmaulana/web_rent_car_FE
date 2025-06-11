@@ -1,27 +1,15 @@
-'use client';
-import { LoadingUi } from '@/components/feedbacks/loading-ui';
-import { useSession } from 'next-auth/react';
-import { Suspense } from 'react';
-import { DashboardMainCard } from './components/dashboard-main-card';
-import { DashboardMainChart } from './components/dashboard-main-chart';
+import { getSession } from '@/actions/getSession';
+import { DashboardMain } from '@/app/(protected)/dashboard/_components/dashboard-main';
+const PageDashboard = async () => {
+  const session = await getSession()
 
-const PageDashboard = () => {
-  const session = useSession();
+  const token = session.user.token
 
-  if (session.status !== 'authenticated') return <LoadingUi />;
+  console.log({session})
+
   return (
-    <div className="space-y-8">
-      <div className="w-full bg-primary-blue min-h-[180px] rounded px-5 relative">
-        <h2 className="text-3xl text-white tracking-widest py-10">Rent LinmId</h2>
-        <Suspense fallback={<p>Loading...</p>}>
-          <DashboardMainCard session={session.data} />
-        </Suspense>
-      </div>
-      <div className="py-20 grid grid-cols-2">
-        <Suspense fallback={<p>Loading..</p>}>
-          <DashboardMainChart session={session.data} />
-        </Suspense>
-      </div>
+    <div className="w-full space-y-8">
+      <DashboardMain token={token} />
     </div>
   );
 };

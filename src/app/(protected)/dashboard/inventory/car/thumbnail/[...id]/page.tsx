@@ -1,12 +1,14 @@
-"use client";
 
-import { ThumbnailCar } from "@/features/admin/dashboard/main/inventory/car/thumbnail";
-import { useParams } from "next/navigation";
+import { ThumbnailCar } from "./_components/thumbnail-form";
 
-const PageDashboardCarRentalThumbnail = () => {
-  const { id } = useParams<{ id: string }>();
+interface GetParams {
+  params: {
+    id: string
+  }
+}
+const PageDashboardCarRentalThumbnail = ({params}: GetParams) => {
 
-  return <ThumbnailCar id={id} />;
+  return <ThumbnailCar id={params.id} />;
 };
 
 export default PageDashboardCarRentalThumbnail;

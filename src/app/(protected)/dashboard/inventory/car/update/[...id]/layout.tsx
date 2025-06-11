@@ -12,5 +12,4 @@ const LayoutCarUpdate = ({ children }: LayoutCarUpdateProps) => {
   );
 };
 
-
-export default LayoutCarUpdate
+export default LayoutCarUpdate;

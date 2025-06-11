@@ -2,14 +2,14 @@ import { RentalGetAllParams, UtilsRentalGetAll } from "@/utils/services/rental";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 export const useRentalGetAll = ({ token, params }: RentalGetAllParams) => {
-  const { data, isError, error } = useSuspenseQuery({
+  const { data, isError, error, isLoading } = useQuery({
     queryKey: ["rentalGetAll", params],
     queryFn: () => UtilsRentalGetAll({ token, params }),
-    
   });
 
   return {
     data,
+    isLoading,
     isError,
     error
   };

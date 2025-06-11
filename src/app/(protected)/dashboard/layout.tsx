@@ -1,43 +1,26 @@
-import { auth, signOut } from "@/auth";
-import { AlertConfirmation } from "@/components/alert-confirmation";
-import { Navbar } from "@/features/admin/dashboard/navbar";
-import { ChartNoAxesGantt } from "lucide-react";
-import { redirect } from "next/navigation";
-import { ReactNode } from "react";
+'use client';
+
+import { ReactNode } from 'react';
+import Sidebar from '@/app/(protected)/dashboard/_components/sidebar';
+import { Header } from '@/components/header';
 
 interface PageDashboardLayoutProps {
   children: ReactNode;
 }
 
-const PageDashboardLayout = async ({ children }: PageDashboardLayoutProps) => {
-  const session = await auth()
-
-  if(!session) {
-    redirect("/auth/login")
-  }
-
-  const handleLogout = async () => {
-    "use server";
-    await signOut({ redirectTo: "/auth/login" });
-  };
-
-
+const PageDashboardLayout = ({ children }: PageDashboardLayoutProps) => {
   return (
-    <div className="w-full flex h-screen overflow-hidden pt-22">
-      <Navbar>
-        <AlertConfirmation
-          title="Apakah anda yakin ingin logout ?"
-          description="Anda akan keluar dari akun anda perlu login kembali untuk melanjutkan"
-          handleConfirm={handleLogout}
-        >
-          <button className="cursor-pointer w-full font-semibold text-sm px-5 rounded-md flex items-center gap-2 text-red-500">
-            {" "}
-            <ChartNoAxesGantt size={20} /> logout
-          </button>
-        </AlertConfirmation>
-      </Navbar>
-      <div className="flex-1 bg-white-blue p-6 h-full overflow-y-auto">
-        {children}
+    <div className="w-full flex">
+      <div className="w-full lg:max-w-[250px] flex h-screen fixed lg:relative translate-x-0">
+        <Sidebar />
+      </div>
+      <div className="flex flex-col w-full h-screen max-h-screen px-4">
+        <div className='w-full h-auto sticky top-0 inset-0'>
+          <Header />
+        </div>
+        <div className='flex-1 overflow-y-scroll py-4'>
+          {children}
+        </div>
       </div>
     </div>
   );

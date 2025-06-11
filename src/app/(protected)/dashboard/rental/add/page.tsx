@@ -1,7 +1,11 @@
-import { RentalAdd } from "@/features/admin/dashboard/main/rental/add";
+import { Crud } from '../../_components/layout-crud';
 
 const PageDashboardRentalAdd = () => {
-  return <RentalAdd />;
+  return (
+    <Crud title="Rental" titleAction="New Rental">
+      <div></div>
+    </Crud>
+  );
 };
 
 export default PageDashboardRentalAdd;

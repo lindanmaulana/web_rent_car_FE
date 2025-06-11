@@ -1,13 +1,13 @@
 "use client"
 
-import { CarBrandUpdate } from "@/features/admin/dashboard/main/inventory/car-brand/update"
 import { useParams } from "next/navigation"
+import { CarBrandUpdateForm } from "./_components/car-brand-update-form"
 
 const PageDashboardInventoryCarBrandUpdate = () => {
     const {id} = useParams<{id: string}>()
     
     return (
-        <CarBrandUpdate id={id} />
+        <CarBrandUpdateForm id={id} />
     )
 }
 

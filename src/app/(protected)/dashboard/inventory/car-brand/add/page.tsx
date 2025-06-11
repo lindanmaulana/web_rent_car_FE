@@ -1,8 +1,12 @@
-import { DashboardMainCarBrandAdd } from "@/features/admin/dashboard/main/inventory/car-brand/add"
+import { getSession } from "@/actions/getSession"
+import { CarBrandAddForm } from "./_components/car-brand-add-form"
 
-const PageDashboardInventoryCarBrandAdd = () => {
+const PageDashboardInventoryCarBrandAdd = async () => {
+    const session = await getSession()
+
+    const token = session.user.token
     return (
-        <DashboardMainCarBrandAdd />
+        <CarBrandAddForm token={token} />
     )
 }
 

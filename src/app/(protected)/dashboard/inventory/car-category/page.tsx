@@ -1,8 +1,12 @@
-import { DashboardMainCarCategory } from "@/features/admin/dashboard/main/inventory/car-category"
+import { CarCategoryHeader } from "./_components/car-category-header"
+import { CarCategoryList } from "./_components/car-category-list"
 
 const PageDashboardInventoryCarCategory = () => {
     return (
-        <DashboardMainCarCategory />
+        <div className="flex flex-col gap-4">
+            <CarCategoryHeader  />
+            <CarCategoryList />
+        </div>
     )
 }
 

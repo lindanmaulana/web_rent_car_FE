@@ -1,8 +1,8 @@
-import { CarCategoryAdd } from "@/features/admin/dashboard/main/inventory/car-category/add"
+import { CarCategoryAddForm } from "./_components/car-category-add-form"
 
 const PageDashboardInventoryCarCategoryAdd = () => {
     return (
-        <CarCategoryAdd />
+        <CarCategoryAddForm />
     )
 }
 
