@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AuthSessionProvider from "./auth-session-provider";
 import "./globals.css";
+import { PoppinsMedium, PoppinsRegular, PoppinsSemiBold } from "@/fonts/poppins";
 
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased`}
+        className={`antialiased ${PoppinsRegular.className} ${PoppinsMedium.variable} ${PoppinsSemiBold.variable}`}
       >
           <AuthSessionProvider>
             {children}  

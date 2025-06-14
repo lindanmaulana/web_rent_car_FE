@@ -1,4 +1,3 @@
-import { DynamicCardCar } from "../components/dynamic-card-car.item"
 import { CarSelect } from "./components/car-select"
 
 export const CarPage = () => {

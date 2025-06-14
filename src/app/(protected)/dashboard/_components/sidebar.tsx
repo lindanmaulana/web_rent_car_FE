@@ -27,9 +27,6 @@ const Sidebar = () => {
           </button>
         </AlertConfirmation>
       </nav>
-      // <Navbar>
-        
-      // </Navbar>
   );
 };
 

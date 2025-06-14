@@ -1,12 +1,9 @@
+import { BsBarChartFill, BsCalendar2WeekFill } from "react-icons/bs";
+import { FaAward, FaTags, FaUserClock } from "react-icons/fa";
 import { IoIosCar } from "react-icons/io";
 import { IconType } from "react-icons/lib";
-import { RiHome6Fill } from "react-icons/ri";
-import { BsBarChartFill, BsCalendar2WeekFill } from "react-icons/bs";
-import { BiSolidWallet } from "react-icons/bi";
-import { TbMessageFilled } from "react-icons/tb";
-import { FaTags, FaUserClock } from "react-icons/fa";
-import { FaAward } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
+import { RiHome6Fill } from "react-icons/ri";
 export interface NavbarList {
   id: number;
   icon: IconType;
@@ -69,18 +66,6 @@ export const navbarListMainMenu: NavbarList[] = [
   },
   {
     id: 5,
-    icon: BiSolidWallet,
-    title: "Reimburse",
-    url: "/dashboard/reimburse",
-  },
-  {
-    id: 6,
-    icon: TbMessageFilled,
-    title: "Inbox",
-    url: "/dashboard/inbox",
-  },
-  {
-    id: 7,
     icon: BsCalendar2WeekFill,
     title: "Calender",
     url: "/dashboard/calender",

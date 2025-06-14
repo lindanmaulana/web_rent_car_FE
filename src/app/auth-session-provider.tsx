@@ -6,9 +6,6 @@ interface AuthSessionProviderProps {
 }
 const AuthSessionProvider = ({children}: AuthSessionProviderProps) => {
     return (
-        // <ClientSessionProvider session={session}>
-        //     {children}
-        // </ClientSessionProvider>
         <ClientSessionProvider >
             {children}
         </ClientSessionProvider>

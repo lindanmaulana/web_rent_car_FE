@@ -25,16 +25,13 @@ export const SidebarList = () => {
                 return (
                     <Fragment key={menu.id}>
                         {!menu.isSubmenu ? (
-                            <li key={menu.id} className={`${pathname === menu.url ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2 hover:bg-gray-500`}>
+                            <li key={menu.id} className={`${pathname === menu.url ? "bg-primary-blue text-white" : "text-[#90A3BF]"} flex items-center gap-x-2 hover:bg-primary-blue/20 scale-110 px-2 py-1 rounded-md`}>
                                 <menu.icon className="text-xl" />
                                 <Link href={url} className="text-md w-full">{menu.title}</Link>
                             </li>
                         ): (
                             <li key={menu.id} className={"text-[#90A3BF] cursor-pointer flex flex-col gap-3"}>
-                                <div onClick={() => {
-                                    setIsUnit(!isUnit)
-                                    console.log("fungsi sub menu")
-                                }} className="w-full flex items-center justify-between">
+                                <div onClick={() => setIsUnit(!isUnit)} className="w-full flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <menu.icon className="text-xl" />
                                         <p>{menu.title}</p>
@@ -47,7 +44,7 @@ export const SidebarList = () => {
                                             const url = `${list.subUrl}?${urlParams.toString()}`
 
                                             return (
-                                            <li key={list.id} className={`${pathname === list.subUrl ? "bg-primary-blue rounded-md scale-110 px-2 py-1 text-white" : "text-[#90A3BF]"} flex items-center gap-x-2`}>
+                                            <li key={list.id} className={`${pathname === list.subUrl ? "bg-primary-blue text-white" : "text-[#90A3BF]"} hover:bg-primary-blue/20 rounded-md scale-110 px-2 py-1 flex items-center gap-x-2`}>
                                                 <list.icon className="text-xl" />
                                                 <Link href={url} className="text-md w-full">{list.subTitle}</Link>
                                             </li>

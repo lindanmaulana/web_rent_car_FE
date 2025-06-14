@@ -1,7 +1,7 @@
 "use client";
-import { UtilsCarGetAll } from "@/utils/services/car";
 import { queryResponses } from "@/utils/helpers/queryResponse";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { UtilsCarGetAll } from "@/utils/services/car";
+import { useQuery } from "@tanstack/react-query";
 import { Car } from "../../../types/car";
 interface useCarGetAllProps {
   params?: string;

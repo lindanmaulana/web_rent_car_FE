@@ -10,6 +10,7 @@ import { IoPeople } from "react-icons/io5"
 
 interface CardCar {
     id: string
+    brand: string
     model: string
     category: string
     image: string
@@ -18,15 +19,15 @@ interface CardCar {
     price: string
 }
 export const CardCar = (props: CardCar) => {
-    const {id ,model, category, image, year, seats, price} = props
+    const {id, brand, model, category, image, year, seats, price} = props
     const urlParams = useSearchParams()
 
     return (
-         <article className="h-86 hover:shadow-md shadow-primary-blue/30 transition-all duration-300 ease-linear overflow-hidden rounded-lg">
+         <article className="h-86 hover:-translate-y-3 shadow-md shadow-primary/20 transition-all duration-300 ease-linear overflow-hidden rounded-lg">
             <Link href={`/car/detail/${id}?${urlParams.toString()}`} className="h-full flex flex-col justify-between bg-white-blue p-6">
                 <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-y-px">
-                    <h3 className="text-xl font-bold">{model}</h3>
+                    <h3 className="text-xl font-bold">{brand} {model}</h3>
                     <strong className="text-sm text-black/30 font-medium">{category}</strong>
                 </div>
                 <IoMdHeart className="cursor-pointer size-5 z-10 text-red-500" />
@@ -40,11 +41,9 @@ export const CardCar = (props: CardCar) => {
                 <p className="flex items-center gap-1 text-sm text-black/40"><BsCalendar3 /> Year {year}</p>
                 <p className="flex items-center gap-1 text-sm text-black/40"> <IoPeople className="size-5" /> {seats} seats</p>
             </div>
-            <div>
-                <div className="flex items-center justify-between">
-                    <h4 className="text-base font-semibold">{price}<span className="text-black/30 text-sm">/day</span></h4>
-                    <Button size={"sm"} className="text-sm bg-primary-blue rounded">Rent now</Button>
-                </div>
+            <div className="space-y-2">
+                <h4 className="text-base font-semibold">{price}<span className="text-black/30 text-sm">/day</span></h4>
+                <Button size={"sm"} className="w-full text-sm bg-primary-blue rounded">Sewa Sekarang</Button>
             </div>
             </div>
             </Link>

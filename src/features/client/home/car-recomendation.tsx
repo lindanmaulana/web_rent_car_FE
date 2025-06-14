@@ -1,5 +1,4 @@
 import { HomeCarRecomendationHeader } from "@/features/client/home/components/car-rekomendation/header"
-import { DynamicCardCar } from "@/features/client/components/dynamic-card-car.item"
 
 export const HomeCarRecomendation = () => {
     

@@ -5,8 +5,6 @@ const PageDashboard = async () => {
 
   const token = session.user.token
 
-  console.log({session})
-
   return (
     <div className="w-full space-y-8">
       <DashboardMain token={token} />
