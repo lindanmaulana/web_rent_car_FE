@@ -1,4 +1,5 @@
-import { Crud } from '@/components/dashboard/layout/crud';
+
+import { Crud } from '@/app/(protected)/dashboard/_components/layout-crud';
 import { ReactNode } from 'react';
 
 interface LayoutCarUpdateProps {

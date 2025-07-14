@@ -1,5 +1,5 @@
-import { CarRental } from "@/features/client/car/car-rental"
 import { Metadata } from "next"
+import { CarRental } from "@/app/(client)/car/rental/[...id]/_components/car-rental"
 
 interface Props {
     params: Promise<{id: string}>

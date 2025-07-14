@@ -1,18 +1,18 @@
 "use client";
 import { ErrorUi } from "@/components/feedbacks/error-ui";
 import { Card, CardContent } from "@/components/ui/card";
-import { useCarGetAll } from "@/hooks/car";
+import { useCarGetCount } from "@/hooks/car/useCarGetCount";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoIosCar } from "react-icons/io";
 import { CardSkeleton } from "../card-skeleton";
 
 export const CardCar = () => {
     const urlParams = useSearchParams()
-    const queryCarGetAll = useCarGetAll({params: urlParams.toString()})
+    const queryCarCount = useCarGetCount()
     const router = useRouter()
 
-    if(queryCarGetAll.isLoading) return <CardSkeleton />
-    if(queryCarGetAll.isError) return <ErrorUi message={queryCarGetAll.error?.message} />
+    if(queryCarCount.isLoading) return <CardSkeleton />
+    if(queryCarCount.isError) return <ErrorUi message={queryCarCount.error?.message} />
 
   return (
     <Card onClick={() => router.push(`/dashboard/inventory/car?${urlParams.toString()}`)} className="bg-white rounded-md min-h-26 cursor-pointer">
@@ -24,7 +24,7 @@ export const CardCar = () => {
             </span>
         </div>
         <div className="space-y-1">
-            <p className="text-3xl font-semibold">{queryCarGetAll.data.pagination?.totalItems}</p>
+            <p className="text-3xl font-semibold">{queryCarCount.data.data.total}</p>
         </div>
       </CardContent>
     </Card>

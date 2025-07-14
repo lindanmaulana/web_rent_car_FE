@@ -5,6 +5,7 @@ import { ButtonUpdate } from '@/components/buttons/button-update';
 import { ErrorUi } from '@/components/feedbacks/error-ui';
 import { Button } from '@/components/ui/button';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { useCarGetAll } from '@/hooks/car';
 import { APIURLIMAGE } from '@/publicConfig';
@@ -22,7 +23,7 @@ import { Car } from '../../../../../../../types/car';
 import { CarListSkeleton } from './car-list-skeleton';
 
 interface CarListProps {
-  token: string
+  token: string;
 }
 export const CarList = ({ token }: CarListProps) => {
   const params = useSearchParams();
@@ -56,7 +57,7 @@ export const CarList = ({ token }: CarListProps) => {
     });
   };
 
-  if(isLoading) return <CarListSkeleton />
+  if (isLoading) return <CarListSkeleton />;
   if (isError) return <ErrorUi />;
 
   const totalPages = data.pagination?.totalPages ?? 1;
@@ -67,6 +68,15 @@ export const CarList = ({ token }: CarListProps) => {
     const urlParams = new URLSearchParams(window.location.search);
 
     urlParams.set('page', page.toString());
+
+    router.replace(`${pathname}?${urlParams.toString()}`);
+  };
+
+  const handleLimit = (limit: string) => {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    urlParams.set('page', '1');
+    urlParams.set('limit', limit);
 
     router.replace(`${pathname}?${urlParams.toString()}`);
   };
@@ -156,29 +166,48 @@ export const CarList = ({ token }: CarListProps) => {
         </TableBody>
       </Table>
 
-      <Pagination className="flex items-center justify-end">
-        <PaginationContent>
-          <PaginationItem>
-            <Button variant={'ghost'} className="cursor-pointer" onClick={() => handlePagination(currentPage - 1)} disabled={!data.pagination?.hashPrevPage}>
-              <FaAngleLeft />
-            </Button>
-          </PaginationItem>
+      <div className='w-full flex items-center justify-between '>
+        <div className="w-1/2 flex items-center gap-2">
+          <Select onValueChange={(value) => handleLimit(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder={params.get('limit')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="15">15</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <h4 className="text-sm">data per halaman</h4>
+        </div>
 
-          {paginationPages.map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink onClick={() => handlePagination(page)} isActive={currentPage === page} className="cursor-pointer">
-                {page}
-              </PaginationLink>
+        <Pagination className="w-1/2 flex items-center justify-end">
+          <PaginationContent>
+            <PaginationItem>
+              <Button variant={'ghost'} className="cursor-pointer" onClick={() => handlePagination(currentPage - 1)} disabled={!data.pagination?.hashPrevPage}>
+                <FaAngleLeft />
+              </Button>
             </PaginationItem>
-          ))}
 
-          <PaginationItem>
-            <Button variant={'ghost'} className="cursor-pointer" onClick={() => handlePagination(currentPage + 1)} disabled={!data.pagination?.hashNextPage}>
-              <FaAngleRight />
-            </Button>
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {paginationPages.map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink onClick={() => handlePagination(page)} isActive={currentPage === page} className="cursor-pointer">
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <Button variant={'ghost'} className="cursor-pointer" onClick={() => handlePagination(currentPage + 1)} disabled={!data.pagination?.hashNextPage}>
+                <FaAngleRight />
+              </Button>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 };

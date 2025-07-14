@@ -31,12 +31,9 @@ const PageTransaction = () => {
         mutationFn: (values: TypePaymentCreateSchema) => UtilsPayment.create({token: session.data?.user.token}, values)
     })
 
-
     if(queryRental.isLoading || session.status === "loading") return <p>Loading...</p>
     if(queryRental.isError) return <p>Error...</p>
 
-    console.log({queryRental: queryRental.data})
-    console.log({params})
 
     const handlePayment = (values: TypePaymentCreateSchema) => {
         setSnapShow(true)
@@ -54,7 +51,6 @@ const PageTransaction = () => {
     }
 
     const dataRental = queryRental.data.data
-
     
     return (
         <div className="w-full flex items-center justify-center py-5">

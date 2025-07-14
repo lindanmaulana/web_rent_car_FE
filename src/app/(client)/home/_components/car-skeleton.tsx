@@ -18,10 +18,8 @@ export const CarSkeleton = () => {
                         <Skeleton className="w-18 h-5 bg-gray-300 rounded-sm" />
                         <Skeleton className="w-12 h-5 bg-gray-300 rounded-sm" />
                     </div>
-                    <div className="w-full flex items-center justify-between">
-                        <Skeleton className="w-28 h-6 bg-gray-300 rounded-sm" />
-                        <Skeleton className="w-18 h-7 bg-gray-300 rounded-sm" />
-                    </div>
+                    <Skeleton className="w-32 h-6 bg-gray-300 rounded-sm" />
+                    <Skeleton className="w-full h-7 bg-gray-300 rounded-sm" />
                 </div>
             </div>
     )

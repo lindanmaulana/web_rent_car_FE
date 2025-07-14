@@ -4,13 +4,11 @@ import { ErrorUi } from "@/components/feedbacks/error-ui"
 import { useCarGetAll } from "@/hooks/car"
 import { APIURLIMAGE } from "@/publicConfig"
 import { UtilsFormatCurrency } from "@/utils/helpers/formatCurrency"
-import { useSearchParams } from "next/navigation"
 import { CarListSkeleton } from "./car-list-skeleton"
 import { CardCar } from "./card-car"
 
 export const CarList = () => {
-    const urlParams = useSearchParams()
-    const carGetAll = useCarGetAll({params: urlParams.toString()})
+    const carGetAll = useCarGetAll({params: "page=1&limit=4"})
 
     if(carGetAll.isLoading) return <CarListSkeleton />
     if(carGetAll.isError) return <ErrorUi message={carGetAll.error?.message} />

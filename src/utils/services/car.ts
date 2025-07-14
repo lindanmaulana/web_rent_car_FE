@@ -46,6 +46,16 @@ export const UtilsCarGetAll = async ({ params }: UtilsCarGetAllParams) => {
   }
 };
 
+export const UtilsCarGetCount = async () => {
+  try {
+    const response = await axiosInstance.get("/cars/count")
+
+    return response.data
+  } catch (err) {
+    throw new Error(UtilsErrorService(err))
+  }
+}
+
 interface UtilsCarGetOneParams {
   id: string;
 }

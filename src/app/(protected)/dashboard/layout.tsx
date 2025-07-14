@@ -9,6 +9,7 @@ interface PageDashboardLayoutProps {
 }
 
 const PageDashboardLayout = ({ children }: PageDashboardLayoutProps) => {
+  
   return (
     <div className="w-full flex">
       <div className="w-full lg:max-w-[250px] flex h-screen fixed lg:relative translate-x-0">

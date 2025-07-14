@@ -36,7 +36,7 @@ export const navbarListMainMenu: NavbarList[] = [
             id: 1,
             icon: IoIosCar,
             subTitle: "Car",
-            subUrl: "/dashboard/inventory/car"
+            subUrl: "/dashboard/inventory/car?page=1&limit=5"
         },
         {
             id: 2,

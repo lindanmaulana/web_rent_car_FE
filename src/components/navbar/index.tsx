@@ -5,18 +5,19 @@ import { MdSettings } from "react-icons/md"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { useSession } from "next-auth/react"
-import { usePathname, useSearchParams } from "next/navigation"
+// import { usePathname, useSearchParams } from "next/navigation"
 import { AlertConfirmation } from "../alert-confirmation"
 import { signOutAction } from "@/actions/signOutAction"
 import Image from "next/image"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
 import { IoLogOutOutline } from "react-icons/io5"
+import { useSearchParams } from "next/navigation"
 
 export const Navbar = () => {
         const session = useSession()
         const urlParams = useSearchParams()
-        const pathname = usePathname()
+        // const pathname = usePathname()
 
         const handleLogout = async () => {
             await signOutAction()
@@ -30,7 +31,19 @@ export const Navbar = () => {
 
             <div className="flex items-center gap-3">   
                 <Button variant="outline" className="w-9 h-9 rounded-full"><FaHeart className="text-slate-blue" /></Button>
-                <Button variant="outline" className="w-9 h-9 rounded-full"><IoIosNotifications className="text-slate-blue" /></Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <IoIosNotifications className="w-9 h-9 p-2 text-slate-blue rounded-full border border-primary/20" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>
+                            <Link href={`/car/rental`}>Rental</Link>
+                        </DropdownMenuLabel>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                {/* <Button variant="outline" className="w-9 h-9 rounded-full">
+                    <IoIosNotifications className="text-slate-blue" />
+                </Button> */}
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <MdSettings className="w-9 h-9 p-2 text-slate-blue rounded-full border border-primary/20" />

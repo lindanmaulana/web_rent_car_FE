@@ -1,5 +1,5 @@
 import { CarSelect } from '@/features/client/car/components/car-select';
-import { CarList } from './_components/car-list';
+import { CarContent } from './_components/car-content';
 
 const Car = () => {
   return (
@@ -12,7 +12,7 @@ const Car = () => {
         <ul className="w-full flex items-center justify-center gap-14">
           <CarSelect />
         </ul>
-        <CarList />
+        <CarContent />
       </div>
     </section>
   );

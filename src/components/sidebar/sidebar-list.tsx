@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 import { IoIosArrowUp } from "react-icons/io"
 import { navbarListMainMenu } from "./sidebar-type"
@@ -9,7 +9,6 @@ import { navbarListMainMenu } from "./sidebar-type"
 export const SidebarList = () => {
     const pathname = usePathname()
     const [isUnit, setIsUnit] = useState<boolean>(false)
-    const urlParams = useSearchParams()
 
     useEffect(() => {
         if(pathname.startsWith("/dashboard/inventory")) {
@@ -20,7 +19,7 @@ export const SidebarList = () => {
     return (
         <ul className="flex flex-col gap-5">
             {navbarListMainMenu?.map(menu => {
-                const url = `${menu.url}?${urlParams.toString()}`
+                const url = `${menu.url}`
                 
                 return (
                     <Fragment key={menu.id}>
@@ -41,7 +40,7 @@ export const SidebarList = () => {
                                 {isUnit && (
                                     <ul className="pl-6 space-y-3">
                                         {menu.subMenu && menu.subMenu.map(list => {
-                                            const url = `${list.subUrl}?${urlParams.toString()}`
+                                            const url = `${list.subUrl}`
 
                                             return (
                                             <li key={list.id} className={`${pathname === list.subUrl ? "bg-primary-blue text-white" : "text-[#90A3BF]"} hover:bg-primary-blue/20 rounded-md scale-110 px-2 py-1 flex items-center gap-x-2`}>

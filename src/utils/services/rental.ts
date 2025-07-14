@@ -34,10 +34,7 @@ export const UtilsRentalCreate = async ({token, data}: RentalCreateParams) => {
   }
 }
 
-export const UtilsRentalGetAll = async ({
-  token,
-  params,
-}: RentalGetAllParams) => {
+export const UtilsRentalGetAll = async ({ token, params, }: RentalGetAllParams) => {
   if (token) setToken(token);
 
   try {
